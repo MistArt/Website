@@ -4,21 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        /* 整体页面背景设为黑色 */
+        /* 整体页面样式 */
         body {
             background-color: #000000;
             margin: 0;
             padding: 0;
             font-family: Snell Roundhand, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            /* 先不设置固定高度，后续通过JavaScript动态设置 */
         }
 
         /* 开屏界面样式 */
-    .splash-screen {
+      .splash-screen {
             position: fixed;
             top: 0;
             left: 0;
@@ -33,65 +28,113 @@
             opacity: 1;
         }
 
-    .splash-screen h2 {
+      .splash-screen h2 {
             font-size: 55px;
             color: #FFFFFF;
             font-weight: bold;
             text-align: center;
-             font-family: Snell Roundhand, sans-serif;
         }
 
-        /* 幻灯片与按钮的共同容器样式 */
-    .content-container {
+        h1.top-text {
+            text-align: center;
+            color: #FFFFFF;
+            margin-top: 0px;
+            font-size: 50px;
+            font-family: Snell Roundhand, sans-serif;
+        }
+
+        /* 幻灯片与图片所在的容器样式 */
+      .slide-and-img-container {
+            width: 965px;
+            /* 和幻灯片等宽，可根据需求调整 */
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            margin: 0 auto;
+        }
+
+        /* 图片样式 */
+      .new-img {
+            width: 965px;
+            height: 450px;
+            object-fit: cover;
             border-radius: 5%;
-            border: 1px solid #FFFFFF;
-            box-sizing: border-box; /* 统一设置盒模型为 border-box，避免因盒模型差异导致宽度不一致 */
+            border: 0px solid #FFFFFF;
+            margin-bottom: 20px;
         }
 
         /* 幻灯片容器样式 */
-    .slide-container {
-            width: 750px;
-            height: 1200px;
-            border-radius: 0%;
-            border-top-left-radius: 5%;
-            border-top-right-radius: 5%;
-            border: 0.5px solid #FFFFFF;
+      .slide-container {
+            width: 965px;
+            height: 450px;
+            border-radius: 22%;
+            border: 2px solid #FFFFFF;
             overflow: hidden;
-            margin-bottom: 0px;
-            box-sizing: border-box; /* 统一设置盒模型为 border-box，避免因盒模型差异导致宽度不一致 */
         }
 
         /* 幻灯片样式 */
-    .slide {
+      .slide {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: none;
         }
 
-        /* 按钮样式 */
+        /* 幻灯片下方文本容器样式 */
+      .text-container {
+            margin-top: 20px;
+            text-align: left;
+            width: 100%;
+        }
+
+        /* 文本容器内标题文本样式（h1） */
+      .text-container h1 {
+            color: #FFFFFF;
+            font-size: 55px;
+            font-family: Hiragino Mincho ProN, sans-serif;
+            line-height: 0.5;
+            margin-bottom: 0px;
+            margin-left: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
+
+        /* 文本容器内副标题文本样式（h2） */
+      .text-container h2 {
+            color: #CCCCCC;
+            font-size: 45px;
+            font-family: Hiragino Mincho ProN, sans-serif;
+            line-height: 0.5;
+            margin-bottom: 0px;
+            margin-left: 0;
+            font-style: italic;
+        }
+
+        /* 按钮容器样式 */
+      .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
         button {
             background-color: transparent;
             color: #FFFFFF;
-            border: 0.5px solid #FFFFFF;
+            border: 2px solid #FFFFFF;
             cursor: pointer;
             font-size: 55px;
-            border-radius: 0 0 5% 5%; /* 设置下边框两角为5%的圆角，保持上边两角为直角，确保侧边与幻灯片平齐 */
-            width: 750px;
+             font-family: Hiragino Mincho ProN, sans-serif;
+            border-radius: 22px;
+            width: 965px;
             height: 200px;
             text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: none;
-            font-family: Snell Roundhand, sans-serif;
-            box-sizing: border-box; /* 统一设置盒模型为 border-box，避免因盒模型差异导致宽度不一致 */
-            margin: 0; /* 去除按钮默认可能存在的外边距 */
-            padding: 0; /* 去除按钮默认可能存在的内边距 */
+            margin: 10px;
+            font-family: Impact, sans-serif;
         }
     </style>
 </head>
@@ -99,26 +142,41 @@
 <body>
     <!-- 开屏界面 -->
     <div class="splash-screen">
-        <h2><b>Welcome</b><br><b>Tipcy love you forever</b></h2>
+        <h2><b>Welcome</b><br><b>Designed by TFOG</b></h2>
     </div>
 
-    <!-- 幻灯片与按钮所在的共同容器 */
-    <div class="content-container">
-        <!-- 幻灯片容器 -->
+    <h1 class="top-text">TFOG</h1>
+
+    <!-- 幻灯片与图片所在的容器（现在在页面中展示了） -->
+    <div class="slide-and-img-container">
+        <img class="new-img" src="https://s2.loli.net/2024/12/28/XcvdZF4Mbsf9W1g.png" alt="New added image">
         <div class="slide-container">
-            <img class="slide" src="https://s2.loli.net/2024/12/21/nJoXZfqtGFKr5mQ.png" alt="Image 1">
-            <img class="slide" src="https://s2.loli.net/2024/12/21/AZF4Yo7VwtrRzme.jpg" alt="Image 2">
+            <img class="slide" src="https://s2.loli.net/2024/12/07/lC8rtTO6neMw3KZ.png" alt="Image 1">
+            <img class="slide" src="https://s2.loli.net/2024/12/07/lC8rtTO6neMw3KZ.png" alt="Image 2">
         </div>
-        <!-- 按钮 -->
-        <button id="button1">Click</button>
+        <!-- 幻灯片下方文本容器 -->
+        <div class="text-container">
+           <h1>公告notice</h1>
+            <h2>加入我們:設計並搶先測試最新項目</h2>
+            <h2>為保持頁面文本盡量美觀</h2>
+            <h2>此網站採用繁體中文與英文</h2>
+            <h1>最近項目recently Project</h1>
+            <h2>模擬朋友圈</h2>
+            <h1>提示tips</h1>
+            <h2>點擊下列按鈕跳轉相應存儲庫</h2>
+            <h2>目前僅總存儲庫可用</h2>
+        </div>
+        <!-- 新增的按钮容器 -->
+        <div class="button-container">
+            <button id="button1">总存储库</button>
+            <button id="button2">iOS快捷指令</button>
+            <button id="button3">桌面小组件</button>
+            <button id="button4">网页小工具</button>
+             <button id="button5">分享</button>
+        </div>
     </div>
 
     <script>
-        // 获取视口高度（浏览器窗口可视区域的高度）
-        const viewportHeight = window.innerHeight;
-        // 设置body元素的高度为视口高度
-        document.body.style.height = viewportHeight + 'px';
-
         setTimeout(() => {
             document.querySelector('.splash-screen').style.opacity = 0;
             setTimeout(() => {
@@ -140,9 +198,27 @@
         }
         setInterval(showSlides, 3000);
 
+        // 为按钮添加点击事件
         document.getElementById('button1').addEventListener('click', function () {
-            window.location.href = 'https://applemusic.com';
+            window.location.href = 'https://github.com/TFogZero/TFogZero';
         });
+
+        document.getElementById('button2').addEventListener('click', function () {
+            window.location.href = 'https://example.com/ios-shortcuts';
+        });
+
+        document.getElementById('button3').addEventListener('click', function () {
+            window.location.href = 'https://example.com/desktop-widgets';
+        });
+
+        document.getElementById('button4').addEventListener('click', function () {
+            window.location.href = 'https://example.com/web-tools';
+        });
+
+document.getElementById('button5').addEventListener('click', function () {
+            window.location.href = 'https://example.com/web-tools';
+        });
+
     </script>
 
 </body>
