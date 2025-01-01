@@ -6,20 +6,20 @@
     <style>
         /* 整体页面样式 */
         body {
-            background-color: #000000;
+            background-color: #f5f2ed;
             margin: 0;
             padding: 0;
             font-family: Snell Roundhand, sans-serif;
         }
 
         /* 开屏界面样式 */
-      .splash-screen {
+    .splash-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #000000;
+            background-color: #f5f2ed;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -28,24 +28,24 @@
             opacity: 1;
         }
 
-      .splash-screen h2 {
+    .splash-screen h2 {
             font-size: 55px;
-            color: #FFFFFF;
+            color: #000000;
             font-weight: bold;
             text-align: center;
         }
 
         h1.top-text {
             text-align: center;
-            color: #FFFFFF;
+            color: #000000;
             margin-top: 0px;
             font-size: 50px;
             font-family: Snell Roundhand, sans-serif;
         }
 
         /* 幻灯片与图片所在的容器样式 */
-      .slide-and-img-container {
-            width: 965px;
+    .slide-and-img-container {
+            width: 900px;
             /* 和幻灯片等宽，可根据需求调整 */
             display: flex;
             flex-direction: column;
@@ -54,79 +54,92 @@
         }
 
         /* 图片样式 */
-      .new-img {
-            width: 965px;
-            height: 450px;
+    .new-img {
+            width: 900px;
+            height: 500px;
             object-fit: cover;
             border-radius: 5%;
-            border: 0px solid #FFFFFF;
+            border: 0px solid #000000;
             margin-bottom: 20px;
         }
 
         /* 幻灯片容器样式 */
-      .slide-container {
-            width: 965px;
-            height: 450px;
+    .slide-container {
+            width: 720px;
+            height: 1280px;
             border-radius: 22px;
-            border: 2px solid #FFFFFF;
+            border: 0.5px solid #000000;
             overflow: hidden;
         }
 
         /* 幻灯片样式 */
-      .slide {
+    .slide {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: none;
         }
 
+        /* 新添加的外层容器样式，用于包裹文本和按钮容器，设置了背景颜色、圆角效果，可按需调整样式及属性值 */
+    .content-wrapper {
+            width: 965px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #000000; /* 设置背景颜色，这里示例用的是#336699，可替换 */
+            border-radius: 45px; /* 设置圆角效果，可调整数值 */
+             margin-top: 20px;
+        }
+
         /* 幻灯片下方文本容器样式 */
-      .text-container {
+    .text-container {
             margin-top: 20px;
+            margin-left: 20px
             text-align: left;
             width: 100%;
         }
 
         /* 文本容器内标题文本样式（h1） */
-      .text-container h1 {
-            color: #FFFFFF;
+    .text-container h1 {
+            color: #f5f2ed;
             font-size: 55px;
-            font-family: Hiragino Mincho ProN, sans-serif;
+            font-family: Impact, sans-serif;
             line-height: 0.5;
             margin-bottom: 0px;
-            margin-left: 0;
+            margin-left: 20;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             letter-spacing: 2px;
         }
 
         /* 文本容器内副标题文本样式（h2） */
-      .text-container h2 {
-            color: #CCCCCC;
+    .text-container h2 {
+            color: #f5f2ed;
             font-size: 45px;
-            font-family: Hiragino Mincho ProN, sans-serif;
+            font-family: Impact, sans-serif;
             line-height: 0.5;
             margin-bottom: 0px;
-            margin-left: 0;
+            margin-left: 20;
             font-style: italic;
         }
 
         /* 按钮容器样式 */
-      .button-container {
+    .button-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin-top: 20px;
+            margin-bottom: 20px
         }
 
         button {
             background-color: transparent;
             color: #FFFFFF;
-            border: 2px solid #FFFFFF;
+            border: 2px solid #f5f2ed;
             cursor: pointer;
-            font-size: 55px;
-             font-family: Hiragino Mincho ProN, sans-serif;
+            font-size: 75px;
+            font-family: Impact, sans-serif;
             border-radius: 22px;
-            width: 965px;
+            width: 880px;
             height: 200px;
             text-align: center;
             display: flex;
@@ -149,30 +162,22 @@
 
     <!-- 幻灯片与图片所在的容器（现在在页面中展示了） -->
     <div class="slide-and-img-container">
-        <img class="new-img" src="https://s2.loli.net/2024/12/28/XcvdZF4Mbsf9W1g.png" alt="New added image">
+        <img class="new-img" src="https://s2.loli.net/2025/01/01/q1vrLpfh46ebKOk.png" alt="New added image">
         <div class="slide-container">
-            <img class="slide" src="https://s2.loli.net/2024/12/07/lC8rtTO6neMw3KZ.png" alt="Image 1">
-            <img class="slide" src="https://s2.loli.net/2024/12/07/lC8rtTO6neMw3KZ.png" alt="Image 2">
+            <img class="slide" src="https://s2.loli.net/2025/01/01/lEUafrC6xy2iYTv.png" alt="Image 1">
         </div>
-        <!-- 幻灯片下方文本容器 -->
-        <div class="text-container">
-           <h1>公告notice</h1>
-            <h2>加入我們:設計並搶先測試最新項目</h2>
-            <h2>為保持頁面文本盡量美觀</h2>
-            <h2>此網站採用繁體中文與英文</h2>
-            <h1>最近項目recently Project</h1>
-            <h2>模擬朋友圈</h2>
-            <h1>提示tips</h1>
-            <h2>點擊下列按鈕跳轉相應存儲庫</h2>
-            <h2>目前僅總存儲庫可用</h2>
-        </div>
-        <!-- 新增的按钮容器 -->
-        <div class="button-container">
-            <button id="button1">总存储库</button>
-            <button id="button2">iOS快捷指令</button>
-            <button id="button3">桌面小组件</button>
-            <button id="button4">网页小工具</button>
-             <button id="button5">分享</button>
+        <!-- 新增的用于包裹文本容器和按钮容器的外层容器 -->
+        <div class="content-wrapper">
+            <!-- 幻灯片下方文本容器 -->
+            <div class="text-container">
+                <h1>Notice</h1>
+                <h2>Click the button to start.</h2>
+            </div>
+            <!-- 按钮容器 -->
+            <div class="button-container">
+                <button id="button1">Tools</button>
+                <button id="button2">Music</button>
+            </div>
         </div>
     </div>
 
@@ -206,19 +211,7 @@
         document.getElementById('button2').addEventListener('click', function () {
             window.location.href = 'https://example.com/ios-shortcuts';
         });
-
-        document.getElementById('button3').addEventListener('click', function () {
-            window.location.href = 'https://example.com/desktop-widgets';
-        });
-
-        document.getElementById('button4').addEventListener('click', function () {
-            window.location.href = 'https://example.com/web-tools';
-        });
-
-document.getElementById('button5').addEventListener('click', function () {
-            window.location.href = 'https://example.com/web-tools';
-        });
-
+        
     </script>
 
 </body>
