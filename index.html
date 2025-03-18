@@ -64,21 +64,22 @@
 
         /* 比例容器 */
         .ratio-container {
-            display: grid;
-            grid-template-columns: minmax(0, 9fr) minmax(0, 16fr); /* 比例容器 */
+            display: flex;
             gap: 20px;
             margin: 20px 0;
             width: 90%;
             max-width: 1000px;
             box-sizing: border-box;
             align-items: stretch;
+            height: 300px; /* 统一容器高度 */
         }
 
         /* 垂直矩形 */
         .vertical-rect {
             background: #f8f8f8;
             border-radius: 15px;
-            aspect-ratio: 9/16;
+            width: calc(300px * 9/16); /* 根据高度计算宽度 */
+            flex-shrink: 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -90,7 +91,7 @@
         .horizontal-rect {
             background: #FFFFFF;
             border-radius: 15px;
-            aspect-ratio: 16/9;
+            flex: 1;
             position: relative;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
@@ -98,7 +99,7 @@
         /* 文字样式 */
         .vertical-text {
             color: #333;
-            font-size: min(2.5vw, 24px);
+            font-size: 24px;
             text-align: center;
             line-height: 1.4;
             word-break: break-word;
@@ -106,13 +107,10 @@
 
         /* 图片样式 */
         .horizontal-image {
-            width: calc(100% - 4px);
-            height: calc(100% - 4px);
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             border-radius: 13px;
-            position: absolute;
-            top: 2px;
-            left: 2px;
         }
 
         /* 保护界面 */
@@ -148,22 +146,21 @@
         /* 响应式调整 */
         @media (max-width: 768px) {
             .ratio-container {
-                grid-template-columns: 1fr;
-                gap: 15px;
+                flex-direction: column;
+                height: auto;
             }
 
             .vertical-rect {
-                aspect-ratio: 9/16;
                 width: 100%;
+                height: 56.25vw; /* 9:16比例 */
             }
 
             .horizontal-rect {
-                aspect-ratio: 16/9;
-                width: 100%;
+                height: 56.25vw; /* 16:9比例 */
             }
 
             .vertical-text {
-                font-size: min(4vw, 20px);
+                font-size: 20px;
             }
         }
 
@@ -174,7 +171,7 @@
             }
 
             .image-caption {
-                font-size: min(5vw, 20px);
+                font-size: 20px;
             }
         }
     </style>
@@ -238,13 +235,9 @@
             const contentHeight = main.scrollHeight;
             const viewportHeight = window.innerHeight;
             
-            // 计算缩放比例（保留5%的边距）
-            let scale = Math.min(1, (viewportHeight - 40) / contentHeight);
-            
-            // 应用缩放
+            let scale = Math.min(1, viewportHeight / contentHeight);
             main.style.transform = `scale(${scale})`;
             
-            // 垂直居中
             const scaledHeight = contentHeight * scale;
             main.style.marginTop = scaledHeight < viewportHeight 
                 ? `${(viewportHeight - scaledHeight) / 2}px` 
@@ -252,9 +245,7 @@
         }
 
         // 事件监听
-        window.addEventListener('resize', () => {
-            adjustLayout();
-        });
+        window.addEventListener('resize', adjustLayout);
 
         // 密码验证函数
         function checkPassword() {
