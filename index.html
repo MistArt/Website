@@ -1,49 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- 保持原有meta标签和标题不变 -->
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
+    <title>MistArt</title>
     <style>
-        /* 修改部分开始 */
-        .ratio-container {
-            display: grid;
-            grid-template-columns: 1fr 2fr; /* 保持1:2宽度比例 */
-            gap: 30px;
-            margin: 40px 0;
-            width: 90%;
-            max-width: 1000px;
-            min-height: 400px; /* 改为最小高度 */
-            align-items: stretch; /* 关键：强制子元素等高 */
-        }
-
-        .vertical-rect {
-            background: #f8f8f8;
-            border-radius: 15px;
-            aspect-ratio: 9/16; /* 保持原有竖版比例 */
-            height: auto; /* 改为自动高度 */
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .horizontal-rect {
-            background: #FFFFFF;
-            border-radius: 15px;
-            aspect-ratio: 16/9; /* 保持原有横版比例 */
-            height: auto; /* 改为自动高度 */
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: relative;
-            padding: 2px;
-        }
-        /* 修改部分结束 */
-
-        /* 其他原有样式保持不变 */
         body {
             background-color: #F5F2ED;
             margin: 0;
             min-height: 100vh;
-            font-family: Arial, sans-serif;
+            font-family: Impact, sans-serif; /* 全局字体设置 */
         }
 
         .main-interface {
@@ -64,6 +32,14 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+        }
+
+        /* 特定元素字体增强 */
+        .image-caption,
+        .vertical-text,
+        .protected-text,
+        .error-message {
+            font-family: Impact, sans-serif; /* 强制使用Impact */
         }
 
         .avatar-container {
@@ -89,6 +65,39 @@
 
         .image-caption:hover {
             transform: scale(1.05);
+        }
+
+        .ratio-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin: 40px 0;
+            width: 90%;
+            max-width: 1000px;
+            min-height: 400px;
+            align-items: stretch;
+        }
+
+        .vertical-rect {
+            background: #f8f8f8;
+            border-radius: 15px;
+            aspect-ratio: 9/16;
+            height: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .horizontal-rect {
+            background: #FFFFFF;
+            border-radius: 15px;
+            aspect-ratio: 16/9;
+            height: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            padding: 2px;
         }
 
         .vertical-text {
@@ -132,7 +141,6 @@
     </style>
 </head>
 <body>
-    <!-- 保持原有HTML结构不变 -->
     <div class="main-interface">
         <div class="avatar-container">
             <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
@@ -175,7 +183,6 @@
         </div>
     </div>
 
-    <!-- 保护界面保持不变 -->
     <div class="protected-interface" id="protectedScreen">
         <div class="protected-content">
             <div class="protected-text" onclick="checkPassword()">🛡️ 点击验证身份</div>
@@ -184,7 +191,6 @@
     </div>
 
     <script>
-        // 保持原有JavaScript不变
         const SECRET_PASSWORD = "1234";
 
         function checkPassword() {
