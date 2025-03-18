@@ -8,81 +8,211 @@
     <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
     <title>MistArt</title>
     <style>
-        /* 统一字体设置 */
-        body {
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        :root {
+            --min-container-height: 50vh;
+            --max-container-width: 95vw;
         }
 
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #F5F2ED;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 保护界面 */
+        .protected-interface {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(245, 242, 237, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        /* 主内容容器 */
+        .main-content {
+            flex: 1;
+            width: 100%;
+            max-width: var(--max-container-width);
+            margin: 0 auto;
+            padding: 2vh 0;
+        }
+
+        /* 头像区域 */
+        .avatar-container {
+            text-align: center;
+            margin-bottom: 3vh;
+        }
+
+        .circle-image {
+            width: min(25vw, 220px);
+            height: min(25vw, 220px);
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #000;
+        }
+
+        /* 双栏容器 */
+        .ratio-container {
+            display: flex;
+            gap: 2vw;
+            width: 100%;
+            min-height: var(--min-container-height);
+            margin: 2vh 0;
+        }
+
+        /* 左侧垂直区块 */
+        .vertical-rect {
+            flex: 1;
+            min-width: 30%;
+            background: #f0f0f0;
+            border-radius: 15px;
+            padding: 2vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* 右侧横向区块 */
+        .horizontal-rect {
+            flex: 2;
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            aspect-ratio: 16/9;
+        }
+
+        /* 响应式布局 */
+        @media (max-aspect-ratio: 1/1) {
+            .ratio-container {
+                flex-direction: column;
+                min-height: auto;
+            }
+            
+            .vertical-rect,
+            .horizontal-rect {
+                width: 100% !important;
+                flex: none;
+                min-height: 40vh;
+            }
+            
+            .horizontal-rect {
+                aspect-ratio: 16/9;
+            }
+        }
+
+        /* 文字系统 */
         .image-caption {
-            font-family: Impact, sans-serif;
-            font-size: 24px;
-            letter-spacing: 1.2px;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: #333;
+            margin: 2vh 0;
         }
 
         .vertical-text {
-            font-family: Impact, sans-serif;
-            font-size: 22px;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            line-height: 1.5;
+            text-align: center;
         }
 
+        .image-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 90%;
+        }
+
+        .main-title {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            line-height: 1.2;
+        }
+
+        .sub-title {
+            font-size: clamp(1rem, 2.5vw, 1.8rem);
+        }
+
+        /* 密码界面样式 */
         .protected-text {
-            font-family: Impact, sans-serif;
-            font-size: 32px;
-            letter-spacing: 2px;
+            font-size: clamp(2rem, 6vw, 3rem);
+            cursor: pointer;
         }
 
         .error-message {
-            font-family: Impact, sans-serif;
+            font-size: clamp(0.8rem, 2vw, 1rem);
         }
-
-        button {
-            font-family: Impact, sans-serif;
-            letter-spacing: 1.5px;
-        }
-
-        /* 其他样式保持不变 */
-        .ratio-container {
-            /* 原有样式 */
-        }
-        /* ...其余样式... */
     </style>
 </head>
 <body>
-    <!-- 界面结构保持不变 -->
-    <div class="main-interface">
-        <div class="avatar-container">
-            <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
-                 alt="Profile" 
-                 class="circle-image">
-            <div class="image-caption" onclick="showProtected()">TFOG DESIGN</div>
-        </div>
-
-        <!-- 三个比例容器 -->
-        <div class="ratio-container">
-            <div class="vertical-rect">
-                <div class="vertical-text">Creative Workshop<br>Design Thinking</div>
-            </div>
-            <div class="horizontal-rect">
-                <img src="https://example.com/image1.jpg" 
-                     alt="设计案例" 
-                     class="horizontal-image">
-            </div>
-        </div>
-
-        <!-- 更多容器... -->
-    </div>
-
     <!-- 保护界面 -->
     <div class="protected-interface" id="protectedScreen">
-        <div class="protected-content">
-            <div class="protected-text" onclick="checkPassword()">🛡️ VERIFY IDENTITY</div>
-            <div class="error-message" id="errorMsg">ACCESS DENIED</div>
+        <div class="main-content">
+            <div class="protected-text" onclick="checkPassword()">🛡️ VERIFY ACCESS</div>
+            <div class="error-message" id="errorMsg">INVALID PASSWORD</div>
+        </div>
+    </div>
+
+    <!-- 主界面 -->
+    <div class="main-interface">
+        <div class="main-content">
+            <div class="avatar-container">
+                <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
+                     alt="Profile" 
+                     class="circle-image">
+                <div class="image-caption" onclick="showProtected()">TFOG DESIGN</div>
+            </div>
+
+            <!-- 容器组 -->
+            <div class="ratio-container">
+                <div class="vertical-rect">
+                    <div class="vertical-text">Creative Workshop<br>Design Thinking</div>
+                </div>
+                <div class="horizontal-rect">
+                    <img src="https://s2.loli.net/2025/01/07/2hQTDqj9elPVsfw.png" 
+                         alt="Design" 
+                         class="horizontal-image">
+                    <div class="image-text">
+                        <div class="main-title">DESIGN</div>
+                        <div class="sub-title">PORTFOLIO</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 其他容器结构相同 -->
         </div>
     </div>
 
     <script>
-        // JavaScript保持不变
+        const SECRET_PASSWORD = "1234";
+
+        // 初始化显示保护界面
+        document.getElementById('protectedScreen').style.display = 'flex';
+
+        function checkPassword() {
+            const input = prompt("ENTER ACCESS CODE:");
+            if(input === SECRET_PASSWORD) {
+                document.querySelector('.main-interface').style.display = 'flex';
+                document.getElementById('protectedScreen').style.display = 'none';
+            } else {
+                const errorMsg = document.getElementById('errorMsg');
+                errorMsg.style.display = 'block';
+                setTimeout(() => errorMsg.style.display = 'none', 2000);
+            }
+        }
+
+        function showProtected() {
+            document.querySelector('.main-interface').style.display = 'none';
+            document.getElementById('protectedScreen').style.display = 'flex';
+        }
     </script>
 </body>
 </html>
