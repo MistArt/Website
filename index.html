@@ -3,305 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
-    <title>MistArt</title>
     <style>
-        /* 全局锁定 */
-        html, body {
-            overflow: hidden;
-            width: 100%;
-            height: 100%;
-            position: fixed;
-            touch-action: none;
+        /* 全局样式 */
+        body {
             margin: 0;
             padding: 0;
-        }
-
-        body {
-            background-color: #F5F2ED;
-            font-family: Impact, sans-serif;
+            overflow: hidden;
+            background: #F5F2ED;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            min-height: 100vh;
         }
 
-        /* 主内容容器 */
-        .main-interface {
-            display: none;
+        /* 容器组 */
+        .container-group {
+            flex: 1;
+            display: flex;
             flex-direction: column;
-            align-items: center;
-            width: 100%;
-            padding: 20px 0;
-            box-sizing: border-box;
-            transform-origin: top center;
-            transition: transform 0.3s ease;
+            padding: 20px;
+            gap: 20px;
         }
 
-        /* 头像区域 */
-        .avatar-container {
-            text-align: center;
-            margin-bottom: 20px;
-            flex-shrink: 0;
-        }
-
-        .circle-image {
-            width: min(20vw, 200px);
-            height: min(20vw, 200px);
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #000;
-        }
-
-        .image-caption {
-            font-size: 24px;
-            color: #333;
-            cursor: pointer;
-            transition: transform 0.2s;
-            margin: 15px 0;
-        }
-
-        /* 比例容器 */
+        /* 单个容器 */
         .ratio-container {
             display: flex;
             gap: 20px;
-            margin: 20px 0;
-            width: 90%;
-            max-width: 1000px;
-            box-sizing: border-box;
-            height: 300px; /* 初始高度，由JS动态调整 */
+            height: calc((100vh - 160px) / 3); /* 动态计算高度 */
         }
 
-        /* 垂直矩形 */
-        .vertical-rect {
+        /* 文本容器 (9:16) */
+        .text-box {
+            flex: 0 0 calc(9/16 * 100%);
             background: #f8f8f8;
             border-radius: 15px;
-            flex: 0 0 auto;
-            aspect-ratio: 9/16;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        /* 水平矩形 */
-        .horizontal-rect {
-            background: #FFFFFF;
-            border-radius: 15px;
-            flex: 1;
-            aspect-ratio: 16/9;
-            height: 100%;
-            position: relative;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        /* 文字样式 */
-        .vertical-text {
-            color: #333;
-            font-size: min(2.5vw, 24px);
-            text-align: center;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-
-        /* 图片样式 */
-        .horizontal-image {
-            width: calc(100% - 4px);
-            height: calc(100% - 4px);
-            object-fit: cover;
-            border-radius: 13px;
-            position: absolute;
-            top: 2px;
-            left: 2px;
-        }
-
-        /* 保护界面 */
-        .protected-interface {
             display: flex;
-            position: fixed;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* 图片容器 (16:9) */
+        .image-box {
+            flex: 1;
+            background: #fff;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .image-box img {
             width: 100%;
             height: 100%;
-            background: rgba(245, 242, 237, 0.95);
-            align-items: center;
-            justify-content: center;
+            object-fit: cover;
         }
 
-        .protected-content {
-            text-align: center;
-            max-width: 600px;
-            padding: 20px;
-        }
-
-        .protected-text {
-            font-size: 24px;
+        /* 文本样式 */
+        .vertical-text {
+            font-family: Impact, sans-serif;
+            font-size: min(3vw, 24px);
             color: #333;
-            cursor: pointer;
+            text-align: center;
+            line-height: 1.4;
         }
 
-        .error-message {
-            color: #ff4444;
-            font-size: 14px;
-            margin-top: 10px;
-            display: none;
-        }
-
-        /* 响应式调整 */
+        /* 移动端适配 */
         @media (max-width: 768px) {
             .ratio-container {
-                flex-direction: column;
-                height: auto;
+                flex-direction: row; /* 保持水平排列 */
+                height: calc((100vh - 120px) / 3);
+                overflow: visible;
             }
 
-            .vertical-rect {
-                width: 100%;
-                height: calc(100vw * 9/16); /* 移动端垂直排列时保持比例 */
+            .text-box {
+                flex-basis: 35%; /* 9/(9+16) ≈ 35% */
+                height: 100%;
             }
 
-            .horizontal-rect {
-                width: 100%;
-                height: calc(100vw * 9/16); /* 保持16:9比例 */
-            }
-
-            .vertical-text {
-                font-size: min(4vw, 20px);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .circle-image {
-                width: min(25vw, 150px);
-                height: min(25vw, 150px);
-            }
-
-            .image-caption {
-                font-size: min(5vw, 20px);
+            .image-box {
+                flex-basis: 65%; /* 16/(9+16) ≈ 65% */
+                height: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <div class="main-interface">
-        <div class="avatar-container">
-            <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
-                 alt="Profile" 
-                 class="circle-image">
-            <div class="image-caption" onclick="showProtected()">TFOG DESIGN</div>
-        </div>
-
+    <div class="container-group">
+        <!-- 第一个容器 -->
         <div class="ratio-container">
-            <div class="vertical-rect">
+            <div class="text-box">
                 <div class="vertical-text">创意工坊<br>设计思维可视化</div>
             </div>
-            <div class="horizontal-rect">
-                <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
-                     alt="设计案例" 
-                     class="horizontal-image">
+            <div class="image-box">
+                <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" alt="设计案例">
             </div>
         </div>
 
+        <!-- 复制的第二个容器 -->
         <div class="ratio-container">
-            <div class="vertical-rect">
+            <div class="text-box">
                 <div class="vertical-text">数字艺术<br>AI生成与人工精修</div>
             </div>
-            <div class="horizontal-rect">
-                <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
-                     alt="数字作品" 
-                     class="horizontal-image">
+            <div class="image-box">
+                <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" alt="数字作品">
             </div>
         </div>
 
+        <!-- 复制的第三个容器 -->
         <div class="ratio-container">
-            <div class="vertical-rect">
+            <div class="text-box">
                 <div class="vertical-text">交互原型<br>用户体验实验室</div>
             </div>
-            <div class="horizontal-rect">
-                <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
-                     alt="交互设计" 
-                     class="horizontal-image">
+            <div class="image-box">
+                <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" alt="交互设计">
             </div>
-        </div>
-    </div>
-
-    <div class="protected-interface" id="protectedScreen">
-        <div class="protected-content">
-            <div class="protected-text" onclick="checkPassword()">🛡️ 点击验证身份</div>
-            <div class="error-message" id="errorMsg">密码错误，请重试</div>
         </div>
     </div>
 
     <script>
-        const SECRET_PASSWORD = "1234";
-
-        // 动态调整容器高度
-        function adjustContainerHeights() {
+        // 动态高度计算
+        function calculateHeights() {
             const containers = document.querySelectorAll('.ratio-container');
             const viewportHeight = window.innerHeight;
-            const avatarHeight = document.querySelector('.avatar-container').offsetHeight;
-            const padding = 40; // 上下padding各20px
-            const gap = 20; // 容器间距
-
-            // 计算可用高度
-            const availableHeight = viewportHeight - avatarHeight - padding - (containers.length - 1) * gap;
+            const containerGroup = document.querySelector('.container-group');
             
-            // 设置每个容器高度
+            // 计算可用高度 = 视口高度 - 容器组的内边距
+            const availableHeight = viewportHeight - 40; // 20px上下内边距
+            const containerHeight = availableHeight / 3;
+            
             containers.forEach(container => {
-                container.style.height = `${availableHeight / containers.length}px`;
+                container.style.height = `${containerHeight}px`;
             });
         }
 
-        // 自适应调整函数
-        function adjustLayout() {
-            adjustContainerHeights();
-            const main = document.querySelector('.main-interface');
-            const contentHeight = main.scrollHeight;
-            const viewportHeight = window.innerHeight;
-            
-            // 计算缩放比例（保留边距）
-            let scale = Math.min(1, (viewportHeight - 40) / contentHeight);
-            
-            // 应用缩放
-            main.style.transform = `scale(${scale})`;
-            
-            // 垂直居中
-            const scaledHeight = contentHeight * scale;
-            main.style.marginTop = scaledHeight < viewportHeight 
-                ? `${(viewportHeight - scaledHeight) / 2}px` 
-                : '0';
-        }
-
-        // 事件监听
-        window.addEventListener('resize', () => {
-            adjustLayout();
-        });
-
-        // 密码验证函数
-        function checkPassword() {
-            const input = prompt("请输入访问密码：");
-            if(input === SECRET_PASSWORD) {
-                document.querySelector('.main-interface').style.display = 'flex';
-                document.getElementById('protectedScreen').style.display = 'none';
-                setTimeout(adjustLayout, 50);
-            } else {
-                document.getElementById('errorMsg').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('errorMsg').style.display = 'none';
-                }, 2000);
-            }
-        }
-
-        function showProtected() {
-            document.querySelector('.main-interface').style.display = 'none';
-            document.getElementById('protectedScreen').style.display = 'flex';
-        }
-
-        // 初始化
-        window.addEventListener('load', () => {
-            adjustLayout();
-            document.body.style.height = window.innerHeight + 'px';
-        });
+        // 初始化执行
+        calculateHeights();
+        window.addEventListener('resize', calculateHeights);
     </script>
 </body>
 </html>
