@@ -3,26 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MistArt 安全访问系统</title>
+    <title>数字矩阵安全系统</title>
     <style>
-        /* 基础重置 */
+        :root {
+            --cell-size: min(4vw, 40px);
+            --grid-gap: 2px;
+            --main-color: #333;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* 容器系统 */
         body {
-            min-height: 100vh;
             background: #F5F2ED;
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            display: flex;
-            flex-direction: column;
+            min-height: 100vh;
         }
 
         /* 保护界面 */
-        #protectedScreen {
+        #authScreen {
             position: fixed;
             top: 0;
             left: 0;
@@ -30,190 +32,116 @@
             height: 100%;
             background: rgba(245, 242, 237, 0.98);
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             z-index: 1000;
         }
 
-        /* 主内容容器 */
-        .main-container {
-            flex: 1;
-            width: 95%;
-            max-width: 1600px;
-            margin: 20px auto;
-            padding: 20px 0;
+        .auth-prompt {
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--main-color);
+            cursor: pointer;
+            margin-bottom: 20px;
         }
 
-        /* 头像系统 */
-        .avatar-wrapper {
-            text-align: center;
-            margin: 30px 0;
+        .error-msg {
+            color: #ff4444;
+            display: none;
+            font-size: 1.2rem;
         }
 
-        .profile-image {
-            width: min(250px, 30vw);
-            height: min(250px, 30vw);
-            border-radius: 50%;
-            border: 4px solid #000;
-            object-fit: cover;
-            margin-bottom: 15px;
+        /* 数字网格容器 */
+        #matrixContainer {
+            display: none;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* 双栏布局系统 */
-        .card-container {
-            display: flex;
-            gap: 20px;
-            margin: 30px 0;
-            min-height: 500px;
-        }
-
-        /* 左侧信息面板 */
-        .info-panel {
-            flex: 1;
-            background: #f8f8f8;
-            border-radius: 15px;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
+        .number-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, var(--cell-size));
+            gap: var(--grid-gap);
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .panel-text {
-            font-size: clamp(20px, 2.5vw, 28px);
-            line-height: 1.4;
-            text-align: center;
+        .number-cell {
+            width: var(--cell-size);
+            height: var(--cell-size);
+            background: #fff;
+            border: 1px solid var(--main-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: calc(var(--cell-size) * 0.6);
+            color: var(--main-color);
+            transition: transform 0.2s;
         }
 
-        /* 右侧媒体容器 */
-        .media-container {
-            flex: 2;
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            aspect-ratio: 16/9;
+        .number-cell:hover {
+            transform: scale(1.1);
+            z-index: 1;
         }
 
-        .media-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(0.92);
-        }
-
-        /* 覆盖文字 */
-        .media-label {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
-            width: 90%;
-        }
-
-        .primary-text {
-            font-size: clamp(24px, 4vw, 36px);
-            line-height: 1.1;
-            margin-bottom: 8px;
-        }
-
-        .secondary-text {
-            font-size: clamp(18px, 2.5vw, 24px);
-        }
-
-        /* 响应式布局 */
         @media (max-width: 768px) {
-            .card-container {
-                flex-direction: column;
-                min-height: auto;
-            }
-
-            .info-panel,
-            .media-container {
-                width: 100% !important;
-                flex: none;
-                min-height: 300px;
-            }
-
-            .profile-image {
-                width: min(200px, 50vw);
-                height: min(200px, 50vw);
+            :root {
+                --cell-size: 8vw;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 保护界面 -->
-    <div id="protectedScreen">
-        <div class="main-container">
-            <div class="protected-content">
-                <div class="panel-text" onclick="handleAuth()">🛡️ 点击验证身份</div>
-                <div id="authError" style="display:none;color:#ff4444;margin-top:15px;">验证失败，请重试</div>
-            </div>
-        </div>
+    <!-- 安全验证界面 -->
+    <div id="authScreen">
+        <div class="auth-prompt" onclick="verifyAccess()">🛡️ 点击验证访问</div>
+        <div class="error-msg" id="errorMsg">验证失败，请重试</div>
     </div>
 
-    <!-- 主界面 -->
-    <main class="main-container" id="mainContent" style="display:none;">
-        <!-- 用户信息 -->
-        <div class="avatar-wrapper">
-            <img src="https://example.com/avatar.jpg" 
-                 alt="用户头像"
-                 class="profile-image">
-            <div class="panel-text" onclick="showAuthScreen()">TFOG 设计中心</div>
-        </div>
-
-        <!-- 内容区块 -->
-        <div class="card-container">
-            <div class="info-panel">
-                <div class="panel-text">创意工坊<br>设计思维可视化</div>
-            </div>
-            <div class="media-container">
-                <img src="https://example.com/design.jpg" 
-                     alt="设计案例" 
-                     class="media-image">
-                <div class="media-label">
-                    <div class="primary-text">DESIGN</div>
-                    <div class="secondary-text">Portfolio</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 其他内容区块（结构相同） -->
-    </main>
+    <!-- 数字矩阵容器 -->
+    <div id="matrixContainer"></div>
 
     <script>
-        // 认证系统
-        const AUTH_CODE = "2024";
+        // 系统配置
+        const ACCESS_CODE = "2024";
+        const TOTAL_NUMBERS = 686; // 根据实际需求调整
 
-        // 初始化显示保护界面
-        window.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('protectedScreen').style.display = 'flex';
-        });
+        // 初始化矩阵
+        function createNumberMatrix() {
+            const container = document.getElementById('matrixContainer');
+            container.innerHTML = '<div class="number-grid"></div>';
+            
+            const grid = container.querySelector('.number-grid');
+            for (let i = 1; i <= TOTAL_NUMBERS; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'number-cell';
+                cell.textContent = i;
+                grid.appendChild(cell);
+            }
+        }
 
-        function handleAuth() {
+        // 验证系统
+        function verifyAccess() {
             const userInput = prompt("请输入访问密码：");
-            if(userInput === AUTH_CODE) {
-                document.getElementById('mainContent').style.display = 'block';
-                document.getElementById('protectedScreen').style.display = 'none';
+            if (userInput === ACCESS_CODE) {
+                document.getElementById('authScreen').style.display = 'none';
+                document.getElementById('matrixContainer').style.display = 'block';
+                createNumberMatrix();
             } else {
                 showError();
             }
         }
 
-        function showAuthScreen() {
-            document.getElementById('mainContent').style.display = 'none';
-            document.getElementById('protectedScreen').style.display = 'flex';
-        }
-
         function showError() {
-            const errorElem = document.getElementById('authError');
+            const errorElem = document.getElementById('errorMsg');
             errorElem.style.display = 'block';
             setTimeout(() => errorElem.style.display = 'none', 2000);
         }
+
+        // 初始化显示验证界面
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('authScreen').style.display = 'flex';
+        });
     </script>
 </body>
 </html>
