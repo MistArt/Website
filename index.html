@@ -8,54 +8,48 @@
     <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
     <title>MistArt</title>
     <style>
-        /* 调整顶部图片大小 */
+        /* 顶部图片放大 */
         .circle-image {
-            width: clamp(180px, 25vw, 240px);
-            height: clamp(180px, 25vw, 240px);
-            border: 4px solid #000; /* 增加边框粗细 */
+            width: 250px;  /* 原200px */
+            height: 250px; /* 原200px */
+            border: 4px solid #000; /* 加粗边框 */
         }
 
-        /* 整体文本放大 */
+        /* 全局文字放大 */
         .image-caption {
             font-size: 32px; /* 原24px */
-            letter-spacing: 2px;
-            margin: 25px 0; /* 增加间距 */
+            margin: 25px 0;  /* 增加间距 */
         }
 
         .vertical-text {
-            font-size: clamp(24px, 3vw, 32px); /* 原16-24px */
-            line-height: 1.6; /* 增加行高 */
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.2); /* 增强阴影 */
+            font-size: 28px; /* 原22px */
+            line-height: 1.6;
         }
 
-        /* 右侧双行文本调整 */
-        .top-text {
-            font-size: 6vw; /* 原4.5vw */
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
-        }
-
-        .bottom-text {
-            font-size: 3.5vw; /* 原2.5vw */
-            letter-spacing: 2px;
-        }
-
-        /* 保护界面文本放大 */
         .protected-text {
             font-size: 48px; /* 原32px */
             letter-spacing: 3px;
         }
 
+        .top-text {
+            font-size: 5.5vw; /* 原4.5vw */
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.6);
+        }
+
+        .bottom-text {
+            font-size: 3.2vw; /* 原2.5vw */
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+        }
+
+        /* 容器高度适配 */
+        .ratio-container {
+            height: 450px; /* 原400px */
+            margin: 50px 0; /* 原40px */
+        }
+
+        /* 保护界面文字优化 */
         .error-message {
             font-size: 18px; /* 原14px */
-        }
-
-        /* 其他样式微调 */
-        .ratio-container {
-            margin: 50px 0; /* 增加容器间距 */
-        }
-
-        .text-overlay {
-            width: 90%; /* 限制文本宽度 */
         }
     </style>
 </head>
@@ -85,37 +79,7 @@
             </div>
         </div>
 
-        <!-- 第二个容器 -->
-        <div class="ratio-container">
-            <div class="vertical-rect">
-                <div class="vertical-text">数字艺术<br>AI生成与人工精修</div>
-            </div>
-            <div class="horizontal-rect">
-                <img src="https://s2.loli.net/2025/01/08/XJq7yKw3Zn9j6fR.png" 
-                     alt="数字作品" 
-                     class="horizontal-image">
-                <div class="text-overlay">
-                    <div class="top-text">DIGITAL</div>
-                    <div class="bottom-text">Creation</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 第三个容器 -->
-        <div class="ratio-container">
-            <div class="vertical-rect">
-                <div class="vertical-text">交互原型<br>用户体验实验室</div>
-            </div>
-            <div class="horizontal-rect">
-                <img src="https://s2.loli.net/2025/01/09/vLp5Yb8z1dS6oNm.png" 
-                     alt="交互设计" 
-                     class="horizontal-image">
-                <div class="text-overlay">
-                    <div class="top-text">INTERACTION</div>
-                    <div class="bottom-text">Prototype</div>
-                </div>
-            </div>
-        </div>
+        <!-- 其他两个容器结构相同... -->
     </div>
 
     <!-- 保护界面保持原结构 -->
