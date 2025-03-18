@@ -8,52 +8,178 @@
     <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
     <title>MistArt</title>
     <style>
-        /* 顶部图片放大 */
-        .circle-image {
-            width: 250px;  /* 原200px */
-            height: 250px; /* 原200px */
-            border: 4px solid #000; /* 加粗边框 */
+        :root {
+            --main-color: #F5F2ED;
+            --dark-bg: #333;
         }
 
-        /* 全局文字放大 */
-        .image-caption {
-            font-size: 32px; /* 原24px */
-            margin: 25px 0;  /* 增加间距 */
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--main-color);
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
 
-        .vertical-text {
-            font-size: 28px; /* 原22px */
-            line-height: 1.6;
+        /* 保护界面 */
+        .protected-interface {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(245, 242, 237, 0.95);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .protected-content {
+            text-align: center;
         }
 
         .protected-text {
-            font-size: 48px; /* 原32px */
-            letter-spacing: 3px;
+            font-size: 4rem;
+            color: var(--dark-bg);
+            cursor: pointer;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
-        .top-text {
-            font-size: 5.5vw; /* 原4.5vw */
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.6);
-        }
-
-        .bottom-text {
-            font-size: 3.2vw; /* 原2.5vw */
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
-        }
-
-        /* 容器高度适配 */
-        .ratio-container {
-            height: 450px; /* 原400px */
-            margin: 50px 0; /* 原40px */
-        }
-
-        /* 保护界面文字优化 */
         .error-message {
-            font-size: 18px; /* 原14px */
+            color: #ff4444;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        /* 主界面 */
+        .main-interface {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        .avatar-container {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .circle-image {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--dark-bg);
+            margin-bottom: 1.5rem;
+        }
+
+        .image-caption {
+            font-size: 2.5rem;
+            color: var(--dark-bg);
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        /* 双容器布局 */
+        .ratio-container {
+            display: flex;
+            gap: 2rem;
+            width: 90%;
+            max-width: 1200px;
+            margin: 2rem 0;
+            min-height: 500px;
+        }
+
+        .vertical-rect {
+            flex: 1;
+            background: #f0f0f0;
+            border-radius: 20px;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .vertical-text {
+            font-size: 2rem;
+            line-height: 1.6;
+            color: var(--dark-bg);
+            text-transform: uppercase;
+        }
+
+        .horizontal-rect {
+            flex: 2;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .horizontal-image {
+            width: calc(100% - 4px);
+            height: calc(100% - 4px);
+            object-fit: cover;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            filter: brightness(0.9);
+        }
+
+        .image-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 2;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .main-title {
+            font-size: 4vw;
+            line-height: 1;
+            margin-bottom: 1vw;
+        }
+
+        .sub-title {
+            font-size: 2.5vw;
+        }
+
+        @media (max-width: 768px) {
+            .ratio-container {
+                flex-direction: column;
+                min-height: auto;
+            }
+
+            .vertical-rect,
+            .horizontal-rect {
+                width: 100%!important;
+                min-height: 400px;
+            }
+
+            .main-title { font-size: 8vw; }
+            .sub-title { font-size: 5vw; }
+            .protected-text { font-size: 3rem; }
+            .circle-image { 
+                width: 200px;
+                height: 200px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- 保护界面 -->
+    <div class="protected-interface" id="protectedScreen">
+        <div class="protected-content">
+            <div class="protected-text" onclick="checkPassword()">🛡️ VERIFY ACCESS</div>
+            <div class="error-message" id="errorMsg">INVALID PASSWORD</div>
+        </div>
+    </div>
+
     <!-- 主界面 -->
     <div class="main-interface">
         <div class="avatar-container">
@@ -63,25 +189,79 @@
             <div class="image-caption" onclick="showProtected()">TFOG DESIGN</div>
         </div>
 
-        <!-- 第一个容器 -->
+        <!-- 容器1 -->
         <div class="ratio-container">
             <div class="vertical-rect">
-                <div class="vertical-text">创意工坊<br>设计思维可视化</div>
+                <div class="vertical-text">Creative Workshop<br>Design Thinking</div>
             </div>
             <div class="horizontal-rect">
                 <img src="https://s2.loli.net/2025/01/07/2hQTDqj9elPVsfw.png" 
-                     alt="设计案例" 
+                     alt="Design" 
                      class="horizontal-image">
-                <div class="text-overlay">
-                    <div class="top-text">DESIGN</div>
-                    <div class="bottom-text">Portfolio</div>
+                <div class="image-text">
+                    <div class="main-title">DESIGN</div>
+                    <div class="sub-title">PORTFOLIO</div>
                 </div>
             </div>
         </div>
 
-        <!-- 其他两个容器结构相同... -->
+        <!-- 容器2 -->
+        <div class="ratio-container">
+            <div class="vertical-rect">
+                <div class="vertical-text">Digital Art<br>AI Generation</div>
+            </div>
+            <div class="horizontal-rect">
+                <img src="https://s2.loli.net/2025/01/08/XJq7yKw3Zn9j6fR.png" 
+                     alt="Digital" 
+                     class="horizontal-image">
+                <div class="image-text">
+                    <div class="main-title">DIGITAL</div>
+                    <div class="sub-title">CREATION</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 容器3 -->
+        <div class="ratio-container">
+            <div class="vertical-rect">
+                <div class="vertical-text">Interaction<br>Prototype Lab</div>
+            </div>
+            <div class="horizontal-rect">
+                <img src="https://s2.loli.net/2025/01/09/vLp5Yb8z1dS6oNm.png" 
+                     alt="Interaction" 
+                     class="horizontal-image">
+                <div class="image-text">
+                    <div class="main-title">INTERACTION</div>
+                    <div class="sub-title">PROTOTYPE</div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- 保护界面保持原结构 -->
+    <script>
+        const PASSWORD = "1234";
+
+        function checkPassword() {
+            const input = prompt("ENTER ACCESS CODE:");
+            if(input === PASSWORD) {
+                document.querySelector('.main-interface').style.display = 'flex';
+                document.getElementById('protectedScreen').style.display = 'none';
+            } else {
+                const errorMsg = document.getElementById('errorMsg');
+                errorMsg.style.display = 'block';
+                setTimeout(() => errorMsg.style.display = 'none', 2000);
+            }
+        }
+
+        function showProtected() {
+            document.querySelector('.main-interface').style.display = 'none';
+            document.getElementById('protectedScreen').style.display = 'flex';
+        }
+
+        // 初始化检查
+        window.onload = () => {
+            document.getElementById('protectedScreen').style.display = 'flex';
+        }
+    </script>
 </body>
 </html>
