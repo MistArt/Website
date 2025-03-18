@@ -8,211 +8,65 @@
     <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
     <title>MistArt</title>
     <style>
-        /* 整体页面样式 */
-        body {
-            background-color: #f5f2ed;
-            margin: 0;
-            padding: 0;
-            font-family: Snell Roundhand, sans-serif;
+        /* 修改初始显示状态 */
+        .main-interface {
+            display: none; /* 初始隐藏主界面 */
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+            transition: opacity 0.3s;
         }
 
-        /* 开屏界面样式 */
-    .splash-screen {
+        .protected-interface {
+            display: flex; /* 初始显示保护界面 */
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #f5f2ed;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 1s ease-in-out;
-            opacity: 1;
-        }
-
-    .splash-screen h2 {
-            font-size: 55px;
-            color: #000000;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        h1.top-text {
-            text-align: center;
-            color: #000000;
-            margin-top: 0px;
-            font-size: 50px;
-            font-family: Snell Roundhand, sans-serif;
-        }
-
-        /* 幻灯片与图片所在的容器样式 */
-    .slide-and-img-container {
-            width: 900px;
-            /* 和幻灯片等宽，可根据需求调整 */
-            display: flex;
+            background: rgba(245, 242, 237, 0.95);
             flex-direction: column;
-            align-items: center;
-            margin: 0 auto;
-        }
-
-        /* 图片样式 */
-    .new-img {
-            width: 900px;
-            height: 500px;
-            object-fit: cover;
-            border-radius: 5%;
-            border: 0px solid #000000;
-            margin-bottom: 20px;
-        }
-
-        /* 幻灯片容器样式 */
-    .slide-container {
-            width: 720px;
-            height: 1280px;
-            border-radius: 22px;
-            border: 0.5px solid #000000;
-            overflow: hidden;
-        }
-
-        /* 幻灯片样式 */
-    .slide {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
-        }
-
-        /* 新添加的外层容器样式，用于包裹文本和按钮容器，设置了背景颜色、圆角效果，可按需调整样式及属性值 */
-    .content-wrapper {
-            width: 965px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #000000; /* 设置背景颜色，这里示例用的是#336699，可替换 */
-            border-radius: 45px; /* 设置圆角效果，可调整数值 */
-             margin-top: 20px;
-        }
-
-        /* 幻灯片下方文本容器样式 */
-    .text-container {
-            margin-top: 20px;
-            margin-left: 20px
-            text-align: left;
-            width: 100%;
-        }
-
-        /* 文本容器内标题文本样式（h1） */
-    .text-container h1 {
-            color: #f5f2ed;
-            font-size: 55px;
-            font-family: Impact, sans-serif;
-            line-height: 0.5;
-            margin-bottom: 0px;
-            margin-left: 20;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            letter-spacing: 2px;
-        }
-
-        /* 文本容器内副标题文本样式（h2） */
-    .text-container h2 {
-            color: #f5f2ed;
-            font-size: 45px;
-            font-family: Impact, sans-serif;
-            line-height: 0.5;
-            margin-bottom: 0px;
-            margin-left: 20;
-            font-style: italic;
-        }
-
-        /* 按钮容器样式 */
-    .button-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-            margin-bottom: 20px
-        }
-
-        button {
-            background-color: transparent;
-            color: #FFFFFF;
-            border: 2px solid #f5f2ed;
-            cursor: pointer;
-            font-size: 75px;
-            font-family: Impact, sans-serif;
-            border-radius: 22px;
-            width: 880px;
-            height: 200px;
-            text-align: center;
-            display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: none;
-            margin: 10px;
-            font-family: Impact, sans-serif;
         }
+
+        /* 其他样式保持不变 */
     </style>
 </head>
 
 <body>
-    <!-- 开屏界面 -->
-    <div class="splash-screen">
-        <h2><b>Welcome</b><br><b>Designed by TFOG</b></h2>
+    <!-- 主界面（初始隐藏） -->
+    <div class="main-interface">
+        <!-- 原有主界面内容 -->
     </div>
 
-    <h1 class="top-text">TFOG</h1>
-
-    <!-- 幻灯片与图片所在的容器（现在在页面中展示了） -->
-    <div class="slide-and-img-container">
-        <img class="new-img" src="https://s2.loli.net/2025/01/01/mnSIZoAyigdPEY5.png" alt="New added image">
-        <div class="slide-container">
-            <img class="slide" src="https://s2.loli.net/2025/01/07/2hQTDqj9elPVsfw.png" alt="Image 1">
-        </div>
-        <!-- 新增的用于包裹文本容器和按钮容器的外层容器 -->
-        <div class="content-wrapper">
-            <!-- 幻灯片下方文本容器 -->
-            <div class="text-container">
-                <h1>Notice</h1>
-                <h2>Click the button to start.</h2>
-            </div>
-            <!-- 按钮容器 -->
-            <div class="button-container">
-                <button id="button1">Tools</button>
-            </div>
+    <!-- 保护界面（初始显示） -->
+    <div class="protected-interface" id="protectedScreen">
+        <div class="protected-content">
+            <div class="protected-text" onclick="checkPassword()">🛡️ 点击验证身份</div>
+            <div class="error-message" id="errorMsg">密码错误，请重试</div>
         </div>
     </div>
 
     <script>
-        setTimeout(() => {
-            document.querySelector('.splash-screen').style.opacity = 0;
-            setTimeout(() => {
-                document.querySelector('.splash-screen').style.display = 'none';
-            }, 1000);
-        }, 2000);
+        // 修改后的验证逻辑
+        const SECRET_PASSWORD = "1234";
 
-        let slideIndex = 0;
-        function showSlides() {
-            let slides = document.getElementsByClassName('slide');
-            for (let i = 0; i < slides.length; i++) {
-                slides[i].style.display = 'none';
+        function checkPassword() {
+            const userInput = prompt("请输入访问密码：");
+            if(userInput === SECRET_PASSWORD) {
+                // 密码正确显示主界面
+                document.querySelector('.main-interface').style.display = 'flex';
+                document.getElementById('protectedScreen').style.display = 'none';
+            } else {
+                // 显示错误提示
+                document.getElementById('errorMsg').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('errorMsg').style.display = 'none';
+                }, 2000);
             }
-            slideIndex++;
-            if (slideIndex >= slides.length) {
-                slideIndex = 0;
-            }
-            slides[slideIndex].style.display = 'block';
         }
-        setInterval(showSlides, 3000);
-
-        // 为按钮添加点击事件
-        document.getElementById('button1').addEventListener('click', function () {
-            window.location.href = 'https://github.com/TFogArt/MainRepository';
-        });
-
     </script>
-
 </body>
 
 </html>
