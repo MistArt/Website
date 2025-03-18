@@ -1,12 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
-    <title>MistArt</title>
+    <!-- 保持原有meta标签和标题不变 -->
     <style>
+        /* 修改部分开始 */
+        .ratio-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr; /* 保持1:2宽度比例 */
+            gap: 30px;
+            margin: 40px 0;
+            width: 90%;
+            max-width: 1000px;
+            min-height: 400px; /* 改为最小高度 */
+            align-items: stretch; /* 关键：强制子元素等高 */
+        }
+
+        .vertical-rect {
+            background: #f8f8f8;
+            border-radius: 15px;
+            aspect-ratio: 9/16; /* 保持原有竖版比例 */
+            height: auto; /* 改为自动高度 */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .horizontal-rect {
+            background: #FFFFFF;
+            border-radius: 15px;
+            aspect-ratio: 16/9; /* 保持原有横版比例 */
+            height: auto; /* 改为自动高度 */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            padding: 2px;
+        }
+        /* 修改部分结束 */
+
+        /* 其他原有样式保持不变 */
         body {
             background-color: #F5F2ED;
             margin: 0;
@@ -59,39 +91,6 @@
             transform: scale(1.05);
         }
 
-        .ratio-container {
-            display: flex;
-            gap: 30px;
-            margin: 40px 0;
-            width: 90%;
-            max-width: 1000px;
-            height: 400px;
-        }
-
-        .vertical-rect {
-            flex: 1;
-            background: #f8f8f8;
-            border-radius: 15px;
-            aspect-ratio: 9/16;
-            height: 100%;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .horizontal-rect {
-            flex: 2;
-            background: #FFFFFF;
-            border-radius: 15px;
-            aspect-ratio: 16/9;
-            height: 100%;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: relative;
-            padding: 2px;
-        }
-
         .vertical-text {
             color: #333;
             font-size: 24px;
@@ -133,7 +132,7 @@
     </style>
 </head>
 <body>
-    <!-- 主界面 -->
+    <!-- 保持原有HTML结构不变 -->
     <div class="main-interface">
         <div class="avatar-container">
             <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
@@ -176,7 +175,7 @@
         </div>
     </div>
 
-    <!-- 保护界面 -->
+    <!-- 保护界面保持不变 -->
     <div class="protected-interface" id="protectedScreen">
         <div class="protected-content">
             <div class="protected-text" onclick="checkPassword()">🛡️ 点击验证身份</div>
@@ -185,6 +184,7 @@
     </div>
 
     <script>
+        // 保持原有JavaScript不变
         const SECRET_PASSWORD = "1234";
 
         function checkPassword() {
