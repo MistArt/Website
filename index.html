@@ -7,13 +7,13 @@
     <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
     <title>MistArt</title>
     <style>
-        /* 基础全屏设置 */
+        /* 核心修正 */
         html, body {
             width: 100%;
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
         body {
@@ -23,84 +23,54 @@
             flex-direction: column;
         }
 
-        /* 主内容容器 */
+        /* 主容器优化 */
         .main-interface {
             display: none;
             flex: 1;
             width: 100%;
-            padding: 50px 0;
+            padding: 30px 0;
             overflow-y: auto;
+            box-sizing: border-box;
         }
 
-        /* 响应式容器 */
+        /* 网格容器动态适配 */
         .ratio-container {
             display: grid;
             grid-template-columns: 1fr 2fr;
-            gap: 2vw; /* 使用视窗单位 */
-            margin: 4vh auto; /* 垂直间距使用视窗高度单位 */
-            width: 94%;
-            max-width: 100vw; /* 最大宽度不超过屏幕宽度 */
-            min-height: 40vh;
+            gap: 20px;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 1000px;
+            aspect-ratio: unset; /* 移除固定比例 */
+            min-height: 0; /* 关键修复 */
             align-items: stretch;
         }
 
-        /* 垂直矩形 */
+        /* 垂直矩形优化 */
         .vertical-rect {
             background: #f8f8f8;
             border-radius: 15px;
-            aspect-ratio: 9/16;
+            min-height: 300px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 2vw;
+            padding: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
+            box-sizing: border-box;
         }
 
-        /* 水平矩形 */
+        /* 水平矩形优化 */
         .horizontal-rect {
             background: #FFFFFF;
             border-radius: 15px;
-            aspect-ratio: 16/9;
+            min-height: 300px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
         }
 
-        /* 文字样式 */
-        .vertical-text {
-            color: #333;
-            font-size: 2.2vw; /* 响应式字体大小 */
-            text-align: center;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-
-        /* 其他元素保持原有比例 */
-        .avatar-container {
-            text-align: center;
-            margin-bottom: 3vh;
-        }
-
-        .circle-image {
-            width: 20vmin; /* 使用视窗最小单位 */
-            height: 20vmin;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #000;
-        }
-
-        .image-caption {
-            font-size: 3vmin;
-            color: #333;
-            cursor: pointer;
-            transition: transform 0.2s;
-            margin: 2vh 0;
-        }
-
-        /* 保持原有交互功能 */
-        .image-caption:hover {
-            transform: scale(1.05);
-        }
-
+        /* 图片适配修正 */
         .horizontal-image {
             width: 100%;
             height: 100%;
@@ -108,35 +78,65 @@
             border-radius: 13px;
         }
 
-        /* 保护界面适配 */
+        /* 文字容器优化 */
+        .vertical-text {
+            color: #333;
+            font-size: clamp(18px, 2.5vw, 24px);
+            text-align: center;
+            line-height: 1.4;
+            padding: 10px;
+        }
+
+        /* 保护界面优化 */
         .protected-interface {
             display: flex;
             position: fixed;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             background: rgba(245, 242, 237, 0.95);
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
+        }
+
+        /* 其他样式微调 */
+        .avatar-container {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 0 15px;
+        }
+
+        .circle-image {
+            width: min(200px, 30vw);
+            height: min(200px, 30vw);
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #000;
+        }
+
+        .image-caption {
+            font-size: clamp(20px, 3vw, 24px);
+            color: #333;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin: 10px 0;
         }
 
         .protected-text {
-            font-size: 5vmin;
+            font-size: clamp(24px, 5vw, 32px);
             color: #333;
-            margin-bottom: 4vh;
-            cursor: pointer;
+            margin-bottom: 20px;
+            padding: 0 15px;
         }
 
         .error-message {
-            color: #ff4444;
-            font-size: 2vmin;
-            margin-top: 2vh;
-            display: none;
+            font-size: clamp(12px, 2vw, 14px);
         }
     </style>
 </head>
 <body>
-    <!-- 主界面结构保持不变 -->
+    <!-- 保持HTML结构不变 -->
     <div class="main-interface">
         <div class="avatar-container">
             <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
@@ -145,7 +145,6 @@
             <div class="image-caption" onclick="showProtected()">TFOG DESIGN</div>
         </div>
 
-        <!-- 三个内容区块 -->
         <div class="ratio-container">
             <div class="vertical-rect">
                 <div class="vertical-text">创意工坊<br>设计思维可视化</div>
@@ -180,7 +179,6 @@
         </div>
     </div>
 
-    <!-- 保护界面 -->
     <div class="protected-interface" id="protectedScreen">
         <div class="protected-content">
             <div class="protected-text" onclick="checkPassword()">🛡️ 点击验证身份</div>
