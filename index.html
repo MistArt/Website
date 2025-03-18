@@ -2,13 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
     <title>MistArt</title>
     <style>
-        /* 基础布局重置 */
+        /* 新增基础布局设置 */
         html, body {
             width: 100vw;
             height: 100vh;
@@ -19,30 +18,31 @@
             font-family: Impact, sans-serif;
         }
 
-        /* 主界面全屏布局 */
+        /* 主界面适配 */
         .main-interface {
             display: none;
             flex-direction: column;
+            align-items: center;
             height: 100vh;
             width: 100vw;
-            padding: 2vh 5vw;
+            padding: 20px 0;
             box-sizing: border-box;
+            overflow-y: auto;
         }
 
-        /* 保护界面全屏定位 */
+        /* 保护界面适配 */
         .protected-interface {
             display: flex;
             position: fixed;
-            top: 0;
-            left: 0;
             width: 100vw;
             height: 100vh;
             background: rgba(245, 242, 237, 0.95);
+            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
 
-        /* 头像容器自适应 */
+        /* 头像容器优化 */
         .avatar-container {
             text-align: center;
             margin-bottom: 2vh;
@@ -54,80 +54,75 @@
             height: 20vmin;
             border-radius: 50%;
             object-fit: cover;
-            border: 0.3vmin solid #000;
+            border: 3px solid #000;
         }
 
         /* 文字元素响应式 */
         .image-caption {
-            font-size: 4vmin;
+            font-size: 3vmin;
             margin: 1.5vh 0;
             transition: transform 0.2s;
         }
 
-        /* 容器网格布局优化 */
+        /* 比例容器适配 */
         .ratio-container {
             display: grid;
             grid-template-columns: 1fr 2fr;
-            gap: 2vmax;
+            gap: 2vmin;
             margin: 2vh 0;
-            flex: 1;
-            min-height: 30vh;
-            max-height: 40vh;
-            width: 100%;
+            width: 90vw;
+            max-width: 90vw;
+            min-height: 40vh;
+            align-items: stretch;
+            box-sizing: border-box;
+            flex-shrink: 0;
         }
 
-        /* 垂直矩形自适应 */
+        /* 矩形元素适配 */
+        .vertical-rect, .horizontal-rect {
+            border-radius: 1.5vmin;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 2vmin;
+            position: relative;
+        }
+
         .vertical-rect {
             background: #f8f8f8;
-            border-radius: 2vmin;
             aspect-ratio: 9/16;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2vmin;
-            box-shadow: 0 0.4vmin 1.2vmin rgba(0,0,0,0.1);
         }
 
-        /* 水平矩形自适应 */
         .horizontal-rect {
             background: #FFFFFF;
-            border-radius: 2vmin;
             aspect-ratio: 16/9;
-            position: relative;
-            box-shadow: 0 0.4vmin 1.2vmin rgba(0,0,0,0.1);
         }
 
-        /* 文本元素适配 */
+        /* 文字适配 */
         .vertical-text {
-            font-size: 3vmin;
+            font-size: 2.5vmin;
             line-height: 1.4;
-            word-break: break-word;
         }
 
+        /* 图片适配 */
         .horizontal-image {
-            width: 100%;
-            height: 100%;
+            width: calc(100% - 4px);
+            height: calc(100% - 4px);
             object-fit: cover;
-            border-radius: 1.8vmin;
+            border-radius: 1.3vmin;
         }
 
-        /* 保护界面元素适配 */
+        /* 保护界面元素 */
         .protected-text {
-            font-size: 6vmin;
-            margin-bottom: 4vh;
+            font-size: 5vmin;
+            margin-bottom: 3vh;
         }
 
         .error-message {
-            font-size: 2.5vmin;
-        }
-
-        /* 交互效果保持 */
-        .image-caption:hover {
-            transform: scale(1.05);
+            font-size: 2vmin;
         }
     </style>
 </head>
 <body>
+    <!-- 界面结构保持不变 -->
     <div class="main-interface">
         <div class="avatar-container">
             <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
@@ -185,8 +180,6 @@
             if(userInput === SECRET_PASSWORD) {
                 document.querySelector('.main-interface').style.display = 'flex';
                 document.getElementById('protectedScreen').style.display = 'none';
-                // 窗口重置时调整布局
-                setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
             } else {
                 document.getElementById('errorMsg').style.display = 'block';
                 setTimeout(() => {
@@ -199,12 +192,6 @@
             document.querySelector('.main-interface').style.display = 'none';
             document.getElementById('protectedScreen').style.display = 'flex';
         }
-
-        // 初始化视口尺寸
-        window.addEventListener('resize', () => {
-            document.documentElement.style.setProperty('--vh', `${window.innerHeight}px`);
-        });
-        window.dispatchEvent(new Event('resize'));
     </script>
 </body>
 </html>
