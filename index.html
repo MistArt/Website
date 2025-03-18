@@ -1,20 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
-    <title>MistArt</title>
+    <title>MistArt 安全访问系统</title>
     <style>
-        :root {
-            --min-container-height: 50vh;
-            --max-container-width: 95vw;
+        /* 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
+        /* 容器系统 */
         body {
-            margin: 0;
             min-height: 100vh;
             background: #F5F2ED;
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
@@ -23,66 +22,71 @@
         }
 
         /* 保护界面 */
-        .protected-interface {
+        #protectedScreen {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(245, 242, 237, 0.95);
+            width: 100%;
+            height: 100%;
+            background: rgba(245, 242, 237, 0.98);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 100;
+            z-index: 1000;
         }
 
         /* 主内容容器 */
-        .main-content {
+        .main-container {
             flex: 1;
-            width: 100%;
-            max-width: var(--max-container-width);
-            margin: 0 auto;
-            padding: 2vh 0;
+            width: 95%;
+            max-width: 1600px;
+            margin: 20px auto;
+            padding: 20px 0;
         }
 
-        /* 头像区域 */
-        .avatar-container {
+        /* 头像系统 */
+        .avatar-wrapper {
             text-align: center;
-            margin-bottom: 3vh;
+            margin: 30px 0;
         }
 
-        .circle-image {
-            width: min(25vw, 220px);
-            height: min(25vw, 220px);
+        .profile-image {
+            width: min(250px, 30vw);
+            height: min(250px, 30vw);
             border-radius: 50%;
+            border: 4px solid #000;
             object-fit: cover;
-            border: 3px solid #000;
+            margin-bottom: 15px;
         }
 
-        /* 双栏容器 */
-        .ratio-container {
+        /* 双栏布局系统 */
+        .card-container {
             display: flex;
-            gap: 2vw;
-            width: 100%;
-            min-height: var(--min-container-height);
-            margin: 2vh 0;
+            gap: 20px;
+            margin: 30px 0;
+            min-height: 500px;
         }
 
-        /* 左侧垂直区块 */
-        .vertical-rect {
+        /* 左侧信息面板 */
+        .info-panel {
             flex: 1;
-            min-width: 30%;
-            background: #f0f0f0;
+            background: #f8f8f8;
             border-radius: 15px;
-            padding: 2vh;
+            padding: 25px;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        /* 右侧横向区块 */
-        .horizontal-rect {
+        .panel-text {
+            font-size: clamp(20px, 2.5vw, 28px);
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        /* 右侧媒体容器 */
+        .media-container {
             flex: 2;
             position: relative;
             border-radius: 15px;
@@ -91,127 +95,124 @@
             aspect-ratio: 16/9;
         }
 
-        /* 响应式布局 */
-        @media (max-aspect-ratio: 1/1) {
-            .ratio-container {
-                flex-direction: column;
-                min-height: auto;
-            }
-            
-            .vertical-rect,
-            .horizontal-rect {
-                width: 100% !important;
-                flex: none;
-                min-height: 40vh;
-            }
-            
-            .horizontal-rect {
-                aspect-ratio: 16/9;
-            }
+        .media-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.92);
         }
 
-        /* 文字系统 */
-        .image-caption {
-            font-size: clamp(1.5rem, 3vw, 2rem);
-            color: #333;
-            margin: 2vh 0;
-        }
-
-        .vertical-text {
-            font-size: clamp(1rem, 2vw, 1.5rem);
-            line-height: 1.5;
-            text-align: center;
-        }
-
-        .image-text {
+        /* 覆盖文字 */
+        .media-label {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
             width: 90%;
         }
 
-        .main-title {
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            line-height: 1.2;
+        .primary-text {
+            font-size: clamp(24px, 4vw, 36px);
+            line-height: 1.1;
+            margin-bottom: 8px;
         }
 
-        .sub-title {
-            font-size: clamp(1rem, 2.5vw, 1.8rem);
+        .secondary-text {
+            font-size: clamp(18px, 2.5vw, 24px);
         }
 
-        /* 密码界面样式 */
-        .protected-text {
-            font-size: clamp(2rem, 6vw, 3rem);
-            cursor: pointer;
-        }
+        /* 响应式布局 */
+        @media (max-width: 768px) {
+            .card-container {
+                flex-direction: column;
+                min-height: auto;
+            }
 
-        .error-message {
-            font-size: clamp(0.8rem, 2vw, 1rem);
+            .info-panel,
+            .media-container {
+                width: 100% !important;
+                flex: none;
+                min-height: 300px;
+            }
+
+            .profile-image {
+                width: min(200px, 50vw);
+                height: min(200px, 50vw);
+            }
         }
     </style>
 </head>
 <body>
     <!-- 保护界面 -->
-    <div class="protected-interface" id="protectedScreen">
-        <div class="main-content">
-            <div class="protected-text" onclick="checkPassword()">🛡️ VERIFY ACCESS</div>
-            <div class="error-message" id="errorMsg">INVALID PASSWORD</div>
+    <div id="protectedScreen">
+        <div class="main-container">
+            <div class="protected-content">
+                <div class="panel-text" onclick="handleAuth()">🛡️ 点击验证身份</div>
+                <div id="authError" style="display:none;color:#ff4444;margin-top:15px;">验证失败，请重试</div>
+            </div>
         </div>
     </div>
 
     <!-- 主界面 -->
-    <div class="main-interface">
-        <div class="main-content">
-            <div class="avatar-container">
-                <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
-                     alt="Profile" 
-                     class="circle-image">
-                <div class="image-caption" onclick="showProtected()">TFOG DESIGN</div>
-            </div>
-
-            <!-- 容器组 -->
-            <div class="ratio-container">
-                <div class="vertical-rect">
-                    <div class="vertical-text">Creative Workshop<br>Design Thinking</div>
-                </div>
-                <div class="horizontal-rect">
-                    <img src="https://s2.loli.net/2025/01/07/2hQTDqj9elPVsfw.png" 
-                         alt="Design" 
-                         class="horizontal-image">
-                    <div class="image-text">
-                        <div class="main-title">DESIGN</div>
-                        <div class="sub-title">PORTFOLIO</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 其他容器结构相同 -->
+    <main class="main-container" id="mainContent" style="display:none;">
+        <!-- 用户信息 -->
+        <div class="avatar-wrapper">
+            <img src="https://example.com/avatar.jpg" 
+                 alt="用户头像"
+                 class="profile-image">
+            <div class="panel-text" onclick="showAuthScreen()">TFOG 设计中心</div>
         </div>
-    </div>
+
+        <!-- 内容区块 -->
+        <div class="card-container">
+            <div class="info-panel">
+                <div class="panel-text">创意工坊<br>设计思维可视化</div>
+            </div>
+            <div class="media-container">
+                <img src="https://example.com/design.jpg" 
+                     alt="设计案例" 
+                     class="media-image">
+                <div class="media-label">
+                    <div class="primary-text">DESIGN</div>
+                    <div class="secondary-text">Portfolio</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 其他内容区块（结构相同） -->
+    </main>
 
     <script>
-        const SECRET_PASSWORD = "1234";
+        // 认证系统
+        const AUTH_CODE = "2024";
 
         // 初始化显示保护界面
-        document.getElementById('protectedScreen').style.display = 'flex';
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('protectedScreen').style.display = 'flex';
+        });
 
-        function checkPassword() {
-            const input = prompt("ENTER ACCESS CODE:");
-            if(input === SECRET_PASSWORD) {
-                document.querySelector('.main-interface').style.display = 'flex';
+        function handleAuth() {
+            const userInput = prompt("请输入访问密码：");
+            if(userInput === AUTH_CODE) {
+                document.getElementById('mainContent').style.display = 'block';
                 document.getElementById('protectedScreen').style.display = 'none';
             } else {
-                const errorMsg = document.getElementById('errorMsg');
-                errorMsg.style.display = 'block';
-                setTimeout(() => errorMsg.style.display = 'none', 2000);
+                showError();
             }
         }
 
-        function showProtected() {
-            document.querySelector('.main-interface').style.display = 'none';
+        function showAuthScreen() {
+            document.getElementById('mainContent').style.display = 'none';
             document.getElementById('protectedScreen').style.display = 'flex';
+        }
+
+        function showError() {
+            const errorElem = document.getElementById('authError');
+            errorElem.style.display = 'block';
+            setTimeout(() => errorElem.style.display = 'none', 2000);
         }
     </script>
 </body>
