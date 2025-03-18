@@ -7,30 +7,32 @@
     <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
     <title>MistArt</title>
     <style>
-        /* 新增基础布局设置 */
+        /* 新增全屏适配代码 */
         html, body {
             width: 100vw;
             height: 100vh;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow-x: hidden;
+        }
+
+        body {
             background-color: #F5F2ED;
             font-family: Impact, sans-serif;
+            display: flex;
+            flex-direction: column;
         }
 
         /* 主界面适配 */
         .main-interface {
             display: none;
-            flex-direction: column;
-            align-items: center;
-            height: 100vh;
-            width: 100vw;
-            padding: 20px 0;
-            box-sizing: border-box;
+            flex: 1;
+            width: 100%;
+            padding: 50px 0;
             overflow-y: auto;
         }
 
-        /* 保护界面适配 */
+        /* 保护界面保持全屏 */
         .protected-interface {
             display: flex;
             position: fixed;
@@ -42,87 +44,108 @@
             justify-content: center;
         }
 
-        /* 头像容器优化 */
+        /* 容器尺寸优化 */
+        .ratio-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin: 40px auto;
+            width: 90%;
+            max-width: 1000px;
+            min-height: 400px;
+            align-items: stretch;
+        }
+
+        /* 其他原有样式保持不变 */
         .avatar-container {
             text-align: center;
-            margin-bottom: 2vh;
-            flex-shrink: 0;
+            margin-bottom: 30px;
         }
 
         .circle-image {
-            width: 20vmin;
-            height: 20vmin;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid #000;
         }
 
-        /* 文字元素响应式 */
         .image-caption {
-            font-size: 3vmin;
-            margin: 1.5vh 0;
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
             transition: transform 0.2s;
+            margin: 15px 0;
         }
 
-        /* 比例容器适配 */
-        .ratio-container {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 2vmin;
-            margin: 2vh 0;
-            width: 90vw;
-            max-width: 90vw;
-            min-height: 40vh;
-            align-items: stretch;
-            box-sizing: border-box;
-            flex-shrink: 0;
-        }
-
-        /* 矩形元素适配 */
-        .vertical-rect, .horizontal-rect {
-            border-radius: 1.5vmin;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 2vmin;
-            position: relative;
+        .image-caption:hover {
+            transform: scale(1.05);
         }
 
         .vertical-rect {
             background: #f8f8f8;
+            border-radius: 15px;
             aspect-ratio: 9/16;
+            height: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .horizontal-rect {
             background: #FFFFFF;
+            border-radius: 15px;
             aspect-ratio: 16/9;
+            height: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            padding: 2px;
         }
 
-        /* 文字适配 */
         .vertical-text {
-            font-size: 2.5vmin;
+            color: #333;
+            font-size: 24px;
+            text-align: center;
             line-height: 1.4;
+            max-width: 90%;
+            word-break: break-word;
         }
 
-        /* 图片适配 */
         .horizontal-image {
             width: calc(100% - 4px);
             height: calc(100% - 4px);
             object-fit: cover;
-            border-radius: 1.3vmin;
+            border-radius: 13px;
+            position: absolute;
+            top: 2px;
+            left: 2px;
         }
 
-        /* 保护界面元素 */
+        .protected-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+        }
+
         .protected-text {
-            font-size: 5vmin;
-            margin-bottom: 3vh;
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 30px;
+            cursor: pointer;
         }
 
         .error-message {
-            font-size: 2vmin;
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- 界面结构保持不变 -->
+    <!-- 保持原有HTML结构不变 -->
     <div class="main-interface">
         <div class="avatar-container">
             <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
