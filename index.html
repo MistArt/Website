@@ -67,7 +67,7 @@
             padding-bottom: 15px;
         }
 
-        /* 单个容器（16:9比例） */
+        /* 单个容器 */
         .ratio-container {
             position: relative;
             width: 100%;
@@ -83,7 +83,7 @@
             gap: 15px;
         }
 
-        /* 文本容器（9:16比例） */
+        /* 文本容器 */
         .text-panel {
             background: #f8f8f8;
             border-radius: 15px;
@@ -93,9 +93,20 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        /* 图片容器（自动比例） */
+        .text-panel:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+
+        .text-panel:active {
+            transform: scale(0.98);
+        }
+
+        /* 图片容器 */
         .image-panel {
             flex: 1;
             background: #fff;
@@ -131,6 +142,12 @@
             justify-content: center;
         }
 
+        .protected-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+        }
+
         .protected-text {
             font-size: 24px;
             color: #333;
@@ -154,6 +171,10 @@
             .vertical-text {
                 font-size: min(4vw, 18px);
             }
+            
+            .text-panel {
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -167,39 +188,38 @@
         </div>
 
         <div class="container-group">
-            <!-- 三个相同结构的容器 -->
+            <!-- 第一个容器 -->
             <div class="ratio-container">
                 <div class="inner-container">
-                    <div class="text-panel">
+                    <div class="text-panel" data-url="https://example.com/design">
                         <div class="vertical-text">创意工坊<br>设计思维可视化</div>
                     </div>
                     <div class="image-panel">
-                        <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
-                             alt="设计案例">
+                        <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" alt="设计案例">
                     </div>
                 </div>
             </div>
 
+            <!-- 第二个容器 -->
             <div class="ratio-container">
                 <div class="inner-container">
-                    <div class="text-panel">
+                    <div class="text-panel" data-url="https://example.com/digital">
                         <div class="vertical-text">数字艺术<br>AI生成与人工精修</div>
                     </div>
                     <div class="image-panel">
-                        <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
-                             alt="数字作品">
+                        <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" alt="数字作品">
                     </div>
                 </div>
             </div>
 
+            <!-- 第三个容器 -->
             <div class="ratio-container">
                 <div class="inner-container">
-                    <div class="text-panel">
+                    <div class="text-panel" data-url="https://example.com/interaction">
                         <div class="vertical-text">交互原型<br>用户体验实验室</div>
                     </div>
                     <div class="image-panel">
-                        <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
-                             alt="交互设计">
+                        <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" alt="交互设计">
                     </div>
                 </div>
             </div>
@@ -223,8 +243,7 @@
 
             // 计算容器总可用高度
             const avatarHeight = document.querySelector('.avatar-container').offsetHeight;
-            const containerGroup = document.querySelector('.container-group');
-            const availableHeight = window.innerHeight - avatarHeight - 55; // 55=上下padding总和
+            const availableHeight = window.innerHeight - avatarHeight - 60; // 60=上下padding
             
             // 设置每个容器的高度（保持16:9比例）
             const containers = document.querySelectorAll('.ratio-container');
@@ -241,6 +260,7 @@
             });
 
             // 居中容器组
+            const containerGroup = document.querySelector('.container-group');
             containerGroup.style.justifyContent = 'center';
             containerGroup.style.alignItems = 'center';
         }
@@ -251,7 +271,10 @@
             if(input === SECRET_PASSWORD) {
                 document.querySelector('.main-interface').style.display = 'flex';
                 document.getElementById('protectedScreen').style.display = 'none';
-                setTimeout(updateLayout, 50);
+                setTimeout(() => {
+                    updateLayout();
+                    initLinkHandlers(); // 重新绑定事件
+                }, 50);
             } else {
                 document.getElementById('errorMsg').style.display = 'block';
                 setTimeout(() => {
@@ -265,13 +288,27 @@
             document.getElementById('protectedScreen').style.display = 'flex';
         }
 
-        // 事件监听
+        // 链接处理
+        function initLinkHandlers() {
+            document.querySelectorAll('.text-panel').forEach(panel => {
+                panel.onclick = function(e) {
+                    e.preventDefault();
+                    const url = this.dataset.url;
+                    if (url) {
+                        window.open(url, '_blank');
+                    }
+                };
+            });
+        }
+
+        // 初始化
         window.addEventListener('resize', updateLayout);
         window.addEventListener('load', () => {
             document.body.style.height = window.innerHeight + 'px';
             if(document.querySelector('.main-interface').style.display === 'flex') {
                 updateLayout();
             }
+            initLinkHandlers();
         });
     </script>
 </body>
