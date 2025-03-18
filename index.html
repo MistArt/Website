@@ -8,15 +8,11 @@
     <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
     <title>MistArt</title>
     <style>
-        :root {
-            --main-color: #F5F2ED;
-            --dark-bg: #333;
-        }
-
+        /* 基础样式 */
         body {
             margin: 0;
             min-height: 100vh;
-            background: var(--main-color);
+            background: #F5F2ED;
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
 
@@ -34,20 +30,16 @@
             z-index: 100;
         }
 
-        .protected-content {
-            text-align: center;
-        }
-
         .protected-text {
-            font-size: 4rem;
-            color: var(--dark-bg);
+            font-size: 4.5rem;  /* 增大字号 */
+            color: #333;
             cursor: pointer;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
         .error-message {
+            font-size: 1.5rem;  /* 增大字号 */
             color: #ff4444;
-            font-size: 1.2rem;
             margin-top: 1rem;
             display: none;
         }
@@ -60,6 +52,7 @@
             padding: 2rem 0;
         }
 
+        /* 顶部头像 */
         .avatar-container {
             text-align: center;
             margin-bottom: 3rem;
@@ -70,13 +63,13 @@
             height: 280px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid var(--dark-bg);
-            margin-bottom: 1.5rem;
+            border: 4px solid #333;
+            margin-bottom: 2rem;
         }
 
         .image-caption {
-            font-size: 2.5rem;
-            color: var(--dark-bg);
+            font-size: 3rem;  /* 增大字号 */
+            color: #333;
             letter-spacing: 2px;
             cursor: pointer;
         }
@@ -87,10 +80,11 @@
             gap: 2rem;
             width: 90%;
             max-width: 1200px;
-            margin: 2rem 0;
+            margin: 3rem 0;  /* 增大间距 */
             min-height: 500px;
         }
 
+        /* 左侧容器 */
         .vertical-rect {
             flex: 1;
             background: #f0f0f0;
@@ -104,12 +98,13 @@
         }
 
         .vertical-text {
-            font-size: 2rem;
+            font-size: 2.5rem;  /* 增大字号 */
             line-height: 1.6;
-            color: var(--dark-bg);
+            color: #333;
             text-transform: uppercase;
         }
 
+        /* 右侧容器 */
         .horizontal-rect {
             flex: 2;
             position: relative;
@@ -119,36 +114,35 @@
         }
 
         .horizontal-image {
-            width: calc(100% - 4px);
-            height: calc(100% - 4px);
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            position: absolute;
-            top: 2px;
-            left: 2px;
             filter: brightness(0.9);
         }
 
+        /* 图片文字 */
         .image-text {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            z-index: 2;
             color: white;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            z-index: 2;
         }
 
         .main-title {
-            font-size: 4vw;
+            font-size: 5vw;  /* 增大字号 */
             line-height: 1;
             margin-bottom: 1vw;
         }
 
         .sub-title {
-            font-size: 2.5vw;
+            font-size: 3vw;  /* 增大字号 */
         }
 
+        /* 响应式 */
         @media (max-width: 768px) {
             .ratio-container {
                 flex-direction: column;
@@ -157,17 +151,19 @@
 
             .vertical-rect,
             .horizontal-rect {
-                width: 100%!important;
+                width: 100% !important;
                 min-height: 400px;
             }
 
-            .main-title { font-size: 8vw; }
-            .sub-title { font-size: 5vw; }
             .protected-text { font-size: 3rem; }
+            .main-title { font-size: 8vw; }
+            .sub-title { font-size: 6vw; }
             .circle-image { 
                 width: 200px;
                 height: 200px;
             }
+            .image-caption { font-size: 2.5rem; }
+            .vertical-text { font-size: 2rem; }
         }
     </style>
 </head>
@@ -189,10 +185,10 @@
             <div class="image-caption" onclick="showProtected()">TFOG DESIGN</div>
         </div>
 
-        <!-- 容器1 -->
+        <!-- 容器组 -->
         <div class="ratio-container">
             <div class="vertical-rect">
-                <div class="vertical-text">Creative Workshop<br>Design Thinking</div>
+                <div class="vertical-text">CREATIVE WORKSHOP<br>DESIGN THINKING</div>
             </div>
             <div class="horizontal-rect">
                 <img src="https://s2.loli.net/2025/01/07/2hQTDqj9elPVsfw.png" 
@@ -205,10 +201,9 @@
             </div>
         </div>
 
-        <!-- 容器2 -->
         <div class="ratio-container">
             <div class="vertical-rect">
-                <div class="vertical-text">Digital Art<br>AI Generation</div>
+                <div class="vertical-text">DIGITAL ART<br>AI GENERATION</div>
             </div>
             <div class="horizontal-rect">
                 <img src="https://s2.loli.net/2025/01/08/XJq7yKw3Zn9j6fR.png" 
@@ -221,10 +216,9 @@
             </div>
         </div>
 
-        <!-- 容器3 -->
         <div class="ratio-container">
             <div class="vertical-rect">
-                <div class="vertical-text">Interaction<br>Prototype Lab</div>
+                <div class="vertical-text">INTERACTION<br>PROTOTYPE LAB</div>
             </div>
             <div class="horizontal-rect">
                 <img src="https://s2.loli.net/2025/01/09/vLp5Yb8z1dS6oNm.png" 
@@ -239,6 +233,7 @@
     </div>
 
     <script>
+        // 密码验证逻辑
         const PASSWORD = "1234";
 
         function checkPassword() {
@@ -258,7 +253,7 @@
             document.getElementById('protectedScreen').style.display = 'flex';
         }
 
-        // 初始化检查
+        // 初始化显示保护界面
         window.onload = () => {
             document.getElementById('protectedScreen').style.display = 'flex';
         }
