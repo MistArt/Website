@@ -26,7 +26,7 @@
             flex-direction: column;
         }
 
-        /* 主界面 */
+        /* 主界面容器 */
         .main-interface {
             display: none;
             flex-direction: column;
@@ -61,22 +61,35 @@
         /* 容器组 */
         .container-group {
             flex: 1;
-            display: grid;
-            grid-template-rows: repeat(3, 1fr);
+            display: flex;
+            flex-direction: column;
             gap: 20px;
         }
 
-        /* 单个容器 (16:9) */
+        /* 单个容器 (整体16:9) */
         .ratio-container {
-            aspect-ratio: 16/9;
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9比例 */
+        }
+
+        /* 容器内容包装 */
+        .content-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
             gap: 15px;
-            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
         }
 
         /* 文本容器 (9:16) */
-        .text-container {
-            flex: 0 0 calc(9/16 * 100%);
+        .text-panel {
+            height: 100%;
+            aspect-ratio: 9/16;
             background: #f8f8f8;
             border-radius: 15px;
             padding: 15px;
@@ -84,16 +97,18 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            flex-shrink: 0;
         }
 
         /* 图片容器 (16:9) */
-        .image-container {
+        .image-panel {
             flex: 1;
+            height: 100%;
             background: #fff;
             border-radius: 15px;
-            position: relative;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
         }
 
         .horizontal-image {
@@ -102,7 +117,7 @@
             object-fit: cover;
         }
 
-        /* 文字样式 */
+        /* 文本样式 */
         .vertical-text {
             font-size: min(2.5vw, 24px);
             color: #333;
@@ -122,12 +137,6 @@
             justify-content: center;
         }
 
-        .protected-content {
-            text-align: center;
-            max-width: 600px;
-            padding: 20px;
-        }
-
         .protected-text {
             font-size: 24px;
             color: #333;
@@ -143,18 +152,21 @@
 
         /* 移动端适配 */
         @media (max-width: 768px) {
-            .ratio-container {
+            .content-wrapper {
                 flex-direction: column;
-                aspect-ratio: 9/16; /* 竖屏比例 */
+                padding: 5px;
             }
 
-            .text-container {
-                flex-basis: 35%;
+            .text-panel {
                 width: 100%;
+                height: auto;
+                aspect-ratio: 9/16;
             }
 
-            .image-container {
-                flex-basis: 65%;
+            .image-panel {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 16/9;
             }
 
             .vertical-text {
@@ -175,35 +187,41 @@
         <div class="container-group">
             <!-- 三个相同容器 -->
             <div class="ratio-container">
-                <div class="text-container">
-                    <div class="vertical-text">创意工坊<br>设计思维可视化</div>
-                </div>
-                <div class="image-container">
-                    <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
-                         alt="设计案例" 
-                         class="horizontal-image">
-                </div>
-            </div>
-
-            <div class="ratio-container">
-                <div class="text-container">
-                    <div class="vertical-text">数字艺术<br>AI生成与人工精修</div>
-                </div>
-                <div class="image-container">
-                    <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
-                         alt="数字作品" 
-                         class="horizontal-image">
+                <div class="content-wrapper">
+                    <div class="text-panel">
+                        <div class="vertical-text">创意工坊<br>设计思维可视化</div>
+                    </div>
+                    <div class="image-panel">
+                        <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
+                             alt="设计案例" 
+                             class="horizontal-image">
+                    </div>
                 </div>
             </div>
 
             <div class="ratio-container">
-                <div class="text-container">
-                    <div class="vertical-text">交互原型<br>用户体验实验室</div>
+                <div class="content-wrapper">
+                    <div class="text-panel">
+                        <div class="vertical-text">数字艺术<br>AI生成与人工精修</div>
+                    </div>
+                    <div class="image-panel">
+                        <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
+                             alt="数字作品" 
+                             class="horizontal-image">
+                    </div>
                 </div>
-                <div class="image-container">
-                    <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
-                         alt="交互设计" 
-                         class="horizontal-image">
+            </div>
+
+            <div class="ratio-container">
+                <div class="content-wrapper">
+                    <div class="text-panel">
+                        <div class="vertical-text">交互原型<br>用户体验实验室</div>
+                    </div>
+                    <div class="image-panel">
+                        <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
+                             alt="交互设计" 
+                             class="horizontal-image">
+                    </div>
                 </div>
             </div>
         </div>
@@ -218,19 +236,21 @@
 
     <script>
         const SECRET_PASSWORD = "1234";
-
-        // 动态布局调整
+        
+        // 动态调整布局
         function updateLayout() {
-            const main = document.querySelector('.main-interface');
-            if (!main || main.style.display !== 'flex') return;
-
-            // 计算容器宽度
-            const containerWidth = document.querySelector('.container-group').offsetWidth;
-            
-            // 设置容器高度（根据16:9比例）
             const containers = document.querySelectorAll('.ratio-container');
             containers.forEach(container => {
-                container.style.height = `${containerWidth * 9/16}px`;
+                const wrapper = container.querySelector('.content-wrapper');
+                const textPanel = container.querySelector('.text-panel');
+                const imagePanel = container.querySelector('.image-panel');
+                
+                // 桌面端布局调整
+                if (window.innerWidth > 768) {
+                    const containerWidth = container.offsetWidth;
+                    const textWidth = textPanel.offsetWidth;
+                    imagePanel.style.flex = `0 0 ${containerWidth - textWidth - 30}px`;
+                }
             });
         }
 
@@ -258,9 +278,7 @@
         window.addEventListener('resize', updateLayout);
         window.addEventListener('load', () => {
             document.body.style.height = window.innerHeight + 'px';
-            if(document.querySelector('.main-interface').style.display === 'flex') {
-                updateLayout();
-            }
+            updateLayout();
         });
     </script>
 </body>
