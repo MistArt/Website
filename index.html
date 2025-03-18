@@ -26,13 +26,13 @@
             flex-direction: column;
         }
 
-        /* 主界面 */
+        /* 主界面容器 */
         .main-interface {
             display: none;
             flex-direction: column;
-            padding: 20px;
-            box-sizing: border-box;
             height: 100vh;
+            padding: 20px 0;
+            box-sizing: border-box;
         }
 
         /* 头像区域 */
@@ -54,32 +54,31 @@
             font-size: 24px;
             color: #333;
             cursor: pointer;
-            transition: transform 0.2s;
             margin: 15px 0;
+            transition: transform 0.2s;
         }
 
-        /* 容器组 */
-        .container-group {
+        /* 内容容器组 */
+        .content-group {
             flex: 1;
             display: flex;
             flex-direction: column;
             gap: 20px;
-            overflow: hidden;
         }
 
-        /* 单个容器 */
-        .ratio-container {
+        /* 单个内容容器 */
+        .content-item {
             display: flex;
-            gap: 20px;
-            height: calc((100% - 40px) / 3); /* JS动态更新 */
+            height: 0; /* 由JS动态设置 */
+            flex-grow: 1;
+            gap: 15px;
         }
 
-        /* 文本容器 (9:16) */
-        .text-container {
-            flex: 0 0 auto;
-            width: calc(height * 9/16); /* 由JS动态计算 */
+        /* 文本容器 (固定9:16比例) */
+        .text-panel {
             background: #f8f8f8;
             border-radius: 15px;
+            flex-shrink: 0;
             padding: 15px;
             display: flex;
             align-items: center;
@@ -87,8 +86,8 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        /* 图片容器 (16:9) */
-        .image-container {
+        /* 图片容器 (自适应比例) */
+        .image-panel {
             flex: 1;
             background: #fff;
             border-radius: 15px;
@@ -97,15 +96,15 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .horizontal-image {
+        .image-panel img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        /* 文字样式 */
+        /* 文本样式 */
         .vertical-text {
-            font-size: min(2.5vw, 24px);
+            font-size: min(2.8vw, 24px);
             color: #333;
             text-align: center;
             line-height: 1.4;
@@ -123,12 +122,6 @@
             justify-content: center;
         }
 
-        .protected-content {
-            text-align: center;
-            max-width: 600px;
-            padding: 20px;
-        }
-
         .protected-text {
             font-size: 24px;
             color: #333;
@@ -144,20 +137,12 @@
 
         /* 移动端适配 */
         @media (max-width: 768px) {
-            .ratio-container {
+            .content-item {
                 gap: 10px;
             }
             
-            .text-container {
-                flex: 0 0 35%;
-            }
-            
-            .image-container {
-                flex: 0 0 63%;
-            }
-            
             .vertical-text {
-                font-size: min(4vw, 20px);
+                font-size: min(4.5vw, 20px);
             }
         }
     </style>
@@ -171,38 +156,35 @@
             <div class="image-caption" onclick="showProtected()">TFOG DESIGN</div>
         </div>
 
-        <div class="container-group">
-            <!-- 三个相同容器 -->
-            <div class="ratio-container">
-                <div class="text-container">
+        <div class="content-group">
+            <!-- 三个相同结构的内容项 -->
+            <div class="content-item">
+                <div class="text-panel">
                     <div class="vertical-text">创意工坊<br>设计思维可视化</div>
                 </div>
-                <div class="image-container">
+                <div class="image-panel">
                     <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
-                         alt="设计案例" 
-                         class="horizontal-image">
+                         alt="设计案例">
                 </div>
             </div>
 
-            <div class="ratio-container">
-                <div class="text-container">
+            <div class="content-item">
+                <div class="text-panel">
                     <div class="vertical-text">数字艺术<br>AI生成与人工精修</div>
                 </div>
-                <div class="image-container">
+                <div class="image-panel">
                     <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
-                         alt="数字作品" 
-                         class="horizontal-image">
+                         alt="数字作品">
                 </div>
             </div>
 
-            <div class="ratio-container">
-                <div class="text-container">
+            <div class="content-item">
+                <div class="text-panel">
                     <div class="vertical-text">交互原型<br>用户体验实验室</div>
                 </div>
-                <div class="image-container">
+                <div class="image-panel">
                     <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
-                         alt="交互设计" 
-                         class="horizontal-image">
+                         alt="交互设计">
                 </div>
             </div>
         </div>
@@ -225,17 +207,18 @@
 
             // 计算可用高度
             const avatarHeight = document.querySelector('.avatar-container').offsetHeight;
-            const containerGroup = document.querySelector('.container-group');
-            const availableHeight = window.innerHeight - avatarHeight - 60; // 60=上下padding总和
+            const availableHeight = window.innerHeight - avatarHeight - 40; // 40=上下padding
             
-            // 设置容器高度
-            const containers = document.querySelectorAll('.ratio-container');
-            const containerHeight = availableHeight / 3;
+            // 设置每个内容项的高度（均分可用高度）
+            const contentItems = document.querySelectorAll('.content-item');
+            const itemHeight = availableHeight / contentItems.length;
             
-            containers.forEach(container => {
-                container.style.height = `${containerHeight}px`;
-                const textContainer = container.querySelector('.text-container');
-                textContainer.style.width = `${containerHeight * 9/16}px`;
+            contentItems.forEach(item => {
+                item.style.height = `${itemHeight}px`;
+                
+                // 设置文本容器宽度（基于固定高度和9:16比例）
+                const textPanel = item.querySelector('.text-panel');
+                textPanel.style.width = `${itemHeight * 9 / 16}px`;
             });
         }
 
