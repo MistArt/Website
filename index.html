@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -8,17 +7,24 @@
     <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
     <title>MistArt</title>
     <style>
-        /* 修改初始显示状态 */
+        body {
+            background-color: #F5F2ED;
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        /* 主界面初始隐藏 */
         .main-interface {
-            display: none; /* 初始隐藏主界面 */
+            display: none;
             flex-direction: column;
             align-items: center;
             padding-top: 50px;
-            transition: opacity 0.3s;
         }
 
+        /* 保护界面初始显示 */
         .protected-interface {
-            display: flex; /* 初始显示保护界面 */
+            display: flex;
             position: fixed;
             top: 0;
             left: 0;
@@ -30,17 +36,149 @@
             justify-content: center;
         }
 
-        /* 其他样式保持不变 */
+        .avatar-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .circle-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #000;
+        }
+
+        .image-caption {
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin: 15px 0;
+        }
+
+        .image-caption:hover {
+            transform: scale(1.05);
+        }
+
+        .ratio-container {
+            display: flex;
+            gap: 30px;
+            margin: 40px 0;
+            width: 90%;
+            max-width: 1000px;
+            height: 400px;
+        }
+
+        .vertical-rect {
+            flex: 1;
+            background: #f8f8f8;
+            border-radius: 15px;
+            aspect-ratio: 9/16;
+            height: 100%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .horizontal-rect {
+            flex: 2;
+            background: #FFFFFF;
+            border-radius: 15px;
+            aspect-ratio: 16/9;
+            height: 100%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            padding: 2px;
+        }
+
+        .vertical-text {
+            color: #333;
+            font-size: 24px;
+            text-align: center;
+            line-height: 1.4;
+            max-width: 90%;
+            word-break: break-word;
+        }
+
+        .horizontal-image {
+            width: calc(100% - 4px);
+            height: calc(100% - 4px);
+            object-fit: cover;
+            border-radius: 13px;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+        }
+
+        .protected-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .protected-text {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
     </style>
 </head>
-
 <body>
-    <!-- 主界面（初始隐藏） -->
+    <!-- 主界面 -->
     <div class="main-interface">
-        <!-- 原有主界面内容 -->
+        <div class="avatar-container">
+            <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
+                 alt="Profile" 
+                 class="circle-image">
+            <div class="image-caption" onclick="showProtected()">TFOG DESIGN</div>
+        </div>
+
+        <div class="ratio-container">
+            <div class="vertical-rect">
+                <div class="vertical-text">创意工坊<br>设计思维可视化</div>
+            </div>
+            <div class="horizontal-rect">
+                <img src="https://s2.loli.net/2025/01/07/2hQTDqj9elPVsfw.png" 
+                     alt="设计案例" 
+                     class="horizontal-image">
+            </div>
+        </div>
+
+        <div class="ratio-container">
+            <div class="vertical-rect">
+                <div class="vertical-text">数字艺术<br>AI生成与人工精修</div>
+            </div>
+            <div class="horizontal-rect">
+                <img src="https://s2.loli.net/2025/01/08/XJq7yKw3Zn9j6fR.png" 
+                     alt="数字作品" 
+                     class="horizontal-image">
+            </div>
+        </div>
+
+        <div class="ratio-container">
+            <div class="vertical-rect">
+                <div class="vertical-text">交互原型<br>用户体验实验室</div>
+            </div>
+            <div class="horizontal-rect">
+                <img src="https://s2.loli.net/2025/01/09/vLp5Yb8z1dS6oNm.png" 
+                     alt="交互设计" 
+                     class="horizontal-image">
+            </div>
+        </div>
     </div>
 
-    <!-- 保护界面（初始显示） -->
+    <!-- 保护界面 -->
     <div class="protected-interface" id="protectedScreen">
         <div class="protected-content">
             <div class="protected-text" onclick="checkPassword()">🛡️ 点击验证身份</div>
@@ -49,24 +187,25 @@
     </div>
 
     <script>
-        // 修改后的验证逻辑
         const SECRET_PASSWORD = "1234";
 
         function checkPassword() {
             const userInput = prompt("请输入访问密码：");
             if(userInput === SECRET_PASSWORD) {
-                // 密码正确显示主界面
                 document.querySelector('.main-interface').style.display = 'flex';
                 document.getElementById('protectedScreen').style.display = 'none';
             } else {
-                // 显示错误提示
                 document.getElementById('errorMsg').style.display = 'block';
                 setTimeout(() => {
                     document.getElementById('errorMsg').style.display = 'none';
                 }, 2000);
             }
         }
+
+        function showProtected() {
+            document.querySelector('.main-interface').style.display = 'none';
+            document.getElementById('protectedScreen').style.display = 'flex';
+        }
     </script>
 </body>
-
 </html>
