@@ -1,147 +1,72 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>数字矩阵安全系统</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
+    <title>MistArt</title>
     <style>
-        :root {
-            --cell-size: min(4vw, 40px);
-            --grid-gap: 2px;
-            --main-color: #333;
+        /* 修改初始显示状态 */
+        .main-interface {
+            display: none; /* 初始隐藏主界面 */
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+            transition: opacity 0.3s;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: #F5F2ED;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            min-height: 100vh;
-        }
-
-        /* 保护界面 */
-        #authScreen {
+        .protected-interface {
+            display: flex; /* 初始显示保护界面 */
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(245, 242, 237, 0.98);
-            display: flex;
+            background: rgba(245, 242, 237, 0.95);
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
         }
 
-        .auth-prompt {
-            font-size: clamp(2rem, 4vw, 3rem);
-            color: var(--main-color);
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
-
-        .error-msg {
-            color: #ff4444;
-            display: none;
-            font-size: 1.2rem;
-        }
-
-        /* 数字网格容器 */
-        #matrixContainer {
-            display: none;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .number-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, var(--cell-size));
-            gap: var(--grid-gap);
-            justify-content: center;
-        }
-
-        .number-cell {
-            width: var(--cell-size);
-            height: var(--cell-size);
-            background: #fff;
-            border: 1px solid var(--main-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: calc(var(--cell-size) * 0.6);
-            color: var(--main-color);
-            transition: transform 0.2s;
-        }
-
-        .number-cell:hover {
-            transform: scale(1.1);
-            z-index: 1;
-        }
-
-        @media (max-width: 768px) {
-            :root {
-                --cell-size: 8vw;
-            }
-        }
+        /* 其他样式保持不变 */
     </style>
 </head>
+
 <body>
-    <!-- 安全验证界面 -->
-    <div id="authScreen">
-        <div class="auth-prompt" onclick="verifyAccess()">🛡️ 点击验证访问</div>
-        <div class="error-msg" id="errorMsg">验证失败，请重试</div>
+    <!-- 主界面（初始隐藏） -->
+    <div class="main-interface">
+        <!-- 原有主界面内容 -->
     </div>
 
-    <!-- 数字矩阵容器 -->
-    <div id="matrixContainer"></div>
+    <!-- 保护界面（初始显示） -->
+    <div class="protected-interface" id="protectedScreen">
+        <div class="protected-content">
+            <div class="protected-text" onclick="checkPassword()">🛡️ 点击验证身份</div>
+            <div class="error-message" id="errorMsg">密码错误，请重试</div>
+        </div>
+    </div>
 
     <script>
-        // 系统配置
-        const ACCESS_CODE = "2024";
-        const TOTAL_NUMBERS = 686; // 根据实际需求调整
+        // 修改后的验证逻辑
+        const SECRET_PASSWORD = "1234";
 
-        // 初始化矩阵
-        function createNumberMatrix() {
-            const container = document.getElementById('matrixContainer');
-            container.innerHTML = '<div class="number-grid"></div>';
-            
-            const grid = container.querySelector('.number-grid');
-            for (let i = 1; i <= TOTAL_NUMBERS; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'number-cell';
-                cell.textContent = i;
-                grid.appendChild(cell);
-            }
-        }
-
-        // 验证系统
-        function verifyAccess() {
+        function checkPassword() {
             const userInput = prompt("请输入访问密码：");
-            if (userInput === ACCESS_CODE) {
-                document.getElementById('authScreen').style.display = 'none';
-                document.getElementById('matrixContainer').style.display = 'block';
-                createNumberMatrix();
+            if(userInput === SECRET_PASSWORD) {
+                // 密码正确显示主界面
+                document.querySelector('.main-interface').style.display = 'flex';
+                document.getElementById('protectedScreen').style.display = 'none';
             } else {
-                showError();
+                // 显示错误提示
+                document.getElementById('errorMsg').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('errorMsg').style.display = 'none';
+                }, 2000);
             }
         }
-
-        function showError() {
-            const errorElem = document.getElementById('errorMsg');
-            errorElem.style.display = 'block';
-            setTimeout(() => errorElem.style.display = 'none', 2000);
-        }
-
-        // 初始化显示验证界面
-        window.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('authScreen').style.display = 'flex';
-        });
     </script>
 </body>
+
 </html>
