@@ -3,16 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
+    <title>MistArt</title>
     <style>
-        /* 全局样式 */
-        body {
+        /* 全局锁定 */
+        html, body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            touch-action: none;
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            background: #F5F2ED;
+        }
+
+        body {
+            background-color: #F5F2ED;
+            font-family: Impact, sans-serif;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+        }
+
+        /* 主界面 */
+        .main-interface {
+            display: none;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            height: 100vh;
+        }
+
+        /* 头像区域 */
+        .avatar-container {
+            text-align: center;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+
+        .circle-image {
+            width: min(20vw, 200px);
+            height: min(20vw, 200px);
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #000;
+        }
+
+        .image-caption {
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin: 15px 0;
         }
 
         /* 容器组 */
@@ -20,20 +63,21 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 20px;
             gap: 20px;
+            overflow: hidden;
         }
 
         /* 单个容器 */
         .ratio-container {
             display: flex;
             gap: 20px;
-            height: calc((100vh - 160px) / 3); /* 动态计算高度 */
+            height: calc((100% - 40px) / 3); /* JS动态更新 */
         }
 
         /* 文本容器 (9:16) */
-        .text-box {
-            flex: 0 0 calc(9/16 * 100%);
+        .text-container {
+            flex: 0 0 auto;
+            width: calc(height * 9/16); /* 由JS动态计算 */
             background: #f8f8f8;
             border-radius: 15px;
             padding: 15px;
@@ -44,7 +88,7 @@
         }
 
         /* 图片容器 (16:9) */
-        .image-box {
+        .image-container {
             flex: 1;
             background: #fff;
             border-radius: 15px;
@@ -53,93 +97,176 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .image-box img {
+        .horizontal-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        /* 文本样式 */
+        /* 文字样式 */
         .vertical-text {
-            font-family: Impact, sans-serif;
-            font-size: min(3vw, 24px);
+            font-size: min(2.5vw, 24px);
             color: #333;
             text-align: center;
             line-height: 1.4;
+            word-break: break-word;
+        }
+
+        /* 保护界面 */
+        .protected-interface {
+            display: flex;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(245, 242, 237, 0.95);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .protected-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .protected-text {
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
         }
 
         /* 移动端适配 */
         @media (max-width: 768px) {
             .ratio-container {
-                flex-direction: row; /* 保持水平排列 */
-                height: calc((100vh - 120px) / 3);
-                overflow: visible;
+                gap: 10px;
             }
-
-            .text-box {
-                flex-basis: 35%; /* 9/(9+16) ≈ 35% */
-                height: 100%;
+            
+            .text-container {
+                flex: 0 0 35%;
             }
-
-            .image-box {
-                flex-basis: 65%; /* 16/(9+16) ≈ 65% */
-                height: 100%;
+            
+            .image-container {
+                flex: 0 0 63%;
+            }
+            
+            .vertical-text {
+                font-size: min(4vw, 20px);
             }
         }
     </style>
 </head>
 <body>
-    <div class="container-group">
-        <!-- 第一个容器 -->
-        <div class="ratio-container">
-            <div class="text-box">
-                <div class="vertical-text">创意工坊<br>设计思维可视化</div>
-            </div>
-            <div class="image-box">
-                <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" alt="设计案例">
-            </div>
+    <div class="main-interface">
+        <div class="avatar-container">
+            <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
+                 alt="Profile" 
+                 class="circle-image">
+            <div class="image-caption" onclick="showProtected()">TFOG DESIGN</div>
         </div>
 
-        <!-- 复制的第二个容器 -->
-        <div class="ratio-container">
-            <div class="text-box">
-                <div class="vertical-text">数字艺术<br>AI生成与人工精修</div>
+        <div class="container-group">
+            <!-- 三个相同容器 -->
+            <div class="ratio-container">
+                <div class="text-container">
+                    <div class="vertical-text">创意工坊<br>设计思维可视化</div>
+                </div>
+                <div class="image-container">
+                    <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
+                         alt="设计案例" 
+                         class="horizontal-image">
+                </div>
             </div>
-            <div class="image-box">
-                <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" alt="数字作品">
-            </div>
-        </div>
 
-        <!-- 复制的第三个容器 -->
-        <div class="ratio-container">
-            <div class="text-box">
-                <div class="vertical-text">交互原型<br>用户体验实验室</div>
+            <div class="ratio-container">
+                <div class="text-container">
+                    <div class="vertical-text">数字艺术<br>AI生成与人工精修</div>
+                </div>
+                <div class="image-container">
+                    <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
+                         alt="数字作品" 
+                         class="horizontal-image">
+                </div>
             </div>
-            <div class="image-box">
-                <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" alt="交互设计">
+
+            <div class="ratio-container">
+                <div class="text-container">
+                    <div class="vertical-text">交互原型<br>用户体验实验室</div>
+                </div>
+                <div class="image-container">
+                    <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" 
+                         alt="交互设计" 
+                         class="horizontal-image">
+                </div>
             </div>
         </div>
     </div>
 
+    <div class="protected-interface" id="protectedScreen">
+        <div class="protected-content">
+            <div class="protected-text" onclick="checkPassword()">🛡️ 点击验证身份</div>
+            <div class="error-message" id="errorMsg">密码错误，请重试</div>
+        </div>
+    </div>
+
     <script>
-        // 动态高度计算
-        function calculateHeights() {
-            const containers = document.querySelectorAll('.ratio-container');
-            const viewportHeight = window.innerHeight;
+        const SECRET_PASSWORD = "1234";
+        
+        // 动态布局计算
+        function updateLayout() {
+            const main = document.querySelector('.main-interface');
+            if (!main || main.style.display !== 'flex') return;
+
+            // 计算可用高度
+            const avatarHeight = document.querySelector('.avatar-container').offsetHeight;
             const containerGroup = document.querySelector('.container-group');
+            const availableHeight = window.innerHeight - avatarHeight - 60; // 60=上下padding总和
             
-            // 计算可用高度 = 视口高度 - 容器组的内边距
-            const availableHeight = viewportHeight - 40; // 20px上下内边距
+            // 设置容器高度
+            const containers = document.querySelectorAll('.ratio-container');
             const containerHeight = availableHeight / 3;
             
             containers.forEach(container => {
                 container.style.height = `${containerHeight}px`;
+                const textContainer = container.querySelector('.text-container');
+                textContainer.style.width = `${containerHeight * 9/16}px`;
             });
         }
 
-        // 初始化执行
-        calculateHeights();
-        window.addEventListener('resize', calculateHeights);
+        // 密码验证
+        function checkPassword() {
+            const input = prompt("请输入访问密码：");
+            if(input === SECRET_PASSWORD) {
+                document.querySelector('.main-interface').style.display = 'flex';
+                document.getElementById('protectedScreen').style.display = 'none';
+                setTimeout(updateLayout, 50);
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('errorMsg').style.display = 'none';
+                }, 2000);
+            }
+        }
+
+        function showProtected() {
+            document.querySelector('.main-interface').style.display = 'none';
+            document.getElementById('protectedScreen').style.display = 'flex';
+        }
+
+        // 事件监听
+        window.addEventListener('resize', updateLayout);
+        window.addEventListener('load', () => {
+            document.body.style.height = window.innerHeight + 'px';
+            if(document.querySelector('.main-interface').style.display === 'flex') {
+                updateLayout();
+            }
+        });
     </script>
 </body>
 </html>
