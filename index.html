@@ -2,141 +2,128 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
     <title>MistArt</title>
     <style>
-        body {
-            background-color: #F5F2ED;
+        /* 基础布局重置 */
+        html, body {
+            width: 100vw;
+            height: 100vh;
             margin: 0;
-            min-height: 100vh;
-            font-family: Impact, sans-serif; /* 全局字体设置 */
+            padding: 0;
+            overflow: hidden;
+            background-color: #F5F2ED;
+            font-family: Impact, sans-serif;
         }
 
+        /* 主界面全屏布局 */
         .main-interface {
             display: none;
             flex-direction: column;
-            align-items: center;
-            padding-top: 50px;
+            height: 100vh;
+            width: 100vw;
+            padding: 2vh 5vw;
+            box-sizing: border-box;
         }
 
+        /* 保护界面全屏定位 */
         .protected-interface {
             display: flex;
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             background: rgba(245, 242, 237, 0.95);
-            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
 
-        /* 特定元素字体增强 */
-        .image-caption,
-        .vertical-text,
-        .protected-text,
-        .error-message {
-            font-family: Impact, sans-serif; /* 强制使用Impact */
-        }
-
+        /* 头像容器自适应 */
         .avatar-container {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 2vh;
+            flex-shrink: 0;
         }
 
         .circle-image {
-            width: 200px;
-            height: 200px;
+            width: 20vmin;
+            height: 20vmin;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #000;
+            border: 0.3vmin solid #000;
         }
 
+        /* 文字元素响应式 */
         .image-caption {
-            font-size: 24px;
-            color: #333;
-            cursor: pointer;
+            font-size: 4vmin;
+            margin: 1.5vh 0;
             transition: transform 0.2s;
-            margin: 15px 0;
         }
 
-        .image-caption:hover {
-            transform: scale(1.05);
-        }
-
+        /* 容器网格布局优化 */
         .ratio-container {
             display: grid;
             grid-template-columns: 1fr 2fr;
-            gap: 30px;
-            margin: 40px 0;
-            width: 90%;
-            max-width: 1000px;
-            min-height: 400px;
-            align-items: stretch;
+            gap: 2vmax;
+            margin: 2vh 0;
+            flex: 1;
+            min-height: 30vh;
+            max-height: 40vh;
+            width: 100%;
         }
 
+        /* 垂直矩形自适应 */
         .vertical-rect {
             background: #f8f8f8;
-            border-radius: 15px;
+            border-radius: 2vmin;
             aspect-ratio: 9/16;
-            height: auto;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 20px;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            padding: 2vmin;
+            box-shadow: 0 0.4vmin 1.2vmin rgba(0,0,0,0.1);
         }
 
+        /* 水平矩形自适应 */
         .horizontal-rect {
             background: #FFFFFF;
-            border-radius: 15px;
+            border-radius: 2vmin;
             aspect-ratio: 16/9;
-            height: auto;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             position: relative;
-            padding: 2px;
+            box-shadow: 0 0.4vmin 1.2vmin rgba(0,0,0,0.1);
         }
 
+        /* 文本元素适配 */
         .vertical-text {
-            color: #333;
-            font-size: 24px;
-            text-align: center;
+            font-size: 3vmin;
             line-height: 1.4;
-            max-width: 90%;
             word-break: break-word;
         }
 
         .horizontal-image {
-            width: calc(100% - 4px);
-            height: calc(100% - 4px);
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border-radius: 13px;
-            position: absolute;
-            top: 2px;
-            left: 2px;
+            border-radius: 1.8vmin;
         }
 
-        .protected-content {
-            text-align: center;
-            max-width: 600px;
-            padding: 20px;
-        }
-
+        /* 保护界面元素适配 */
         .protected-text {
-            font-size: 32px;
-            color: #333;
-            margin-bottom: 30px;
-            cursor: pointer;
+            font-size: 6vmin;
+            margin-bottom: 4vh;
         }
 
         .error-message {
-            color: #ff4444;
-            font-size: 14px;
-            margin-top: 10px;
-            display: none;
+            font-size: 2.5vmin;
+        }
+
+        /* 交互效果保持 */
+        .image-caption:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -198,6 +185,8 @@
             if(userInput === SECRET_PASSWORD) {
                 document.querySelector('.main-interface').style.display = 'flex';
                 document.getElementById('protectedScreen').style.display = 'none';
+                // 窗口重置时调整布局
+                setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
             } else {
                 document.getElementById('errorMsg').style.display = 'block';
                 setTimeout(() => {
@@ -210,6 +199,12 @@
             document.querySelector('.main-interface').style.display = 'none';
             document.getElementById('protectedScreen').style.display = 'flex';
         }
+
+        // 初始化视口尺寸
+        window.addEventListener('resize', () => {
+            document.documentElement.style.setProperty('--vh', `${window.innerHeight}px`);
+        });
+        window.dispatchEvent(new Event('resize'));
     </script>
 </body>
 </html>
