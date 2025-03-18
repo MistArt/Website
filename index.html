@@ -195,7 +195,9 @@
                         <div class="vertical-text">创意工坊<br>设计思维可视化</div>
                     </div>
                     <div class="image-panel">
-                        <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" alt="设计案例">
+                        <img src="https://source.unsplash.com/random/800x450?design,workshop" 
+                             alt="设计案例"
+                             loading="lazy">
                     </div>
                 </div>
             </div>
@@ -207,7 +209,9 @@
                         <div class="vertical-text">数字艺术<br>AI生成与人工精修</div>
                     </div>
                     <div class="image-panel">
-                        <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" alt="数字作品">
+                        <img src="https://source.unsplash.com/random/800x450?digital,art" 
+                             alt="数字作品"
+                             loading="lazy">
                     </div>
                 </div>
             </div>
@@ -219,7 +223,9 @@
                         <div class="vertical-text">交互原型<br>用户体验实验室</div>
                     </div>
                     <div class="image-panel">
-                        <img src="https://s2.loli.net/2025/03/19/482dT1E96wRCMfs.png" alt="交互设计">
+                        <img src="https://source.unsplash.com/random/800x450?ux,interface" 
+                             alt="交互设计"
+                             loading="lazy">
                     </div>
                 </div>
             </div>
@@ -243,7 +249,7 @@
 
             // 计算容器总可用高度
             const avatarHeight = document.querySelector('.avatar-container').offsetHeight;
-            const availableHeight = window.innerHeight - avatarHeight - 60; // 60=上下padding
+            const availableHeight = window.innerHeight - avatarHeight - 60;
             
             // 设置每个容器的高度（保持16:9比例）
             const containers = document.querySelectorAll('.ratio-container');
@@ -273,7 +279,7 @@
                 document.getElementById('protectedScreen').style.display = 'none';
                 setTimeout(() => {
                     updateLayout();
-                    initLinkHandlers(); // 重新绑定事件
+                    initLinkHandlers();
                 }, 50);
             } else {
                 document.getElementById('errorMsg').style.display = 'block';
