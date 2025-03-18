@@ -2,141 +2,184 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
     <title>MistArt</title>
     <style>
-        /* 核心修正 */
+        /* 全局滚动锁定 */
         html, body {
+            overflow: hidden;
             width: 100%;
             height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
+            position: fixed;
+            touch-action: none;
         }
 
         body {
             background-color: #F5F2ED;
+            margin: 0;
             font-family: Impact, sans-serif;
             display: flex;
             flex-direction: column;
         }
 
-        /* 主容器优化 */
         .main-interface {
             display: none;
-            flex: 1;
-            width: 100%;
-            padding: 30px 0;
-            overflow-y: auto;
-            box-sizing: border-box;
-        }
-
-        /* 网格容器动态适配 */
-        .ratio-container {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 20px;
-            margin: 20px auto;
-            width: 90%;
-            max-width: 1000px;
-            aspect-ratio: unset; /* 移除固定比例 */
-            min-height: 0; /* 关键修复 */
-            align-items: stretch;
-        }
-
-        /* 垂直矩形优化 */
-        .vertical-rect {
-            background: #f8f8f8;
-            border-radius: 15px;
-            min-height: 300px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 15px;
-            display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            box-sizing: border-box;
-        }
-
-        /* 水平矩形优化 */
-        .horizontal-rect {
-            background: #FFFFFF;
-            border-radius: 15px;
-            min-height: 300px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-            box-sizing: border-box;
-        }
-
-        /* 图片适配修正 */
-        .horizontal-image {
+            padding-top: 50px;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 13px;
+            flex: 1;
+            overflow: hidden;
         }
 
-        /* 文字容器优化 */
-        .vertical-text {
-            color: #333;
-            font-size: clamp(18px, 2.5vw, 24px);
-            text-align: center;
-            line-height: 1.4;
-            padding: 10px;
-        }
-
-        /* 保护界面优化 */
         .protected-interface {
             display: flex;
             position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             background: rgba(245, 242, 237, 0.95);
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-sizing: border-box;
+            overflow: hidden;
         }
 
-        /* 其他样式微调 */
         .avatar-container {
             text-align: center;
-            margin-bottom: 20px;
-            padding: 0 15px;
+            margin-bottom: 30px;
         }
 
         .circle-image {
-            width: min(200px, 30vw);
-            height: min(200px, 30vw);
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid #000;
         }
 
         .image-caption {
-            font-size: clamp(20px, 3vw, 24px);
+            font-size: 24px;
             color: #333;
             cursor: pointer;
             transition: transform 0.2s;
-            margin: 10px 0;
+            margin: 15px 0;
+        }
+
+        .ratio-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin: 40px 0;
+            width: 90%;
+            max-width: 1000px;
+            min-height: 400px;
+            align-items: stretch;
+            box-sizing: border-box;
+        }
+
+        .vertical-rect {
+            background: #f8f8f8;
+            border-radius: 15px;
+            aspect-ratio: 9/16;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 100%;
+        }
+
+        .horizontal-rect {
+            background: #FFFFFF;
+            border-radius: 15px;
+            aspect-ratio: 16/9;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            padding: 2px;
+        }
+
+        .vertical-text {
+            color: #333;
+            font-size: 24px;
+            text-align: center;
+            line-height: 1.4;
+            max-width: 90%;
+            word-break: break-word;
+        }
+
+        .horizontal-image {
+            width: calc(100% - 4px);
+            height: calc(100% - 4px);
+            object-fit: cover;
+            border-radius: 13px;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+        }
+
+        .protected-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
         }
 
         .protected-text {
-            font-size: clamp(24px, 5vw, 32px);
+            font-size: 32px;
             color: #333;
-            margin-bottom: 20px;
-            padding: 0 15px;
+            margin-bottom: 30px;
+            cursor: pointer;
         }
 
         .error-message {
-            font-size: clamp(12px, 2vw, 14px);
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .ratio-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                min-height: 300px;
+            }
+            
+            .vertical-rect {
+                aspect-ratio: 16/9;
+            }
+            
+            .circle-image {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .main-interface {
+                padding-top: 20px;
+            }
+            
+            .vertical-text {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .circle-image {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .image-caption {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- 保持HTML结构不变 -->
     <div class="main-interface">
         <div class="avatar-container">
             <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
@@ -189,6 +232,11 @@
     <script>
         const SECRET_PASSWORD = "1234";
 
+        // 阻止所有触摸滚动行为
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
         function checkPassword() {
             const userInput = prompt("请输入访问密码：");
             if(userInput === SECRET_PASSWORD) {
@@ -206,6 +254,11 @@
             document.querySelector('.main-interface').style.display = 'none';
             document.getElementById('protectedScreen').style.display = 'flex';
         }
+
+        // 窗口尺寸变化时强制保持比例
+        window.addEventListener('resize', () => {
+            document.body.style.height = window.innerHeight + 'px';
+        });
     </script>
 </body>
 </html>
