@@ -18,28 +18,28 @@
 
         /* 保护界面 */
         .protected-interface {
-            display: flex;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(245, 242, 237, 0.95);
+            display: flex;
             justify-content: center;
             align-items: center;
             z-index: 100;
         }
 
         .protected-text {
-            font-size: 4.5rem;  /* 增大字号 */
+            font-size: 2.5rem;
             color: #333;
             cursor: pointer;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
         .error-message {
-            font-size: 1.5rem;  /* 增大字号 */
             color: #ff4444;
+            font-size: 1rem;
             margin-top: 1rem;
             display: none;
         }
@@ -49,66 +49,64 @@
             display: none;
             flex-direction: column;
             align-items: center;
-            padding: 2rem 0;
+            padding: 20px 0;
         }
 
-        /* 顶部头像 */
+        /* 头像区域 */
         .avatar-container {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 30px;
         }
 
         .circle-image {
-            width: 280px;
-            height: 280px;
+            width: 220px;
+            height: 220px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid #333;
-            margin-bottom: 2rem;
+            border: 3px solid #000;
+            margin-bottom: 15px;
         }
 
         .image-caption {
-            font-size: 3rem;  /* 增大字号 */
+            font-size: 1.8rem;
             color: #333;
-            letter-spacing: 2px;
             cursor: pointer;
         }
 
         /* 双容器布局 */
         .ratio-container {
             display: flex;
-            gap: 2rem;
+            gap: 25px;
             width: 90%;
             max-width: 1200px;
-            margin: 3rem 0;  /* 增大间距 */
-            min-height: 500px;
+            margin: 25px 0;
+            min-height: 450px;
         }
 
         /* 左侧容器 */
         .vertical-rect {
             flex: 1;
             background: #f0f0f0;
-            border-radius: 20px;
-            padding: 2rem;
+            border-radius: 15px;
+            padding: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .vertical-text {
-            font-size: 2.5rem;  /* 增大字号 */
-            line-height: 1.6;
+            font-size: 1.5rem;
             color: #333;
-            text-transform: uppercase;
+            text-align: center;
+            line-height: 1.5;
         }
 
         /* 右侧容器 */
         .horizontal-rect {
             flex: 2;
             position: relative;
-            border-radius: 20px;
+            border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
@@ -129,20 +127,20 @@
             text-align: center;
             color: white;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            z-index: 2;
+            width: 90%;
         }
 
         .main-title {
-            font-size: 5vw;  /* 增大字号 */
+            font-size: 2.2rem;
             line-height: 1;
-            margin-bottom: 1vw;
+            margin-bottom: 0.8rem;
         }
 
         .sub-title {
-            font-size: 3vw;  /* 增大字号 */
+            font-size: 1.5rem;
         }
 
-        /* 响应式 */
+        /* 响应式设计 */
         @media (max-width: 768px) {
             .ratio-container {
                 flex-direction: column;
@@ -152,18 +150,16 @@
             .vertical-rect,
             .horizontal-rect {
                 width: 100% !important;
-                min-height: 400px;
+                min-height: 300px;
             }
 
-            .protected-text { font-size: 3rem; }
-            .main-title { font-size: 8vw; }
-            .sub-title { font-size: 6vw; }
+            .main-title { font-size: 1.8rem; }
+            .sub-title { font-size: 1.2rem; }
+            .protected-text { font-size: 2rem; }
             .circle-image { 
-                width: 200px;
-                height: 200px;
+                width: 180px;
+                height: 180px;
             }
-            .image-caption { font-size: 2.5rem; }
-            .vertical-text { font-size: 2rem; }
         }
     </style>
 </head>
@@ -188,7 +184,7 @@
         <!-- 容器组 -->
         <div class="ratio-container">
             <div class="vertical-rect">
-                <div class="vertical-text">CREATIVE WORKSHOP<br>DESIGN THINKING</div>
+                <div class="vertical-text">Creative Workshop<br>Design Thinking</div>
             </div>
             <div class="horizontal-rect">
                 <img src="https://s2.loli.net/2025/01/07/2hQTDqj9elPVsfw.png" 
@@ -203,7 +199,7 @@
 
         <div class="ratio-container">
             <div class="vertical-rect">
-                <div class="vertical-text">DIGITAL ART<br>AI GENERATION</div>
+                <div class="vertical-text">Digital Art<br>AI Generation</div>
             </div>
             <div class="horizontal-rect">
                 <img src="https://s2.loli.net/2025/01/08/XJq7yKw3Zn9j6fR.png" 
@@ -218,7 +214,7 @@
 
         <div class="ratio-container">
             <div class="vertical-rect">
-                <div class="vertical-text">INTERACTION<br>PROTOTYPE LAB</div>
+                <div class="vertical-text">Interaction<br>Prototype Lab</div>
             </div>
             <div class="horizontal-rect">
                 <img src="https://s2.loli.net/2025/01/09/vLp5Yb8z1dS6oNm.png" 
@@ -233,12 +229,14 @@
     </div>
 
     <script>
-        // 密码验证逻辑
-        const PASSWORD = "1234";
+        const SECRET_PASSWORD = "1234";
+
+        // 初始化显示保护界面
+        document.getElementById('protectedScreen').style.display = 'flex';
 
         function checkPassword() {
             const input = prompt("ENTER ACCESS CODE:");
-            if(input === PASSWORD) {
+            if(input === SECRET_PASSWORD) {
                 document.querySelector('.main-interface').style.display = 'flex';
                 document.getElementById('protectedScreen').style.display = 'none';
             } else {
@@ -250,11 +248,6 @@
 
         function showProtected() {
             document.querySelector('.main-interface').style.display = 'none';
-            document.getElementById('protectedScreen').style.display = 'flex';
-        }
-
-        // 初始化显示保护界面
-        window.onload = () => {
             document.getElementById('protectedScreen').style.display = 'flex';
         }
     </script>
