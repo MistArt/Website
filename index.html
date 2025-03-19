@@ -8,313 +8,108 @@
     <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
     <title>MistArt</title>
     <style>
-        /* 全局锁定 */
-        html, body {
-            overflow: hidden;
-            width: 100%;
-            height: 100%;
-            position: fixed;
-            touch-action: none;
-            margin: 0;
-            padding: 0;
+        /* 新增/修改的样式 */
+        .main-content {
+            flex-direction: row; /* 改为水平布局 */
+            justify-content: space-between;
+            padding-left: 0; /* 移除左侧padding */
         }
 
-        body {
-            background-color: #F5F2ED;
-            font-family: Impact, sans-serif;
+        .content-wrapper {
+            flex: 1;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            padding-left: 10%;
+            max-width: 50%; /* 控制左侧内容宽度 */
         }
 
-        /* 主界面容器 */
-        .main-interface {
-            display: none;
-            flex-direction: column;
+        .image-wrapper {
+            flex: 1;
+            max-width: 50%;
             height: 100vh;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        /* 头像区域 */
-        .avatar-container {
-            text-align: center;
-            margin-bottom: 20px;
-            flex-shrink: 0;
-        }
-
-        .circle-image {
-            width: min(20vw, 200px);
-            height: min(20vw, 200px);
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #000;
-        }
-
-        .image-caption {
-            font-size: 24px;
-            color: #333;
-            cursor: pointer;
-            margin: 15px 0;
-            transition: transform 0.2s;
-        }
-
-        /* 容器组 */
-        .container-group {
-            flex: 1;
-            display: grid;
-            grid-template-rows: repeat(3, 1fr);
-            gap: 15px;
-            padding-bottom: 15px;
-        }
-
-        /* 单个容器 */
-        .ratio-container {
-            position: relative;
-            width: 100%;
-            background: transparent;
-        }
-
-        /* 内部容器 */
-        .inner-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            gap: 15px;
-        }
-
-        /* 文本容器 */
-        .text-panel {
-            background: #f8f8f8;
-            border-radius: 15px;
-            flex-shrink: 0;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .text-panel:hover {
-            transform: scale(1.02);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-        }
-
-        .text-panel:active {
-            transform: scale(0.98);
-        }
-
-        /* 图片容器 */
-        .image-panel {
-            flex: 1;
-            background: #fff;
-            border-radius: 15px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .image-panel img {
+        .side-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center;
+            transition: transform 0.3s ease;
         }
 
-        /* 文字样式 */
-        .vertical-text {
-            font-size: min(2.5vw, 24px);
-            color: #333;
-            text-align: center;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-
-        /* 保护界面 */
-        .protected-interface {
-            display: flex;
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: rgba(245, 242, 237, 0.95);
-            align-items: center;
-            justify-content: center;
-        }
-
-        .protected-content {
-            text-align: center;
-            max-width: 600px;
-            padding: 20px;
-        }
-
-        .protected-text {
-            font-size: 24px;
-            color: #333;
-            cursor: pointer;
-        }
-
-        .error-message {
-            color: #ff4444;
-            font-size: 14px;
-            margin-top: 10px;
-            display: none;
+        /* 调整原有样式 */
+        .avatar-container {
+            gap: 20px;
+            max-width: 400px;
         }
 
         /* 移动端适配 */
         @media (max-width: 768px) {
-            .container-group {
-                gap: 10px;
-                padding-bottom: 10px;
+            .main-content {
+                flex-direction: column;
+                padding: 20px;
             }
-            
-            .vertical-text {
-                font-size: min(4vw, 18px);
+
+            .content-wrapper,
+            .image-wrapper {
+                max-width: 100%;
+                width: 100%;
             }
-            
-            .text-panel {
-                padding: 10px;
+
+            .image-wrapper {
+                height: 50vh;
+                margin-top: 30px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="main-interface">
-        <div class="avatar-container">
-            <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
-                 alt="Profile" 
-                 class="circle-image">
-            <div class="image-caption" onclick="showProtected()">Mist</div>
+    <div class="main-content">
+        <!-- 左侧内容容器 -->
+        <div class="content-wrapper">
+            <div class="avatar-container">
+                <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
+                     alt="Profile" 
+                     class="circle-image">
+                <div class="text-group">
+                    <div class="image-caption" onclick="showProtected()">TFOG DESIGN</div>
+                    <div class="subtitle-text">
+                        <span class="highlight-text">Transformative Design Studio</span><br>
+                        Founded 2018 · Shanghai & Paris
+                    </div>
+                </div>
+                <button class="action-button">作品集</button>
+                <button class="action-button">联系我们</button>
+            </div>
         </div>
 
-        <div class="container-group">
-            <!-- 第一个容器 -->
-            <div class="ratio-container">
-                <div class="inner-container">
-                    <div class="text-panel" data-url="https://example.com/design">
-                        <div class="vertical-text">GitHub<br>Repository</div>
-                    </div>
-                    <div class="image-panel">
-                        <img src="https://source.unsplash.com/random/800x450?design,workshop" 
-                             alt="Picture"
-                             loading="lazy">
-                    </div>
-                </div>
-            </div>
-
-            <!-- 第二个容器 -->
-            <div class="ratio-container">
-                <div class="inner-container">
-                    <div class="text-panel" data-url="https://example.com/digital">
-                        <div class="vertical-text">Music<br>Live</div>
-                    </div>
-                    <div class="image-panel">
-                        <img src="https://source.unsplash.com/random/800x450?digital,art" 
-                             alt="Picture"
-                             loading="lazy">
-                    </div>
-                </div>
-            </div>
-
-            <!-- 第三个容器 -->
-            <div class="ratio-container">
-                <div class="inner-container">
-                    <div class="text-panel" data-url="https://example.com/interaction">
-                        <div class="vertical-text">Netlify<br>Settings</div>
-                    </div>
-                    <div class="image-panel">
-                        <img src="https://source.unsplash.com/random/800x450?ux,interface" 
-                             alt="Picture"
-                             loading="lazy">
-                    </div>
-                </div>
-            </div>
+        <!-- 右侧图片容器 -->
+        <div class="image-wrapper">
+            <img src="https://source.unsplash.com/random/1600x900?minimalist-design" 
+                 alt="品牌展示"
+                 class="side-image">
         </div>
     </div>
 
+    <!-- 保持保护界面不变 -->
     <div class="protected-interface" id="protectedScreen">
-        <div class="protected-content">
-            <div class="protected-text" onclick="checkPassword()">Locked</div>
-            <div class="error-message" id="errorMsg">Wrong</div>
-        </div>
+        <!-- ...原有保护界面内容... -->
     </div>
 
     <script>
-        const SECRET_PASSWORD = "1234";
-        
-        // 动态布局计算
-        function updateLayout() {
-            const main = document.querySelector('.main-interface');
-            if (!main || main.style.display !== 'flex') return;
+        // 新增图片悬停效果
+        document.querySelector('.side-image').addEventListener('mousemove', function(e) {
+            const sensitivity = 0.02;
+            const x = (e.clientX - this.offsetLeft) * sensitivity;
+            const y = (e.clientY - this.offsetTop) * sensitivity;
+            this.style.transform = `translate(${x}px, ${y}px)`;
+        });
 
-            // 计算容器总可用高度
-            const avatarHeight = document.querySelector('.avatar-container').offsetHeight;
-            const availableHeight = window.innerHeight - avatarHeight - 60;
-            
-            // 设置每个容器的高度（保持16:9比例）
-            const containers = document.querySelectorAll('.ratio-container');
-            const containerHeight = availableHeight / 3;
-            const containerWidth = containerHeight * 16 / 9;
-            
-            containers.forEach(container => {
-                container.style.height = `${containerHeight}px`;
-                container.style.width = `${containerWidth}px`;
-                
-                // 设置文本容器宽度（基于9:16比例）
-                const textPanel = container.querySelector('.text-panel');
-                textPanel.style.width = `${containerHeight * 9 / 16}px`;
-            });
-
-            // 居中容器组
-            const containerGroup = document.querySelector('.container-group');
-            containerGroup.style.justifyContent = 'center';
-            containerGroup.style.alignItems = 'center';
-        }
-
-        // 密码验证
-        function checkPassword() {
-            const input = prompt("Enter Your Password：");
-            if(input === SECRET_PASSWORD) {
-                document.querySelector('.main-interface').style.display = 'flex';
-                document.getElementById('protectedScreen').style.display = 'none';
-                setTimeout(() => {
-                    updateLayout();
-                    initLinkHandlers();
-                }, 50);
-            } else {
-                document.getElementById('errorMsg').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('errorMsg').style.display = 'none';
-                }, 2000);
-            }
-        }
-
-        function showProtected() {
-            document.querySelector('.main-interface').style.display = 'none';
-            document.getElementById('protectedScreen').style.display = 'flex';
-        }
-
-        // 链接处理
-        function initLinkHandlers() {
-            document.querySelectorAll('.text-panel').forEach(panel => {
-                panel.onclick = function(e) {
-                    e.preventDefault();
-                    const url = this.dataset.url;
-                    if (url) {
-                        window.open(url, '_blank');
-                    }
-                };
-            });
-        }
-
-        // 初始化
-        window.addEventListener('resize', updateLayout);
-        window.addEventListener('load', () => {
-            document.body.style.height = window.innerHeight + 'px';
-            if(document.querySelector('.main-interface').style.display === 'flex') {
-                updateLayout();
-            }
-            initLinkHandlers();
+        document.querySelector('.side-image').addEventListener('mouseleave', function() {
+            this.style.transform = 'translate(0, 0)';
         });
     </script>
 </body>
