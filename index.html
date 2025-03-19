@@ -8,108 +8,178 @@
     <link rel="apple-touch-icon" href="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png">
     <title>MistArt</title>
     <style>
-        /* 新增/修改的样式 */
-        .main-content {
-            flex-direction: row; /* 改为水平布局 */
-            justify-content: space-between;
-            padding-left: 0; /* 移除左侧padding */
+        /* 全局锁定 */
+        html, body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            touch-action: none;
+            margin: 0;
+            padding: 0;
         }
 
-        .content-wrapper {
+        body {
+            background-color: #F5F2ED;
+            font-family: Impact, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 主内容容器 */
+        .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: flex-start;
             padding-left: 10%;
-            max-width: 50%; /* 控制左侧内容宽度 */
         }
 
-        .image-wrapper {
-            flex: 1;
-            max-width: 50%;
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
+        /* 头像文本容器 */
+        .avatar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 25px; /* 增加间距 */
         }
 
-        .side-image {
+        .circle-image {
+            width: min(25vw, 200px);
+            height: min(25vw, 200px);
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #000;
+        }
+
+        /* 文本样式 */
+        .image-caption {
+            font-size: min(4vw, 32px);
+            color: #333;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        /* 新增按钮样式 */
+        .action-button {
+            padding: 12px 25px;
+            background: #333;
+            color: #F5F2ED;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: min(3.5vw, 18px);
+            transition: all 0.3s ease;
+            width: 200px;
+            text-align: left;
+        }
+
+        .action-button:hover {
+            background: #555;
+            transform: translateX(10px);
+        }
+
+        /* 保护界面 */
+        .protected-interface {
+            display: flex;
+            position: fixed;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            object-position: center;
-            transition: transform 0.3s ease;
+            background: rgba(245, 242, 237, 0.95);
+            align-items: center;
+            justify-content: center;
         }
 
-        /* 调整原有样式 */
-        .avatar-container {
-            gap: 20px;
-            max-width: 400px;
+        .protected-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .protected-text {
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
         }
 
         /* 移动端适配 */
         @media (max-width: 768px) {
             .main-content {
-                flex-direction: column;
-                padding: 20px;
+                padding-left: 5%;
             }
-
-            .content-wrapper,
-            .image-wrapper {
-                max-width: 100%;
-                width: 100%;
-            }
-
-            .image-wrapper {
-                height: 50vh;
-                margin-top: 30px;
+            .action-button {
+                width: 180px;
+                padding: 10px 20px;
             }
         }
     </style>
 </head>
 <body>
     <div class="main-content">
-        <!-- 左侧内容容器 -->
-        <div class="content-wrapper">
-            <div class="avatar-container">
-                <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
-                     alt="Profile" 
-                     class="circle-image">
-                <div class="text-group">
-                    <div class="image-caption" onclick="showProtected()">TFOG DESIGN</div>
-                    <div class="subtitle-text">
-                        <span class="highlight-text">Transformative Design Studio</span><br>
-                        Founded 2018 · Shanghai & Paris
-                    </div>
-                </div>
-                <button class="action-button">作品集</button>
-                <button class="action-button">联系我们</button>
-            </div>
-        </div>
-
-        <!-- 右侧图片容器 -->
-        <div class="image-wrapper">
-            <img src="https://source.unsplash.com/random/1600x900?minimalist-design" 
-                 alt="品牌展示"
-                 class="side-image">
+        <div class="avatar-container">
+            <img src="https://s2.loli.net/2025/03/18/jLOUhpcHswuRzyl.png" 
+                 alt="Profile" 
+                 class="circle-image">
+            <div class="image-caption" onclick="showProtected()">TFOG DESIGN</div>
+            
+            <!-- 新增按钮 -->
+            <button class="action-button">作品集</button>
+            <button class="action-button">联系我们</button>
         </div>
     </div>
 
-    <!-- 保持保护界面不变 -->
     <div class="protected-interface" id="protectedScreen">
-        <!-- ...原有保护界面内容... -->
+        <div class="protected-content">
+            <div class="protected-text" onclick="checkPassword()">🛡️ 点击验证身份</div>
+            <div class="error-message" id="errorMsg">密码错误，请重试</div>
+        </div>
     </div>
 
     <script>
-        // 新增图片悬停效果
-        document.querySelector('.side-image').addEventListener('mousemove', function(e) {
-            const sensitivity = 0.02;
-            const x = (e.clientX - this.offsetLeft) * sensitivity;
-            const y = (e.clientY - this.offsetTop) * sensitivity;
-            this.style.transform = `translate(${x}px, ${y}px)`;
-        });
+        const SECRET_PASSWORD = "1234";
 
-        document.querySelector('.side-image').addEventListener('mouseleave', function() {
-            this.style.transform = 'translate(0, 0)';
+        function checkPassword() {
+            const input = prompt("请输入访问密码：");
+            if(input === SECRET_PASSWORD) {
+                document.querySelector('.main-content').style.display = 'flex';
+                document.getElementById('protectedScreen').style.display = 'none';
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('errorMsg').style.display = 'none';
+                }, 2000);
+            }
+        }
+
+        function showProtected() {
+            document.querySelector('.main-content').style.display = 'none';
+            document.getElementById('protectedScreen').style.display = 'flex';
+        }
+
+        // 初始化
+        window.addEventListener('load', () => {
+            document.body.style.height = window.innerHeight + 'px';
+            
+            // 为按钮添加点击事件
+            document.querySelectorAll('.action-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    // 示例：根据按钮文本执行不同操作
+                    const buttonText = this.textContent;
+                    if(buttonText === '作品集') {
+                        window.open('https://example.com/portfolio', '_blank');
+                    } else if(buttonText === '联系我们') {
+                        window.location.href = 'mailto:contact@example.com';
+                    }
+                });
+            });
         });
     </script>
 </body>
