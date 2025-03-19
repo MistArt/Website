@@ -1,34 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MistArt</title>
+    <title>MistArt Secure</title>
     <style>
-        /* 基础重置 */
+        /* 全局重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* 全局容器 */
         body {
             height: 100vh;
-            display: flex;
             overflow: hidden;
-            background: #F5F2ED;
-            font-family: 'Arial', sans-serif;
+            display: flex;
+            background: #f5f2ed;
+            font-family: 'Helvetica Neue', sans-serif;
         }
 
-        /* 左侧内容容器 */
-        .content-container {
+        /* 主内容容器 */
+        .main-container {
             width: 50%;
             height: 100%;
             padding: 5% 10%;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            position: relative;
         }
 
         /* 右侧图片容器 */
@@ -46,13 +46,17 @@
             transition: transform 0.3s ease;
         }
 
-        /* 头像样式 */
+        /* 头像区域 */
+        .avatar-group {
+            margin-bottom: 40px;
+        }
+
         .avatar {
             width: 120px;
             height: 120px;
             border-radius: 50%;
             border: 3px solid #333;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         /* 文本区域 */
@@ -63,17 +67,19 @@
         .main-title {
             font-size: 2.5rem;
             color: #333;
-            margin-bottom: 15px;
             cursor: pointer;
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
         }
 
         .subtitle {
             font-size: 1.1rem;
             color: #666;
             line-height: 1.6;
+            max-width: 400px;
         }
 
-        /* 按钮样式 */
+        /* 按钮组 */
         .button-group {
             display: flex;
             flex-direction: column;
@@ -81,7 +87,7 @@
         }
 
         .nav-button {
-            padding: 12px 25px;
+            padding: 12px 30px;
             width: 200px;
             background: #333;
             color: white;
@@ -89,6 +95,7 @@
             border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-align: left;
         }
 
         .nav-button:hover {
@@ -96,14 +103,51 @@
             transform: translateX(10px);
         }
 
+        /* 保护界面 */
+        .protected-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(245, 242, 237, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .auth-box {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .auth-text {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .error-msg {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            display: none;
+        }
+
         /* 响应式设计 */
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
                 height: auto;
+                min-height: 100vh;
             }
 
-            .content-container,
+            .main-container,
             .image-container {
                 width: 100%;
                 height: auto;
@@ -117,28 +161,32 @@
             .avatar {
                 width: 80px;
                 height: 80px;
-                margin-bottom: 20px;
             }
 
             .main-title {
                 font-size: 2rem;
             }
+
+            .nav-button {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- 左侧内容 -->
-    <div class="content-container">
-        <img src="https://via.placeholder.com/120" 
-             alt="Avatar" 
-             class="avatar">
-
-        <div class="text-group">
-            <h1 class="main-title">TFOG DESIGN</h1>
-            <p class="subtitle">
-                Transformative Design Studio<br>
-                Founded 2018 · Shanghai & Paris
-            </p>
+    <!-- 主内容 -->
+    <div class="main-container">
+        <div class="avatar-group">
+            <img src="https://via.placeholder.com/120" 
+                 alt="设计师头像" 
+                 class="avatar">
+            <div class="text-group">
+                <h1 class="main-title" onclick="showAuth()">TFOG DESIGN</h1>
+                <p class="subtitle">
+                    Transformative Design Studio<br>
+                    Founded 2018 · Shanghai & Paris
+                </p>
+            </div>
         </div>
 
         <div class="button-group">
@@ -149,32 +197,58 @@
 
     <!-- 右侧图片 -->
     <div class="image-container">
-        <img src="https://source.unsplash.com/random/1600x900?minimalist" 
-             alt="Design Showcase"
+        <img src="https://source.unsplash.com/random/1600x900?minimalist-design" 
+             alt="设计展示" 
              class="feature-image">
     </div>
 
-    <script>
-        // 添加简单的图片悬停动效
-        const featureImage = document.querySelector('.feature-image');
-        let isHovering = false;
+    <!-- 保护界面 -->
+    <div class="protected-overlay" id="authOverlay">
+        <div class="auth-box">
+            <div class="auth-text" onclick="checkAuth()">🛡️ 点击验证身份</div>
+            <div class="error-msg" id="errorMsg">验证失败，请重试</div>
+        </div>
+    </div>
 
-        function updateParallax(e) {
-            if (!isHovering) return;
-            
-            const sensitivity = 0.02;
-            const x = (e.clientX - window.innerWidth/2) * sensitivity;
-            const y = (e.clientY - window.innerHeight/2) * sensitivity;
-            
-            featureImage.style.transform = `translate(${x}px, ${y}px)`;
+    <script>
+        const SECRET_CODE = "2024";
+
+        // 显示验证界面
+        function showAuth() {
+            document.getElementById('authOverlay').style.display = 'flex';
         }
 
-        imageContainer.addEventListener('mouseenter', () => isHovering = true);
-        imageContainer.addEventListener('mouseleave', () => {
-            isHovering = false;
-            featureImage.style.transform = 'translate(0, 0)';
+        // 身份验证
+        function checkAuth() {
+            const input = prompt('请输入访问密码：');
+            if(input === SECRET_CODE) {
+                document.getElementById('authOverlay').style.display = 'none';
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('errorMsg').style.display = 'none';
+                }, 2000);
+            }
+        }
+
+        // 图片悬停效果
+        const featureImage = document.querySelector('.feature-image');
+        window.addEventListener('mousemove', (e) => {
+            const sensitivity = 0.03;
+            const x = (e.clientX - window.innerWidth/2) * sensitivity;
+            const y = (e.clientY - window.innerHeight/2) * sensitivity;
+            featureImage.style.transform = `translate(${x}px, ${y}px)`;
         });
-        imageContainer.addEventListener('mousemove', updateParallax);
+
+        // 初始化
+        window.addEventListener('load', () => {
+            document.body.style.height = window.innerHeight + 'px';
+        });
+
+        // 响应式高度调整
+        window.addEventListener('resize', () => {
+            document.body.style.height = window.innerHeight + 'px';
+        });
     </script>
 </body>
 </html>
