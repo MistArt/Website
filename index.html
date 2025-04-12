@@ -17,11 +17,15 @@
             overflow: -moz-hidden-unscrollable;
         }
 
-        /* 安全区域适配 */
+        /* 全局背景设置 */
+        html, body, .master-container {
+            background: #F2F5ED !important;
+        }
+
+        /* 主容器 */
         .master-container {
             width: 100vw;
             height: 100vh;
-            background: #F2F5ED;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -33,30 +37,33 @@
             padding-bottom: env(safe-area-inset-bottom);
         }
 
+        /* 唯一白色区域 */
         .content-container {
             background: white;
             width: calc(100vw - 40px);
             height: calc(100vh - 40px - env(safe-area-inset-top));
             max-width: 1200px;
             border-radius: 24px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.18);
             overflow: hidden;
             display: flex;
             transition: all 0.3s;
             margin-top: calc(env(safe-area-inset-top) * 0.5);
         }
 
-        /* 主图区域 */
+        /* 图片上传区域 */
         .image-upload-section {
             flex: 0 0 44.44%;
             aspect-ratio: 4/5;
             position: relative;
-            background: #f8f9fa;
+            background: #F2F5ED;
             cursor: pointer;
             transition: background 0.3s;
         }
 
-        .image-upload-section:hover { background: #e9ecef; }
+        .image-upload-section:hover {
+            background: #e3e6df;
+        }
 
         .image-upload-section::before {
             content: '点击上传图片';
@@ -69,7 +76,9 @@
             pointer-events: none;
         }
 
-        .image-upload-section.has-image::before { display: none; }
+        .image-upload-section.has-image::before {
+            display: none;
+        }
 
         .preview-image {
             position: absolute;
@@ -87,6 +96,7 @@
             padding: 24px;
             display: flex;
             flex-direction: column;
+            background: white;
         }
 
         .user-info {
@@ -94,24 +104,30 @@
             align-items: center;
             padding-bottom: 16px;
             margin-bottom: 12px;
-            border-bottom: 1px solid #efefef;
+            border-bottom: 1px solid #e6e6e6;
         }
 
+        /* 头像区域 */
         .avatar-upload {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             margin-right: 12px;
-            background: #f8f9fa;
+            background: #F2F5ED;
             cursor: pointer;
             position: relative;
             transition: all 0.2s;
             overflow: hidden;
         }
 
-        .avatar-upload:hover { transform: scale(1.05); }
+        .avatar-upload:hover {
+            background: #e3e6df;
+            transform: scale(1.05);
+        }
 
-        .avatar-upload::before { content: none; }
+        .avatar-upload::before {
+            content: none;
+        }
 
         .user-avatar {
             width: 100%;
@@ -121,6 +137,7 @@
             display: none;
         }
 
+        /* 用户名 */
         .username {
             font-weight: 600;
             font-size: 16px;
@@ -129,13 +146,15 @@
             transition: color 0.2s;
         }
 
-        .username:hover { color: #1a1a1a; }
+        .username:hover {
+            color: #1a1a1a;
+        }
 
         /* 互动按钮 */
         .action-buttons {
             padding: 16px 0;
             margin-bottom: 12px;
-            border-bottom: 1px solid #efefef;
+            border-bottom: 1px solid #e6e6e6;
             display: flex;
             gap: 20px;
         }
@@ -161,7 +180,9 @@
             scrollbar-width: none;
         }
 
-        .post-content::-webkit-scrollbar { display: none; }
+        .post-content::-webkit-scrollbar {
+            display: none;
+        }
 
         .caption-text {
             font-size: 15px;
@@ -173,7 +194,9 @@
             transition: background 0.2s;
         }
 
-        .caption-text:hover { background: #f8f8f8; }
+        .caption-text:hover {
+            background: #F2F5ED;
+        }
 
         /* 响应式设计 */
         @media (max-width: 768px) {
@@ -191,23 +214,31 @@
                 height: auto;
             }
 
-            .profile-section { padding: 20px; }
+            .profile-section {
+                padding: 20px;
+            }
 
             .avatar-upload {
                 width: 36px;
                 height: 36px;
             }
 
-            .username { font-size: 15px; }
+            .username {
+                font-size: 15px;
+            }
 
             .action-buttons {
                 gap: 18px;
                 padding: 14px 0;
             }
 
-            .action-icon { font-size: 22px; }
+            .action-icon {
+                font-size: 22px;
+            }
 
-            .caption-text { font-size: 14px; }
+            .caption-text {
+                font-size: 14px;
+            }
         }
 
         @media (min-width: 1600px) {
@@ -218,8 +249,13 @@
         }
 
         /* 全局设置 */
-        .hidden-input { display: none; }
-        ::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
+        .hidden-input {
+            display: none;
+        }
+        ::-webkit-scrollbar {
+            width: 0 !important;
+            height: 0 !important;
+        }
     </style>
 </head>
 <body style="overflow: hidden">
