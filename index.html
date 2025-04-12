@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh" style="height: 100%; overflow: hidden">
+<html lang="zh" style="height: 100%; overflow: hidden; background: #F2F5ED">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="https://s2.loli.net/2025/04/12/MZFxhrb9BcnQiJN.jpg">
@@ -13,11 +13,11 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Impact, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             overflow: -moz-hidden-unscrollable;
         }
 
-        /* 视口约束容器 */
+        /* 安全区域适配 */
         .master-container {
             width: 100vw;
             height: 100vh;
@@ -28,35 +28,35 @@
             position: fixed;
             top: 0;
             left: 0;
+            padding-top: env(safe-area-inset-top);
+            padding-top: constant(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* 主内容容器 */
         .content-container {
             background: white;
             width: calc(100vw - 40px);
-            height: calc(100vh - 40px);
+            height: calc(100vh - 40px - env(safe-area-inset-top));
             max-width: 1200px;
-            max-height: 2400px;
             border-radius: 24px;
             box-shadow: 0 12px 40px rgba(0,0,0,0.15);
             overflow: hidden;
             display: flex;
             transition: all 0.3s;
+            margin-top: calc(env(safe-area-inset-top) * 0.5);
         }
 
-        /* 图片上传区域 - 修改部分 */
+        /* 主图区域 */
         .image-upload-section {
             flex: 0 0 44.44%;
-            aspect-ratio: 4/5;  /* 新增宽高比 */
+            aspect-ratio: 4/5;
             position: relative;
             background: #f8f9fa;
             cursor: pointer;
             transition: background 0.3s;
         }
 
-        .image-upload-section:hover {
-            background: #e9ecef;
-        }
+        .image-upload-section:hover { background: #e9ecef; }
 
         .image-upload-section::before {
             content: '点击上传图片';
@@ -69,9 +69,7 @@
             pointer-events: none;
         }
 
-        .image-upload-section.has-image::before {
-            display: none;
-        }
+        .image-upload-section.has-image::before { display: none; }
 
         .preview-image {
             position: absolute;
@@ -83,32 +81,37 @@
             display: none;
         }
 
-        /* 用户信息区域 - 修改部分 */
+        /* 用户信息区域 */
+        .profile-section {
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
         .user-info {
             display: flex;
             align-items: center;
-            padding-bottom: 12px;
+            padding-bottom: 16px;
+            margin-bottom: 12px;
             border-bottom: 1px solid #efefef;
         }
 
         .avatar-upload {
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            margin-right: 10px;
+            margin-right: 12px;
             background: #f8f9fa;
             cursor: pointer;
             position: relative;
-            transition: background 0.3s;
+            transition: all 0.2s;
+            overflow: hidden;
         }
 
-        .avatar-upload:hover {
-            background: #e9ecef;
-        }
+        .avatar-upload:hover { transform: scale(1.05); }
 
-        .avatar-upload::before {
-            content: none;  /* 隐藏+号 */
-        }
+        .avatar-upload::before { content: none; }
 
         .user-avatar {
             width: 100%;
@@ -120,74 +123,91 @@
 
         .username {
             font-weight: 600;
-            font-size: 14px;
-            color: #262626;
+            font-size: 16px;
+            color: #2d2d2d;
             cursor: pointer;
+            transition: color 0.2s;
         }
 
-        /* 互动按钮区域 */
+        .username:hover { color: #1a1a1a; }
+
+        /* 互动按钮 */
         .action-buttons {
-            padding: 12px 0;
+            padding: 16px 0;
+            margin-bottom: 12px;
             border-bottom: 1px solid #efefef;
             display: flex;
+            gap: 20px;
         }
 
         .action-icon {
             font-size: 24px;
-            margin-right: 15px;
-            color: #262626;
+            color: #404040;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-icon:hover {
+            transform: scale(1.1);
+            color: #262626;
         }
 
         /* 内容区域 */
         .post-content {
             flex-grow: 1;
             overflow-y: auto;
-            padding: 12px 0;
+            padding: 8px 0;
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
 
-        .post-content::-webkit-scrollbar {
-            display: none;
-        }
+        .post-content::-webkit-scrollbar { display: none; }
 
         .caption-text {
-            font-size: 14px;
-            line-height: 1.5;
-            color: #262626;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #333;
             cursor: pointer;
+            padding: 8px 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
         }
 
-        /* 隐藏元素 */
-        .hidden-input {
-            display: none;
-        }
+        .caption-text:hover { background: #f8f8f8; }
 
-        /* 响应式设计 - 修改部分 */
+        /* 响应式设计 */
         @media (max-width: 768px) {
-            .master-container {
-                padding: 0;
-            }
-            
             .content-container {
                 width: calc(100vw - 20px);
-                height: calc(100vh - 20px);
-                border-radius: 16px;
+                height: calc(100vh - 20px - env(safe-area-inset-top));
                 flex-direction: column;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                border-radius: 16px;
+                margin-top: 0;
             }
-            
+
             .image-upload-section {
-                aspect-ratio: 4/5;  /* 保持比例 */
+                aspect-ratio: 4/5;
                 min-width: 100%;
-                height: auto;  /* 移除固定高度 */
+                height: auto;
             }
-            
-            .action-icon {
-                font-size: 22px;
-                margin-right: 12px;
+
+            .profile-section { padding: 20px; }
+
+            .avatar-upload {
+                width: 36px;
+                height: 36px;
             }
+
+            .username { font-size: 15px; }
+
+            .action-buttons {
+                gap: 18px;
+                padding: 14px 0;
+            }
+
+            .action-icon { font-size: 22px; }
+
+            .caption-text { font-size: 14px; }
         }
 
         @media (min-width: 1600px) {
@@ -197,12 +217,9 @@
             }
         }
 
-        /* 全局滚动条隐藏 */
-        ::-webkit-scrollbar {
-            width: 0 !important;
-            height: 0 !important;
-            background: transparent;
-        }
+        /* 全局设置 */
+        .hidden-input { display: none; }
+        ::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
     </style>
 </head>
 <body style="overflow: hidden">
@@ -239,40 +256,28 @@
     <input type="file" id="avatarInput" class="hidden-input" accept="image/*">
 
     <script>
-        // 图片上传处理（保持不变）
+        // 图片上传处理
         const mainImageArea = document.getElementById('mainImageArea');
         const mainImageInput = document.getElementById('mainImageInput');
         const previewImage = document.querySelector('.preview-image');
-
         const avatarArea = document.getElementById('avatarArea');
         const avatarInput = document.getElementById('avatarInput');
         const userAvatar = document.querySelector('.user-avatar');
 
         // 主图上传
-        mainImageInput.addEventListener('change', function(e) {
-            handleImageUpload(e, previewImage, mainImageArea);
-        });
-
-        mainImageArea.addEventListener('click', () => {
-            mainImageInput.click();
-        });
+        mainImageInput.addEventListener('change', e => handleImageUpload(e, previewImage, mainImageArea));
+        mainImageArea.addEventListener('click', () => mainImageInput.click());
 
         // 头像上传
-        avatarInput.addEventListener('change', function(e) {
-            handleImageUpload(e, userAvatar, avatarArea);
-        });
+        avatarInput.addEventListener('change', e => handleImageUpload(e, userAvatar, avatarArea));
+        avatarArea.addEventListener('click', () => avatarInput.click());
 
-        avatarArea.addEventListener('click', () => {
-            avatarInput.click();
-        });
-
-        // 通用图片处理
         function handleImageUpload(event, imageElement, areaElement) {
             const file = event.target.files[0];
-            if (!file || !file.type.startsWith('image/')) return;
-
+            if (!file?.type.startsWith('image/')) return;
+            
             const reader = new FileReader();
-            reader.onload = (e) => {
+            reader.onload = e => {
                 imageElement.src = e.target.result;
                 imageElement.style.display = 'block';
                 areaElement.classList.add('has-image');
@@ -280,7 +285,7 @@
             reader.readAsDataURL(file);
         }
 
-        // 文字编辑功能（保持不变）
+        // 文字编辑
         document.getElementById('usernameDisplay').addEventListener('click', function() {
             const newName = prompt('请输入用户名:', this.textContent);
             if (newName !== null) this.textContent = newName || '新用户';
@@ -291,30 +296,26 @@
             if (newText !== null) this.textContent = newText;
         });
 
-        // 视口管理（保持不变）
+        // 视口管理
         function resetViewport() {
             document.documentElement.style.width = window.innerWidth + 'px';
             document.documentElement.style.height = window.innerHeight + 'px';
         }
-        
         window.addEventListener('resize', resetViewport);
         window.addEventListener('orientationchange', resetViewport);
         resetViewport();
 
-        // 智能滚动控制（保持不变）
+        // 滚动控制
         document.addEventListener('wheel', e => {
             const content = document.querySelector('.post-content');
-            if(e.target.closest('.post-content')) {
+            if (e.target.closest('.post-content')) {
                 content.scrollTop += e.deltaY;
                 e.preventDefault();
             }
         }, { passive: false });
 
-        // 禁用全局滚动（保持不变）
         document.addEventListener('touchmove', e => {
-            if(!e.target.closest('.post-content')) {
-                e.preventDefault();
-            }
+            if (!e.target.closest('.post-content')) e.preventDefault();
         }, { passive: false });
     </script>
 </body>
