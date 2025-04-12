@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" style="height: 100%; overflow: hidden; background: #F2F5ED">
+<html lang="zh" style="height: 100%; overflow: hidden; background: #222222">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -17,15 +17,15 @@
             overflow: -moz-hidden-unscrollable;
         }
 
-        /* 全局背景设置 */
+        /* 全局深色背景 */
         html, body, .master-container {
-            background: #F2F5ED !important;
+            background: #222222 !important;
         }
 
-        /* 主容器 */
+        /* 主容器设置 */
         .master-container {
             width: 100vw;
-            height: 100vh;
+            height: calc(100vh + env(safe-area-inset-bottom));
             display: flex;
             justify-content: center;
             align-items: center;
@@ -34,21 +34,20 @@
             left: 0;
             padding-top: env(safe-area-inset-top);
             padding-top: constant(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* 唯一白色区域 */
+        /* 浅色主容器 */
         .content-container {
-            background: white;
+            background: #F2F5ED;
             width: calc(100vw - 40px);
-            height: calc(100vh - 40px - env(safe-area-inset-top));
+            height: calc(100vh - 40px - env(safe-area-inset-top)) !important;
             max-width: 1200px;
             border-radius: 24px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
             overflow: hidden;
             display: flex;
             transition: all 0.3s;
-            margin-top: calc(env(safe-area-inset-top) * 0.5);
+            margin: calc(env(safe-area-inset-top) * 0.5) auto env(safe-area-inset-bottom);
         }
 
         /* 图片上传区域 */
@@ -56,13 +55,13 @@
             flex: 0 0 44.44%;
             aspect-ratio: 4/5;
             position: relative;
-            background: #F2F5ED;
+            background: white;
             cursor: pointer;
             transition: background 0.3s;
         }
 
         .image-upload-section:hover {
-            background: #e3e6df;
+            background: #f0f0f0;
         }
 
         .image-upload-section::before {
@@ -71,7 +70,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: #adb5bd;
+            color: #666;
             font-size: 14px;
             pointer-events: none;
         }
@@ -96,7 +95,7 @@
             padding: 24px;
             display: flex;
             flex-direction: column;
-            background: white;
+            background: #F2F5ED;
         }
 
         .user-info {
@@ -104,7 +103,7 @@
             align-items: center;
             padding-bottom: 16px;
             margin-bottom: 12px;
-            border-bottom: 1px solid #e6e6e6;
+            border-bottom: 1px solid #ddd;
         }
 
         /* 头像区域 */
@@ -113,15 +112,16 @@
             height: 40px;
             border-radius: 50%;
             margin-right: 12px;
-            background: #F2F5ED;
+            background: white;
             cursor: pointer;
             position: relative;
             transition: all 0.2s;
             overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
 
         .avatar-upload:hover {
-            background: #e3e6df;
+            background: #f5f5f5;
             transform: scale(1.05);
         }
 
@@ -141,34 +141,34 @@
         .username {
             font-weight: 600;
             font-size: 16px;
-            color: #2d2d2d;
+            color: #333;
             cursor: pointer;
             transition: color 0.2s;
         }
 
         .username:hover {
-            color: #1a1a1a;
+            color: #000;
         }
 
         /* 互动按钮 */
         .action-buttons {
             padding: 16px 0;
             margin-bottom: 12px;
-            border-bottom: 1px solid #e6e6e6;
+            border-bottom: 1px solid #ddd;
             display: flex;
             gap: 20px;
         }
 
         .action-icon {
             font-size: 24px;
-            color: #404040;
+            color: #444;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .action-icon:hover {
             transform: scale(1.1);
-            color: #262626;
+            color: #222;
         }
 
         /* 内容区域 */
@@ -195,17 +195,17 @@
         }
 
         .caption-text:hover {
-            background: #F2F5ED;
+            background: rgba(255,255,255,0.8);
         }
 
         /* 响应式设计 */
         @media (max-width: 768px) {
             .content-container {
                 width: calc(100vw - 20px);
-                height: calc(100vh - 20px - env(safe-area-inset-top));
-                flex-direction: column;
+                height: calc(100vh - 20px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+                margin: 0 auto;
                 border-radius: 16px;
-                margin-top: 0;
+                flex-direction: column;
             }
 
             .image-upload-section {
