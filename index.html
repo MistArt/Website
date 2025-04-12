@@ -1,254 +1,287 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh" style="height: 100%;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MistArt Secure</title>
+    <title>Instagram Style</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* 全局重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: Impact, sans-serif;
         }
 
-        body {
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            background: #f5f2ed;
-            font-family: 'Helvetica Neue', sans-serif;
-        }
-
-        /* 主内容容器 */
+        /* 统一容器系统 */
         .main-container {
-            width: 50%;
-            height: 100%;
-            padding: 5% 10%;
+            width: 100%;
+            height: 100vh;
+            background: #F2F5ED;
             display: flex;
-            flex-direction: column;
             justify-content: center;
-            position: relative;
+            align-items: center;
+            padding: 20px;
         }
 
-        /* 右侧图片容器 */
-        .image-container {
-            width: 50%;
+        .content-container {
+            background: white;
+            width: 100%;
+            max-width: 1170px;
             height: 100%;
-            background: #ddd;
+            max-height: 2532px;
+            border: 1px solid #dbdbdb;
+            display: flex;
             overflow: hidden;
         }
 
-        .feature-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        /* 头像区域 */
-        .avatar-group {
-            margin-bottom: 40px;
-        }
-
-        .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 3px solid #333;
-            margin-bottom: 20px;
-        }
-
-        /* 文本区域 */
-        .text-group {
-            margin-bottom: 40px;
-        }
-
-        .main-title {
-            font-size: 2.5rem;
-            color: #333;
+        /* 图片上传区域 */
+        .image-upload-section {
+            flex: 0 0 44.44%;
+            position: relative;
+            background: #f8f9fa;
             cursor: pointer;
-            margin-bottom: 15px;
-            transition: color 0.3s ease;
+            transition: background 0.3s;
         }
 
-        .subtitle {
-            font-size: 1.1rem;
-            color: #666;
-            line-height: 1.6;
-            max-width: 400px;
+        .image-upload-section:hover {
+            background: #e9ecef;
         }
 
-        /* 按钮组 */
-        .button-group {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .image-upload-section::before {
+            content: '点击上传图片';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #adb5bd;
+            font-size: 14px;
+            pointer-events: none;
         }
 
-        .nav-button {
-            padding: 12px 30px;
-            width: 200px;
-            background: #333;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
+        .image-upload-section.has-image::before {
+            display: none;
         }
 
-        .nav-button:hover {
-            background: #555;
-            transform: translateX(10px);
-        }
-
-        /* 保护界面 */
-        .protected-overlay {
-            position: fixed;
+        .preview-image {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(245, 242, 237, 0.95);
+            object-fit: cover;
             display: none;
-            justify-content: center;
+        }
+
+        /* 用户信息区域 */
+        .profile-section {
+            flex: 1;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-info {
+            display: flex;
             align-items: center;
-            z-index: 100;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #efefef;
         }
 
-        .auth-box {
-            text-align: center;
-            padding: 40px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .avatar-upload {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background: #f8f9fa;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.3s;
         }
 
-        .auth-text {
-            font-size: 1.5rem;
-            color: #333;
-            margin-bottom: 20px;
+        .avatar-upload:hover {
+            background: #e9ecef;
+        }
+
+        .avatar-upload::before {
+            content: '+';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #adb5bd;
+            font-size: 18px;
+        }
+
+        .user-avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: none;
+        }
+
+        .username {
+            font-weight: 600;
+            font-size: 14px;
+            color: #262626;
             cursor: pointer;
         }
 
-        .error-msg {
-            color: #ff4444;
-            font-size: 0.9rem;
-            margin-top: 15px;
+        /* 互动按钮区域 */
+        .action-buttons {
+            padding: 12px 0;
+            border-bottom: 1px solid #efefef;
+            display: flex;
+        }
+
+        .action-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            color: #262626;
+            cursor: pointer;
+        }
+
+        /* 内容区域 */
+        .post-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 12px 0;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .post-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .caption-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #262626;
+            cursor: pointer;
+        }
+
+        /* 隐藏元素 */
+        .hidden-input {
             display: none;
         }
 
         /* 响应式设计 */
         @media (max-width: 768px) {
-            body {
+            .content-container {
                 flex-direction: column;
-                height: auto;
-                min-height: 100vh;
             }
-
-            .main-container,
-            .image-container {
-                width: 100%;
-                height: auto;
-                padding: 15% 10%;
+            
+            .image-upload-section {
+                height: 60vh;
+                min-width: 100%;
             }
-
-            .image-container {
-                height: 50vh;
-            }
-
-            .avatar {
-                width: 80px;
-                height: 80px;
-            }
-
-            .main-title {
-                font-size: 2rem;
-            }
-
-            .nav-button {
-                width: 100%;
+            
+            .action-icon {
+                font-size: 22px;
+                margin-right: 12px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 主内容 -->
+    <!-- 主容器 -->
     <div class="main-container">
-        <div class="avatar-group">
-            <img src="https://via.placeholder.com/120" 
-                 alt="设计师头像" 
-                 class="avatar">
-            <div class="text-group">
-                <h1 class="main-title" onclick="showAuth()">TFOG DESIGN</h1>
-                <p class="subtitle">
-                    Transformative Design Studio<br>
-                    Founded 2018 · Shanghai & Paris
-                </p>
+        <!-- 内容容器 -->
+        <div class="content-container">
+            <!-- 图片上传区 -->
+            <div class="image-upload-section" id="mainImageArea">
+                <img src="" class="preview-image" alt="Post Preview">
+            </div>
+            
+            <!-- 详情信息区 -->
+            <div class="profile-section">
+                <!-- 用户信息 -->
+                <div class="user-info">
+                    <div class="avatar-upload" id="avatarArea">
+                        <img src="" class="user-avatar" alt="User Avatar">
+                    </div>
+                    <span class="username" id="usernameDisplay">点击设置用户名</span>
+                </div>
+
+                <!-- 互动按钮 -->
+                <div class="action-buttons">
+                    <i class="fa-regular fa-heart action-icon"></i>
+                    <i class="fa-regular fa-comment action-icon"></i>
+                    <i class="fa-regular fa-paper-plane action-icon"></i>
+                </div>
+
+                <!-- 内容区 -->
+                <div class="post-content">
+                    <div class="caption-text" id="postCaption">
+                        <strong>点击编辑描述...</strong>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="button-group">
-            <button class="nav-button">作品集</button>
-            <button class="nav-button">联系我们</button>
-        </div>
     </div>
 
-    <!-- 右侧图片 -->
-    <div class="image-container">
-        <img src="https://source.unsplash.com/random/1600x900?minimalist-design" 
-             alt="设计展示" 
-             class="feature-image">
-    </div>
-
-    <!-- 保护界面 -->
-    <div class="protected-overlay" id="authOverlay">
-        <div class="auth-box">
-            <div class="auth-text" onclick="checkAuth()">🛡️ 点击验证身份</div>
-            <div class="error-msg" id="errorMsg">验证失败，请重试</div>
-        </div>
-    </div>
+    <!-- 文件输入 -->
+    <input type="file" id="mainImageInput" class="hidden-input" accept="image/*">
+    <input type="file" id="avatarInput" class="hidden-input" accept="image/*">
 
     <script>
-        const SECRET_CODE = "2024";
+        // 图片上传处理
+        const mainImageArea = document.getElementById('mainImageArea');
+        const mainImageInput = document.getElementById('mainImageInput');
+        const previewImage = document.querySelector('.preview-image');
 
-        // 显示验证界面
-        function showAuth() {
-            document.getElementById('authOverlay').style.display = 'flex';
+        const avatarArea = document.getElementById('avatarArea');
+        const avatarInput = document.getElementById('avatarInput');
+        const userAvatar = document.querySelector('.user-avatar');
+
+        // 主图上传
+        mainImageInput.addEventListener('change', function(e) {
+            handleImageUpload(e, previewImage, mainImageArea);
+        });
+
+        mainImageArea.addEventListener('click', () => {
+            mainImageInput.click();
+        });
+
+        // 头像上传
+        avatarInput.addEventListener('change', function(e) {
+            handleImageUpload(e, userAvatar, avatarArea);
+        });
+
+        avatarArea.addEventListener('click', () => {
+            avatarInput.click();
+        });
+
+        // 通用图片处理
+        function handleImageUpload(event, imageElement, areaElement) {
+            const file = event.target.files[0];
+            if (!file || !file.type.startsWith('image/')) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                imageElement.src = e.target.result;
+                imageElement.style.display = 'block';
+                areaElement.classList.add('has-image');
+            };
+            reader.readAsDataURL(file);
         }
 
-        // 身份验证
-        function checkAuth() {
-            const input = prompt('请输入访问密码：');
-            if(input === SECRET_CODE) {
-                document.getElementById('authOverlay').style.display = 'none';
-            } else {
-                document.getElementById('errorMsg').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('errorMsg').style.display = 'none';
-                }, 2000);
-            }
-        }
-
-        // 图片悬停效果
-        const featureImage = document.querySelector('.feature-image');
-        window.addEventListener('mousemove', (e) => {
-            const sensitivity = 0.03;
-            const x = (e.clientX - window.innerWidth/2) * sensitivity;
-            const y = (e.clientY - window.innerHeight/2) * sensitivity;
-            featureImage.style.transform = `translate(${x}px, ${y}px)`;
+        // 文字编辑功能
+        document.getElementById('usernameDisplay').addEventListener('click', function() {
+            const newName = prompt('请输入用户名:', this.textContent);
+            if (newName !== null) this.textContent = newName || '新用户';
         });
 
-        // 初始化
-        window.addEventListener('load', () => {
-            document.body.style.height = window.innerHeight + 'px';
+        document.getElementById('postCaption').addEventListener('click', function() {
+            const newText = prompt('编辑描述:', this.textContent);
+            if (newText !== null) this.textContent = newText;
         });
 
-        // 响应式高度调整
-        window.addEventListener('resize', () => {
-            document.body.style.height = window.innerHeight + 'px';
-        });
+        // 禁用滚动
+        document.addEventListener('wheel', e => e.preventDefault(), { passive: false });
+        document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
     </script>
 </body>
 </html>
