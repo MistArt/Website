@@ -1,8 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh" style="height: 100%;">
+<html lang="zh" style="height: 100%; overflow: hidden">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta
+name="apple-mobile-web-app-status-bar-style" content="black-translucent">
++
+<link rel="apple-touch-icon" href="https://s2.10li.net/2025/03/18/jLOUhpcHswuRzy1.png">
     <title>Instagram Style</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -11,33 +16,40 @@
             padding: 0;
             box-sizing: border-box;
             font-family: Impact, sans-serif;
+            overflow: -moz-hidden-unscrollable;
         }
 
-        /* 统一容器系统 */
-        .main-container {
-            width: 100%;
+        /* 视口约束容器 */
+        .master-container {
+            width: 100vw;
             height: 100vh;
             background: #F2F5ED;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
         }
 
+        /* 主内容容器 */
         .content-container {
             background: white;
-            width: 100%;
-            max-width: 1170px;
-            height: 100%;
-            max-height: 2532px;
-            border: 1px solid #dbdbdb;
-            display: flex;
+            width: calc(100vw - 40px);
+            height: calc(100vh - 40px);
+            max-width: 1200px;
+            max-height: 2400px;
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
             overflow: hidden;
+            display: flex;
+            transition: all 0.3s;
         }
 
         /* 图片上传区域 */
         .image-upload-section {
             flex: 0 0 44.44%;
+            height: 100%;
             position: relative;
             background: #f8f9fa;
             cursor: pointer;
@@ -169,12 +181,20 @@
 
         /* 响应式设计 */
         @media (max-width: 768px) {
+            .master-container {
+                padding: 0;
+            }
+            
             .content-container {
+                width: calc(100vw - 20px);
+                height: calc(100vh - 20px);
+                border-radius: 16px;
                 flex-direction: column;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             }
             
             .image-upload-section {
-                height: 60vh;
+                height: 45%;
                 min-width: 100%;
             }
             
@@ -183,21 +203,30 @@
                 margin-right: 12px;
             }
         }
+
+        @media (min-width: 1600px) {
+            .content-container {
+                width: 95vw;
+                height: 95vh;
+            }
+        }
+
+        /* 全局滚动条隐藏 */
+        ::-webkit-scrollbar {
+            width: 0 !important;
+            height: 0 !important;
+            background: transparent;
+        }
     </style>
 </head>
-<body>
-    <!-- 主容器 -->
-    <div class="main-container">
-        <!-- 内容容器 -->
+<body style="overflow: hidden">
+    <div class="master-container">
         <div class="content-container">
-            <!-- 图片上传区 -->
             <div class="image-upload-section" id="mainImageArea">
                 <img src="" class="preview-image" alt="Post Preview">
             </div>
             
-            <!-- 详情信息区 -->
             <div class="profile-section">
-                <!-- 用户信息 -->
                 <div class="user-info">
                     <div class="avatar-upload" id="avatarArea">
                         <img src="" class="user-avatar" alt="User Avatar">
@@ -205,14 +234,12 @@
                     <span class="username" id="usernameDisplay">点击设置用户名</span>
                 </div>
 
-                <!-- 互动按钮 -->
                 <div class="action-buttons">
                     <i class="fa-regular fa-heart action-icon"></i>
                     <i class="fa-regular fa-comment action-icon"></i>
                     <i class="fa-regular fa-paper-plane action-icon"></i>
                 </div>
 
-                <!-- 内容区 -->
                 <div class="post-content">
                     <div class="caption-text" id="postCaption">
                         <strong>点击编辑描述...</strong>
@@ -222,7 +249,6 @@
         </div>
     </div>
 
-    <!-- 文件输入 -->
     <input type="file" id="mainImageInput" class="hidden-input" accept="image/*">
     <input type="file" id="avatarInput" class="hidden-input" accept="image/*">
 
@@ -279,9 +305,31 @@
             if (newText !== null) this.textContent = newText;
         });
 
-        // 禁用滚动
-        document.addEventListener('wheel', e => e.preventDefault(), { passive: false });
-        document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+        // 视口管理
+        function resetViewport() {
+            document.documentElement.style.width = window.innerWidth + 'px';
+            document.documentElement.style.height = window.innerHeight + 'px';
+        }
+        
+        window.addEventListener('resize', resetViewport);
+        window.addEventListener('orientationchange', resetViewport);
+        resetViewport();
+
+        // 智能滚动控制
+        document.addEventListener('wheel', e => {
+            const content = document.querySelector('.post-content');
+            if(e.target.closest('.post-content')) {
+                content.scrollTop += e.deltaY;
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // 禁用全局滚动
+        document.addEventListener('touchmove', e => {
+            if(!e.target.closest('.post-content')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
     </script>
 </body>
 </html>
