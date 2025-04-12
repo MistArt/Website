@@ -44,10 +44,10 @@
             transition: all 0.3s;
         }
 
-        /* 图片上传区域 */
+        /* 图片上传区域 - 修改部分 */
         .image-upload-section {
             flex: 0 0 44.44%;
-            height: 100%;
+            aspect-ratio: 4/5;  /* 新增宽高比 */
             position: relative;
             background: #f8f9fa;
             cursor: pointer;
@@ -83,14 +83,7 @@
             display: none;
         }
 
-        /* 用户信息区域 */
-        .profile-section {
-            flex: 1;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-        }
-
+        /* 用户信息区域 - 修改部分 */
         .user-info {
             display: flex;
             align-items: center;
@@ -114,13 +107,7 @@
         }
 
         .avatar-upload::before {
-            content: '+';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #adb5bd;
-            font-size: 18px;
+            content: none;  /* 隐藏+号 */
         }
 
         .user-avatar {
@@ -177,7 +164,7 @@
             display: none;
         }
 
-        /* 响应式设计 */
+        /* 响应式设计 - 修改部分 */
         @media (max-width: 768px) {
             .master-container {
                 padding: 0;
@@ -192,8 +179,9 @@
             }
             
             .image-upload-section {
-                height: 45%;
+                aspect-ratio: 4/5;  /* 保持比例 */
                 min-width: 100%;
+                height: auto;  /* 移除固定高度 */
             }
             
             .action-icon {
@@ -251,7 +239,7 @@
     <input type="file" id="avatarInput" class="hidden-input" accept="image/*">
 
     <script>
-        // 图片上传处理
+        // 图片上传处理（保持不变）
         const mainImageArea = document.getElementById('mainImageArea');
         const mainImageInput = document.getElementById('mainImageInput');
         const previewImage = document.querySelector('.preview-image');
@@ -292,7 +280,7 @@
             reader.readAsDataURL(file);
         }
 
-        // 文字编辑功能
+        // 文字编辑功能（保持不变）
         document.getElementById('usernameDisplay').addEventListener('click', function() {
             const newName = prompt('请输入用户名:', this.textContent);
             if (newName !== null) this.textContent = newName || '新用户';
@@ -303,7 +291,7 @@
             if (newText !== null) this.textContent = newText;
         });
 
-        // 视口管理
+        // 视口管理（保持不变）
         function resetViewport() {
             document.documentElement.style.width = window.innerWidth + 'px';
             document.documentElement.style.height = window.innerHeight + 'px';
@@ -313,7 +301,7 @@
         window.addEventListener('orientationchange', resetViewport);
         resetViewport();
 
-        // 智能滚动控制
+        // 智能滚动控制（保持不变）
         document.addEventListener('wheel', e => {
             const content = document.querySelector('.post-content');
             if(e.target.closest('.post-content')) {
@@ -322,7 +310,7 @@
             }
         }, { passive: false });
 
-        // 禁用全局滚动
+        // 禁用全局滚动（保持不变）
         document.addEventListener('touchmove', e => {
             if(!e.target.closest('.post-content')) {
                 e.preventDefault();
