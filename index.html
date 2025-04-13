@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" style="height: 100%; overflow: hidden; background: #F2F5ED">
+<html lang="zh" style="height: 100%; overflow: hidden; background: #121212">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -18,7 +18,7 @@
         }
 
         html, body {
-            background: #F2F5ED !important;
+            background: #121212 !important;
             height: 100%;
         }
 
@@ -37,30 +37,32 @@
         }
 
         .content-container {
-            background: #FFFFFF;
+            background: #1E1E1E;
             width: calc(100vw - 40px);
             height: calc(100vh - 40px - env(safe-area-inset-top)) !important;
             max-width: 1200px;
             border-radius: 24px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
             overflow: hidden;
             display: flex;
             transition: all 0.3s;
             margin: calc(env(safe-area-inset-top) * 0.5) auto env(safe-area-inset-bottom);
         }
 
+        /* 9:16图片容器核心样式 */
         .image-upload-section {
             flex: 0 0 44.44%;
-            aspect-ratio: 4/5;
+            aspect-ratio: 9/16;
             position: relative;
-            background: #F8F9FA;
+            background: #2D2D2D;
             cursor: pointer;
             transition: all 0.3s;
             border-radius: 24px 0 0 24px;
+            min-height: 560px;
         }
 
         .image-upload-section:hover {
-            background: #F1F3F5;
+            background: #3A3A3A;
         }
 
         .image-upload-section::before {
@@ -69,7 +71,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: #636E72;
+            color: #757575;
             font-size: 14px;
             pointer-events: none;
         }
@@ -85,13 +87,15 @@
             border-radius: inherit;
         }
 
+        /* 用户信息区高度适配 */
         .profile-section {
             flex: 1;
             padding: 24px;
             display: flex;
             flex-direction: column;
-            background: #FFFFFF;
+            background: #1E1E1E;
             border-radius: 0 24px 24px 0;
+            min-height: 560px;
         }
 
         .user-info {
@@ -99,7 +103,7 @@
             align-items: center;
             padding-bottom: 16px;
             margin-bottom: 12px;
-            border-bottom: 1px solid #DFE6E9;
+            border-bottom: 1px solid #373737;
         }
 
         .avatar-upload {
@@ -107,16 +111,16 @@
             height: 40px;
             border-radius: 50%;
             margin-right: 12px;
-            background: #F8F9FA;
+            background: #2D2D2D;
             cursor: pointer;
             position: relative;
             transition: all 0.2s;
             overflow: hidden;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
 
         .avatar-upload:hover {
-            background: #F1F3F5;
+            background: #3A3A3A;
             transform: scale(1.05);
         }
 
@@ -131,41 +135,43 @@
         .username {
             font-weight: 600;
             font-size: 16px;
-            color: #2D3436;
+            color: #E0E0E0;
             cursor: pointer;
             transition: color 0.2s;
         }
 
         .username:hover {
-            color: #636E72;
+            color: #BB86FC;
         }
 
         .action-buttons {
             padding: 16px 0;
             margin-bottom: 12px;
-            border-bottom: 1px solid #DFE6E9;
+            border-bottom: 1px solid #373737;
             display: flex;
             gap: 20px;
         }
 
         .action-icon {
             font-size: 24px;
-            color: #636E72;
+            color: #9E9E9E;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .action-icon:hover {
             transform: scale(1.1);
-            color: #2D3436;
+            color: #BB86FC;
         }
 
+        /* 内容区滚动优化 */
         .post-content {
             flex-grow: 1;
             overflow-y: auto;
             padding: 8px 0;
             -ms-overflow-style: none;
             scrollbar-width: none;
+            max-height: calc(100vh - 280px);
         }
 
         .post-content::-webkit-scrollbar {
@@ -175,7 +181,7 @@
         .caption-text {
             font-size: 15px;
             line-height: 1.6;
-            color: #2D3436;
+            color: #E0E0E0;
             cursor: pointer;
             padding: 8px 4px;
             border-radius: 4px;
@@ -183,9 +189,10 @@
         }
 
         .caption-text:hover {
-            background: rgba(45,52,54,0.05);
+            background: rgba(255,255,255,0.05);
         }
 
+        /* 移动端适配 */
         @media (max-width: 768px) {
             .content-container {
                 width: calc(100vw - 20px);
@@ -197,14 +204,17 @@
 
             .image-upload-section {
                 border-radius: 16px 16px 0 0;
-                aspect-ratio: 4/3;
+                aspect-ratio: 9/16;
                 min-width: 100%;
+                min-height: 75vh;
                 height: auto;
             }
 
             .profile-section {
                 border-radius: 0 0 16px 16px;
                 padding: 20px;
+                min-height: auto;
+                flex: 0 0 45%;
             }
 
             .avatar-upload {
@@ -228,6 +238,10 @@
             .caption-text {
                 font-size: 14px;
             }
+
+            .post-content {
+                max-height: calc(100vh - 320px);
+            }
         }
 
         @media (min-width: 1600px) {
@@ -238,9 +252,11 @@
             }
             .image-upload-section {
                 border-radius: 28px 0 0 28px;
+                min-height: 640px;
             }
             .profile-section {
                 border-radius: 0 28px 28px 0;
+                min-height: 640px;
             }
         }
 
