@@ -49,16 +49,16 @@
             margin: calc(env(safe-area-inset-top) * 0.5) auto env(safe-area-inset-bottom);
         }
 
-        /* 9:16图片容器核心样式 */
+        /* 5:4竖版图片容器 */
         .image-upload-section {
             flex: 0 0 44.44%;
-            aspect-ratio: 9/16;
+            aspect-ratio: 5/4;
             position: relative;
             background: #2D2D2D;
             cursor: pointer;
             transition: all 0.3s;
             border-radius: 24px 0 0 24px;
-            min-height: 560px;
+            min-height: 480px;
         }
 
         .image-upload-section:hover {
@@ -87,7 +87,7 @@
             border-radius: inherit;
         }
 
-        /* 用户信息区高度适配 */
+        /* 用户信息区适配 */
         .profile-section {
             flex: 1;
             padding: 24px;
@@ -95,7 +95,7 @@
             flex-direction: column;
             background: #1E1E1E;
             border-radius: 0 24px 24px 0;
-            min-height: 560px;
+            min-height: 480px;
         }
 
         .user-info {
@@ -164,14 +164,13 @@
             color: #BB86FC;
         }
 
-        /* 内容区滚动优化 */
         .post-content {
             flex-grow: 1;
             overflow-y: auto;
             padding: 8px 0;
             -ms-overflow-style: none;
             scrollbar-width: none;
-            max-height: calc(100vh - 280px);
+            max-height: calc(100vh - 260px);
         }
 
         .post-content::-webkit-scrollbar {
@@ -204,9 +203,9 @@
 
             .image-upload-section {
                 border-radius: 16px 16px 0 0;
-                aspect-ratio: 9/16;
+                aspect-ratio: 5/4;
                 min-width: 100%;
-                min-height: 75vh;
+                min-height: 60vh;
                 height: auto;
             }
 
@@ -214,7 +213,7 @@
                 border-radius: 0 0 16px 16px;
                 padding: 20px;
                 min-height: auto;
-                flex: 0 0 45%;
+                flex: 0 0 50%;
             }
 
             .avatar-upload {
@@ -240,7 +239,7 @@
             }
 
             .post-content {
-                max-height: calc(100vh - 320px);
+                max-height: calc(100vh - 300px);
             }
         }
 
@@ -252,11 +251,11 @@
             }
             .image-upload-section {
                 border-radius: 28px 0 0 28px;
-                min-height: 640px;
+                min-height: 520px;
             }
             .profile-section {
                 border-radius: 0 28px 28px 0;
-                min-height: 640px;
+                min-height: 520px;
             }
         }
 
