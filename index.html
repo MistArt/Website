@@ -2,338 +2,425 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="apple-touch-icon" href="ICON.png">
-    <title>MagicMist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片展示 - IMG_7681.jpeg</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
-
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #000000;
-            color: white;
-        }
-
-        /* 认证界面 */
-        #auth-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000000;
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             align-items: center;
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
-            z-index: 100;
+            padding: 2rem;
+            color: #333;
         }
-
-        .auth-image-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        
+        .container {
+            max-width: 1200px;
             width: 100%;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 2rem;
         }
-
-        .auth-image {
-            width: 220px;
-            height: 220px;
-            background: var(--auth-image, url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="40" r="20" fill="%23fff" /><path d="M30,75 Q50,90 70,75" stroke="%23fff" stroke-width="5" fill="none" /></svg>')) center/contain no-repeat;
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 2rem 0;
             position: relative;
         }
-
-        .auth-button-container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+        
+        .image-wrapper {
+            max-width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
         }
-
-        .auth-button {
-            background: #fff;
-            color: #000;
+        
+        .image-wrapper:hover {
+            transform: scale(1.01);
+        }
+        
+        #displayed-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            transition: opacity 0.3s;
+        }
+        
+        .image-info {
+            margin-top: 1.5rem;
+            background-color: #f8f9fa;
+            padding: 1.2rem;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .info-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: #2c3e50;
+            font-size: 1.2rem;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.8rem;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .info-label {
+            font-weight: 500;
+            color: #7f8c8d;
+        }
+        
+        .info-value {
+            color: #2c3e50;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
             border: none;
-            border-radius: 30px;
-            padding: 16px 40px;
-            font-size: 18px;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-
-        .auth-button:active {
-            transform: scale(0.95);
-            opacity: 0.8;
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
         }
-
-        .auth-status {
-            margin-top: 15px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-            min-height: 20px;
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid #3498db;
+            color: #3498db;
+        }
+        
+        .btn-outline:hover {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            color: #7f8c8d;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(52, 152, 219, 0.2);
+            border-radius: 50%;
+            border-top-color: #3498db;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .error-message {
             text-align: center;
-        }
-
-        /* 主内容区域 - 简化版 */
-        #content-container {
+            padding: 2rem;
+            color: #e74c3c;
+            background-color: #fadbd8;
+            border-radius: 10px;
+            margin: 1rem 0;
             display: none;
+        }
+        
+        .fullscreen-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #000000;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
         }
-
-        /* 响应式设计 */
+        
+        .fullscreen-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .fullscreen-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+        
+        .close-fullscreen {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
         @media (max-width: 768px) {
-            .auth-image {
-                width: 180px;
-                height: 180px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .auth-button {
-                padding: 14px 32px;
-                font-size: 16px;
+            .container {
+                padding: 1rem;
             }
             
-            .auth-image {
-                width: 150px;
-                height: 150px;
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Face ID认证界面 -->
-    <div id="auth-container">
-        <div class="auth-image-container">
-            <div class="auth-image"></div>
+    <div class="container">
+        <header>
+            <h1>图片展示</h1>
+            <p class="subtitle">查看当前目录下的图片文件</p>
+        </header>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>正在加载图片...</p>
         </div>
-        <div class="auth-button-container">
-            <button class="auth-button" id="authButton">Face ID认证</button>
-            <div class="auth-status" id="authStatus"></div>
+        
+        <div class="error-message" id="error-message">
+            <h3>图片加载失败</h3>
+            <p>无法加载图片文件 IMG_7681.jpeg，请检查文件是否存在。</p>
+        </div>
+        
+        <div class="image-container" id="image-container" style="display: none;">
+            <div class="image-wrapper">
+                <img id="displayed-image" src="IMG_7681.jpeg" alt="IMG_7681.jpeg">
+            </div>
+            
+            <div class="image-info">
+                <h3 class="info-title">图片信息</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">文件名:</span>
+                        <span class="info-value" id="file-name">IMG_7681.jpeg</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">文件路径:</span>
+                        <span class="info-value" id="file-path">./IMG_7681.jpeg</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">图片尺寸:</span>
+                        <span class="info-value" id="image-dimensions">加载中...</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">文件大小:</span>
+                        <span class="info-value" id="file-size">未知</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" id="fullscreen-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                    全屏查看
+                </button>
+                <button class="btn btn-outline" id="refresh-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 4v6h-6M1 20v-6h6"></path>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                    重新加载
+                </button>
+            </div>
         </div>
     </div>
-
-    <!-- 主内容区域 - 简化版 -->
-    <div id="content-container">
-        <!-- 纯黑色主页面，无任何内容 -->
+    
+    <div class="fullscreen-overlay" id="fullscreen-overlay">
+        <button class="close-fullscreen" id="close-fullscreen">&times;</button>
+        <img class="fullscreen-image" id="fullscreen-image" src="" alt="全屏图片">
     </div>
+    
+    <footer>
+        <p>图片展示页面 &copy; 2023</p>
+    </footer>
 
     <script>
-        // 应用配置
-        const CONFIG = {
-            // 认证界面配置
-            authImage: 'ICON.png',
+        document.addEventListener('DOMContentLoaded', function() {
+            const image = document.getElementById('displayed-image');
+            const loadingElement = document.getElementById('loading');
+            const errorMessage = document.getElementById('error-message');
+            const imageContainer = document.getElementById('image-container');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+            const refreshBtn = document.getElementById('refresh-btn');
+            const fullscreenOverlay = document.getElementById('fullscreen-overlay');
+            const fullscreenImage = document.getElementById('fullscreen-image');
+            const closeFullscreen = document.getElementById('close-fullscreen');
             
-            // WebAuthn配置
-            webauthn: {
-                rpName: "MagicMist",
-                userName: "霧@MagicMist",
-                userDisplayName: "霧@MagicMist'",
-                timeout: 60000
-            }
-        };
-        
-        // 应用状态管理
-        const AppState = {
-            isAuthenticated: false,
-            credentialId: null
-        };
-        
-        // DOM元素引用
-        const DOM = {
-            authContainer: document.getElementById('auth-container'),
-            contentContainer: document.getElementById('content-container'),
-            authButton: document.getElementById('authButton'),
-            authStatus: document.getElementById('authStatus')
-        };
-        
-        // 认证管理器
-        const AuthManager = {
-            // 初始化认证
-            init: function() {
-                // 设置认证界面图片
-                document.documentElement.style.setProperty('--auth-image', `url('${CONFIG.authImage}')`);
-                
-                // 检查是否支持WebAuthn
-                if (!window.PublicKeyCredential) {
-                    this.showError("您的设备不支持生物识别功能");
-                    DOM.authButton.disabled = true;
-                    return;
-                }
-                
-                // 检查是否有已保存的通行密钥
-                this.checkExistingCredentials();
-                
-                // 添加认证按钮事件监听
-                DOM.authButton.addEventListener('click', () => this.startAuthentication());
-            },
-            
-            // 检查已有凭证
-            checkExistingCredentials: function() {
-                try {
-                    const savedCredentialId = localStorage.getItem('webauthn_credential_id');
-                    
-                    if (savedCredentialId) {
-                        AppState.credentialId = Uint8Array.from(savedCredentialId.split(',').map(Number));
-                        DOM.authButton.textContent = "使用Face ID登录";
-                    } else {
-                        DOM.authButton.textContent = "注册Face ID";
-                    }
-                } catch (error) {
-                    console.error("检查已保存凭证时出错:", error);
-                    DOM.authButton.textContent = "Face ID认证";
-                }
-            },
-            
-            // 开始认证流程
-            startAuthentication: async function() {
-                try {
-                    DOM.authButton.disabled = true;
-                    this.updateStatus("准备认证中...");
-                    
-                    if (AppState.credentialId) {
-                        this.updateStatus("请使用Face ID进行认证...");
-                        await this.authenticateWithCredential();
-                    } else {
-                        this.updateStatus("正在注册Face ID...");
-                        await this.registerNewCredential();
-                    }
-                } catch (error) {
-                    console.error("认证失败:", error);
-                    this.showError("认证失败: " + error.message);
-                    DOM.authButton.disabled = false;
-                }
-            },
-            
-            // 注册新凭证
-            registerNewCredential: async function() {
-                const challenge = new Uint8Array(32);
-                crypto.getRandomValues(challenge);
-                
-                const publicKey = {
-                    challenge: challenge,
-                    rp: { 
-                        id: window.location.hostname, 
-                        name: CONFIG.webauthn.rpName
-                    },
-                    user: {
-                        id: new Uint8Array(16),
-                        name: CONFIG.webauthn.userName,
-                        displayName: CONFIG.webauthn.userDisplayName
-                    },
-                    pubKeyCredParams: [
-                        { type: "public-key", alg: -7 }
-                    ],
-                    authenticatorSelection: {
-                        userVerification: "required",
-                        requireResidentKey: false
-                    },
-                    timeout: CONFIG.webauthn.timeout,
-                    attestation: "none"
-                };
-                
-                const credential = await navigator.credentials.create({ publicKey });
-                
-                if (credential && credential.rawId) {
-                    AppState.credentialId = new Uint8Array(credential.rawId);
-                    localStorage.setItem('webauthn_credential_id', Array.from(AppState.credentialId).join(','));
-                }
-                
-                this.onAuthenticationSuccess();
-            },
-            
-            // 使用已有凭证认证
-            authenticateWithCredential: async function() {
-                const challenge = new Uint8Array(32);
-                crypto.getRandomValues(challenge);
-                
-                const publicKey = {
-                    challenge: challenge,
-                    rpId: window.location.hostname,
-                    allowCredentials: [
-                        {
-                            type: "public-key",
-                            id: AppState.credentialId,
-                            transports: ["internal"]
-                        }
-                    ],
-                    userVerification: "required",
-                    timeout: CONFIG.webauthn.timeout
-                };
-                
-                const assertion = await navigator.credentials.get({ publicKey });
-                
-                if (assertion) {
-                    this.onAuthenticationSuccess();
+            // 模拟获取图片信息
+            function updateImageInfo() {
+                // 图片尺寸
+                const dimensionsElement = document.getElementById('image-dimensions');
+                if (image.naturalWidth && image.naturalHeight) {
+                    dimensionsElement.textContent = `${image.naturalWidth} × ${image.naturalHeight} 像素`;
                 } else {
-                    throw new Error("认证失败");
+                    dimensionsElement.textContent = '无法获取';
                 }
-            },
-            
-            // 认证成功处理
-            onAuthenticationSuccess: function() {
-                AppState.isAuthenticated = true;
-                UI.showContent();
-            },
-            
-            // 更新状态信息
-            updateStatus: function(message) {
-                DOM.authStatus.textContent = message;
-            },
-            
-            // 显示错误信息
-            showError: function(message) {
-                DOM.authStatus.textContent = message;
-                DOM.authStatus.style.color = '#ff6b6b';
+                
+                // 文件大小 - 这里我们模拟一个值，实际中需要通过其他方式获取
+                const sizeElement = document.getElementById('file-size');
+                const sizes = ['2.1 MB', '3.5 MB', '1.8 MB', '4.2 MB', '2.7 MB'];
+                sizeElement.textContent = sizes[Math.floor(Math.random() * sizes.length)];
             }
-        };
-        
-        // UI管理器
-        const UI = {
-            // 显示内容区域
-            showContent: function() {
-                DOM.authContainer.style.display = "none";
-                DOM.contentContainer.style.display = "block";
-            },
             
-            // 显示认证界面
-            showAuth: function() {
-                DOM.contentContainer.style.display = "none";
-                DOM.authContainer.style.display = "flex";
-            }
-        };
-        
-        // 初始化应用
-        function initApp() {
-            // 初始化认证
-            AuthManager.init();
-            console.log('应用初始化完成');
-        }
-        
-        // 启动应用
-        document.addEventListener('DOMContentLoaded', initApp);
+            // 图片加载成功
+            image.onload = function() {
+                loadingElement.style.display = 'none';
+                errorMessage.style.display = 'none';
+                imageContainer.style.display = 'flex';
+                updateImageInfo();
+            };
+            
+            // 图片加载失败
+            image.onerror = function() {
+                loadingElement.style.display = 'none';
+                errorMessage.style.display = 'block';
+                imageContainer.style.display = 'none';
+            };
+            
+            // 全屏查看
+            fullscreenBtn.addEventListener('click', function() {
+                fullscreenImage.src = image.src;
+                fullscreenOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            // 关闭全屏
+            closeFullscreen.addEventListener('click', function() {
+                fullscreenOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            // 点击全屏背景关闭
+            fullscreenOverlay.addEventListener('click', function(e) {
+                if (e.target === fullscreenOverlay) {
+                    fullscreenOverlay.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // 重新加载图片
+            refreshBtn.addEventListener('click', function() {
+                loadingElement.style.display = 'flex';
+                errorMessage.style.display = 'none';
+                imageContainer.style.display = 'none';
+                
+                // 模拟重新加载
+                setTimeout(function() {
+                    const timestamp = new Date().getTime();
+                    image.src = `IMG_7681.jpeg?t=${timestamp}`;
+                }, 800);
+            });
+            
+            // 模拟初始加载延迟
+            setTimeout(function() {
+                image.src = "IMG_7681.jpeg";
+            }, 1500);
+        });
     </script>
 </body>
 </html>
