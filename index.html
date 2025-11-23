@@ -74,7 +74,7 @@
         .auth-image {
             width: 220px;
             height: 220px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23222" rx="20"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="24" fill="white">Mist.png</text></svg>') center/contain no-repeat; /* 使用占位图 */
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIwIiBoZWlnaHQ9IjIyMCIgdmlld0JveD0iMCAwIDIyMCAyMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMjAiIGhlaWdodD0iMjIwIiByeD0iMjAiIGZpbGw9IiMxRTFFMUUiLz4KPHBhdGggZD0iTTExMCA2MEMxMzMuMTM3IDYwIDE1MiA3OC44NjM0IDE1MiAxMDJDMTUyIDEyNS4xMzcgMTMzLjEzNyAxNDQgMTEwIDE0NEM4Ni44NjM0IDE0NCA2OCAxMjUuMTM3IDY4IDEwMkM2OCA3OC44NjM0IDg2Ljg2MzQgNjAgMTEwIDYwWiIgZmlsbD0iI0ZGRkZGRiIvPgo8cGF0aCBkPSJNMTEwIDE2MEM4Ni44NjM0IDE2MCA2OCAxMzMuMTM3IDY4IDExMEM2OCAxMDQuNDc3IDY5LjM1MjYgOTkuMjA3MSA3MS43ODI2IDk0LjUzMjFDNzEuODQ3NiA5NC40MTcxIDcxLjkxNzYgOTQuMzA3MSA3Mi4wMDI2IDk0LjIwNzFDODAuNjU3NiA4MC45MDIxIDk0LjQ0MjYgNzIgMTEwIDcyQzEyNS41NTc0IDcyIDEzOS4zNDI0IDgwLjkwMjEgMTQ3Ljk5NzQgOTQuMjA3MUMxNDguMDgyNCA5NC4zMDcxIDE0OC4xNTI0IDk0LjQxNzEgMTQ4LjIxNzQgOTQuNTMyMUMxNTAuNjQ3NCA5OS4yMDcxIDE1MiAxMDQuNDc3IDE1MiAxMTBDMTUyIDEzMy4xMzcgMTMzLjEzNyAxNjAgMTEwIDE2MFoiIGZpbGw9IiNGRkZGRkYiLz4KPC9zdmc+') center/contain no-repeat;
             position: relative;
             border-radius: 20px;
             overflow: hidden;
@@ -202,7 +202,7 @@
             background-color: rgba(0, 0, 0, 0.4); /* 添加半透明背景增强可读性 */
         }
 
-        /* 修复模糊背景问题 - 使用CSS渐变作为背景 */
+        /* 添加模糊圆角背景 - 使用CSS渐变和SVG内联图片 */
         .main-content::before {
             content: '';
             position: absolute;
@@ -210,37 +210,31 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: 
-                radial-gradient(circle at 30% 30%, rgba(80, 80, 120, 0.5) 0%, transparent 50%),
-                radial-gradient(circle at 70% 70%, rgba(120, 80, 80, 0.5) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(80, 120, 80, 0.3) 0%, transparent 70%);
-            background-blend-mode: screen;
-            filter: blur(20px) brightness(0.8);
+            background-image: 
+                radial-gradient(circle at 30% 30%, rgba(50, 50, 50, 0.8) 0%, rgba(0, 0, 0, 0.9) 70%),
+                url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIwIiBoZWlnaHQ9IjIyMCIgdmlld0JveD0iMCAwIDIyMCAyMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMjAiIGhlaWdodD0iMjIwIiByeD0iMjAiIGZpbGw9IiMxRTFFMUUiLz4KPHBhdGggZD0iTTExMCA2MEMxMzMuMTM3IDYwIDE1MiA3OC44NjM0IDE1MiAxMDJDMTUyIDEyNS4xMzcgMTMzLjEzNyAxNDQgMTEwIDE0NEM4Ni44NjM0IDE0NCA2OCAxMjUuMTM3IDY4IDEwMkM2OCA3OC44NjM0IDg2Ljg2MzQgNjAgMTEwIDYwWiIgZmlsbD0iI0ZGRkZGRiIvPgo8cGF0aCBkPSJNMTEwIDE2MEM4Ni44NjM0IDE2MCA2OCAxMzMuMTM3IDY4IDExMEM2OCAxMDQuNDc3IDY5LjM1MjYgOTkuMjA3MSA3MS43ODI2IDk0LjUzMjFDNzEuODQ3NiA5NC40MTcxIDcxLjkxNzYgOTQuMzA3MSA3Mi4wMDI2IDk0LjIwNzFDODAuNjU3NiA4MC45MDIxIDk0LjQ0MjYgNzIgMTEwIDcyQzEyNS41NTc0IDcyIDEzOS4zNDI0IDgwLjkwMjEgMTQ3Ljk5NzQgOTQuMjA3MUMxNDguMDgyNCA5NC4zMDcxIDE0OC4xNTI0IDk0LjQxNzEgMTQ4LjIxNzQgOTQuNTMyMUMxNTAuNjQ3NCA5OS4yMDcxIDE1MiAxMDQuNDc3IDE1MiAxMTBDMTUyIDEzMy4xMzcgMTMzLjEzNyAxNjAgMTEwIDE2MFoiIGZpbGw9IiNGRkZGRkYiLz4KPC9zdmc+');
+            background-size: cover, 200% 200%;
+            background-position: center, 0% 0%;
+            background-repeat: no-repeat;
+            filter: blur(15px) brightness(0.6); /* 调整模糊效果和亮度 */
             border-radius: 30px; /* 圆角边框 */
             z-index: -1; /* 确保背景在内容后面 */
+            animation: backgroundMove 20s infinite linear;
         }
 
-        /* 添加额外的模糊层增强效果 */
-        .main-content::after {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            background: 
-                radial-gradient(circle at 20% 20%, rgba(100, 100, 200, 0.4) 0%, transparent 40%),
-                radial-gradient(circle at 80% 80%, rgba(200, 100, 100, 0.4) 0%, transparent 40%);
-            filter: blur(30px) brightness(0.6);
-            z-index: -2; /* 在主要背景后面 */
-            border-radius: 40px;
+        @keyframes backgroundMove {
+            0% { background-position: center, 0% 0%; }
+            25% { background-position: center, 100% 0%; }
+            50% { background-position: center, 100% 100%; }
+            75% { background-position: center, 0% 100%; }
+            100% { background-position: center, 0% 0%; }
         }
 
-        /* 主内容图片 - 保持原有尺寸，使用占位图 */
+        /* 主内容图片 - 使用内联SVG确保加载 */
         .content-image {
             width: 280px;
             height: 280px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23222" rx="20"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="24" fill="white">Mist.png</text></svg>') center/contain no-repeat; /* 使用占位图 */
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjI4MCIgdmlld0JveD0iMCAwIDI4MCAyODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyODAiIGhlaWdodD0iMjgwIiByeD0iMjUiIGZpbGw9IiMxRTFFMUUiLz4KPHBhdGggZD0iTTE0MCA3MEMxNzAuNDYxIDcwIDE5NSA5NC41MzkxIDE5NSAxMjVDMTk1IDE1NS40NjEgMTcwLjQ2MSAxODAgMTQwIDE4MEMxMDkuNTM5IDE4MCA4NSAxNTUuNDYxIDg1IDEyNUM4NSA5NC41MzkxIDEwOS41MzkgNzAgMTQwIDcwWiIgZmlsbD0iI0ZGRkZGRiIvPgo8cGF0aCBkPSJNMTQwIDIwNUMxMDkuNTM5IDIwNSA4NSAxNzAuNDYxIDg1IDE0MEM4NSAxMzMuNjA5IDg2LjcyMTcgMTI3LjQ5MiA4OS44NDg1IDEyMS45MjdDODkuOTQxNSAxMjEuNzkzIDkwLjA0MTUgMTIxLjY2MyA5MC4xNTM1IDEyMS41NDNDMTAyLjY2MzUgMTAzLjE0NyAxMjAuMjM1IDkwIDE0MCA5MEMxNTkuNzY1IDkwIDE3Ny4zMzY1IDEwMy4xNDcgMTg5Ljg0NjUgMTIxLjU0M0MxODkuOTU4NSAxMjEuNjYzIDE5MC4wNTg1IDEyMS43OTMgMTkwLjE1MTUgMTIxLjkyN0MxOTMuMjc4MyAxMjcuNDkyIDE5NSAxMzMuNjA5IDE5NSAxNDBDMTk1IDE3MC40NjEgMTcwLjQ2MSAyMDUgMTQwIDIwNVoiIGZpbGw9IiNGRkZGRkYiLz4KPC9zdmc+') center/contain no-repeat;
             margin-bottom: 40px; /* 增加底部间距 */
             border-radius: 25px;
             box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1); /* 阴影改为浅色 */
@@ -319,8 +313,7 @@
                 min-height: 550px;
             }
             
-            .main-content::before,
-            .main-content::after {
+            .main-content::before {
                 border-radius: 25px;
             }
         }
@@ -356,8 +349,7 @@
                 min-height: 500px;
             }
             
-            .main-content::before,
-            .main-content::after {
+            .main-content::before {
                 border-radius: 20px;
             }
         }
