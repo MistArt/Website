@@ -74,7 +74,7 @@
         .auth-image {
             width: 220px;
             height: 220px;
-            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIwIiBoZWlnaHQ9IjIyMCIgdmlld0JveD0iMCAwIDIyMCAyMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMjAiIGhlaWdodD0iMjIwIiByeD0iMjAiIGZpbGw9IiMxRTFFMUUiLz4KPHBhdGggZD0iTTExMCA2MEMxMzMuMTM3IDYwIDE1MiA3OC44NjM0IDE1MiAxMDJDMTUyIDEyNS4xMzcgMTMzLjEzNyAxNDQgMTEwIDE0NEM4Ni44NjM0IDE0NCA2OCAxMjUuMTM3IDY4IDEwMkM2OCA3OC44NjM0IDg2Ljg2MzQgNjAgMTEwIDYwWiIgZmlsbD0iI0ZGRkZGRiIvPgo8cGF0aCBkPSJNMTEwIDE2MEM4Ni44NjM0IDE2MCA2OCAxMzMuMTM3IDY4IDExMEM2OCAxMDQuNDc3IDY5LjM1MjYgOTkuMjA3MSA3MS43ODI2IDk0LjUzMjFDNzEuODQ3NiA5NC40MTcxIDcxLjkxNzYgOTQuMzA3MSA3Mi4wMDI2IDk0LjIwNzFDODAuNjU3NiA4MC45MDIxIDk0LjQ0MjYgNzIgMTEwIDcyQzEyNS41NTc0IDcyIDEzOS4zNDI0IDgwLjkwMjEgMTQ3Ljk5NzQgOTQuMjA3MUMxNDguMDgyNCA5NC4zMDcxIDE0OC4xNTI0IDk0LjQxNzEgMTQ4LjIxNzQgOTQuNTMyMUMxNTAuNjQ3NCA5OS4yMDcxIDE1MiAxMDQuNDc3IDE1MiAxMTBDMTUyIDEzMy4xMzcgMTMzLjEzNyAxNjAgMTEwIDE2MFoiIGZpbGw9IiNGRkZGRkYiLz4KPC9zdmc+') center/contain no-repeat;
+            background: url('Mist.png') center/contain no-repeat; /* 改为Mist.png */
             position: relative;
             border-radius: 20px;
             overflow: hidden;
@@ -202,7 +202,7 @@
             background-color: rgba(0, 0, 0, 0.4); /* 添加半透明背景增强可读性 */
         }
 
-        /* 添加模糊圆角背景 - 使用CSS渐变和SVG内联图片 */
+        /* 添加模糊圆角背景 - 改为Mist.png */
         .main-content::before {
             content: '';
             position: absolute;
@@ -210,31 +210,20 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: 
-                radial-gradient(circle at 30% 30%, rgba(50, 50, 50, 0.8) 0%, rgba(0, 0, 0, 0.9) 70%),
-                url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIwIiBoZWlnaHQ9IjIyMCIgdmlld0JveD0iMCAwIDIyMCAyMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMjAiIGhlaWdodD0iMjIwIiByeD0iMjAiIGZpbGw9IiMxRTFFMUUiLz4KPHBhdGggZD0iTTExMCA2MEMxMzMuMTM3IDYwIDE1MiA3OC44NjM0IDE1MiAxMDJDMTUyIDEyNS4xMzcgMTMzLjEzNyAxNDQgMTEwIDE0NEM4Ni44NjM0IDE0NCA2OCAxMjUuMTM3IDY4IDEwMkM2OCA3OC44NjM0IDg2Ljg2MzQgNjAgMTEwIDYwWiIgZmlsbD0iI0ZGRkZGRiIvPgo8cGF0aCBkPSJNMTEwIDE2MEM4Ni44NjM0IDE2MCA2OCAxMzMuMTM3IDY4IDExMEM2OCAxMDQuNDc3IDY5LjM1MjYgOTkuMjA3MSA3MS43ODI2IDk0LjUzMjFDNzEuODQ3NiA5NC40MTcxIDcxLjkxNzYgOTQuMzA3MSA3Mi4wMDI2IDk0LjIwNzFDODAuNjU3NiA4MC45MDIxIDk0LjQ0MjYgNzIgMTEwIDcyQzEyNS41NTc0IDcyIDEzOS4zNDI0IDgwLjkwMjEgMTQ3Ljk5NzQgOTQuMjA3MUMxNDguMDgyNCA5NC4zMDcxIDE0OC4xNTI0IDk0LjQxNzEgMTQ4LjIxNzQgOTQuNTMyMUMxNTAuNjQ3NCA5OS4yMDcxIDE1MiAxMDQuNDc3IDE1MiAxMTBDMTUyIDEzMy4xMzcgMTMzLjEzNyAxNjAgMTEwIDE2MFoiIGZpbGw9IiNGRkZGRkYiLz4KPC9zdmc+');
-            background-size: cover, 200% 200%;
-            background-position: center, 0% 0%;
+            background-image: url('Mist.png'); /* 改为Mist.png */
+            background-size: cover;
+            background-position: center;
             background-repeat: no-repeat;
             filter: blur(15px) brightness(0.6); /* 调整模糊效果和亮度 */
             border-radius: 30px; /* 圆角边框 */
             z-index: -1; /* 确保背景在内容后面 */
-            animation: backgroundMove 20s infinite linear;
         }
 
-        @keyframes backgroundMove {
-            0% { background-position: center, 0% 0%; }
-            25% { background-position: center, 100% 0%; }
-            50% { background-position: center, 100% 100%; }
-            75% { background-position: center, 0% 100%; }
-            100% { background-position: center, 0% 0%; }
-        }
-
-        /* 主内容图片 - 使用内联SVG确保加载 */
+        /* 主内容图片 - 保持原有尺寸，改为Mist.png */
         .content-image {
             width: 280px;
             height: 280px;
-            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjI4MCIgdmlld0JveD0iMCAwIDI4MCAyODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyODAiIGhlaWdodD0iMjgwIiByeD0iMjUiIGZpbGw9IiMxRTFFMUUiLz4KPHBhdGggZD0iTTE0MCA3MEMxNzAuNDYxIDcwIDE5NSA5NC41MzkxIDE5NSAxMjVDMTk1IDE1NS40NjEgMTcwLjQ2MSAxODAgMTQwIDE4MEMxMDkuNTM5IDE4MCA4NSAxNTUuNDYxIDg1IDEyNUM4NSA5NC41MzkxIDEwOS41MzkgNzAgMTQwIDcwWiIgZmlsbD0iI0ZGRkZGRiIvPgo8cGF0aCBkPSJNMTQwIDIwNUMxMDkuNTM5IDIwNSA4NSAxNzAuNDYxIDg1IDE0MEM4NSAxMzMuNjA5IDg2LjcyMTcgMTI3LjQ5MiA4OS44NDg1IDEyMS45MjdDODkuOTQxNSAxMjEuNzkzIDkwLjA0MTUgMTIxLjY2MyA5MC4xNTM1IDEyMS41NDNDMTAyLjY2MzUgMTAzLjE0NyAxMjAuMjM1IDkwIDE0MCA5MEMxNTkuNzY1IDkwIDE3Ny4zMzY1IDEwMy4xNDcgMTg5Ljg0NjUgMTIxLjU0M0MxODkuOTU4NSAxMjEuNjYzIDE5MC4wNTg1IDEyMS43OTMgMTkwLjE1MTUgMTIxLjkyN0MxOTMuMjc4MyAxMjcuNDkyIDE5NSAxMzMuNjA5IDE5NSAxNDBDMTk1IDE3MC40NjEgMTcwLjQ2MSAyMDUgMTQwIDIwNVoiIGZpbGw9IiNGRkZGRkYiLz4KPC9zdmc+') center/contain no-repeat;
+            background: url('Mist.png') center/contain no-repeat; /* 改为Mist.png */
             margin-bottom: 40px; /* 增加底部间距 */
             border-radius: 25px;
             box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1); /* 阴影改为浅色 */
