@@ -69,6 +69,7 @@
         .auth-image {
             width: 220px;
             height: 220px;
+            /* 认证界面图片始终使用默认图片，不受自定义影响 */
             background: #333333 url('Mist.png') center/cover no-repeat;
             position: relative;
             border-radius: 20px;
@@ -280,7 +281,7 @@
             background: transparent;
         }
 
-        /* 头像图片 */
+        /* 头像图片 - 可自定义 */
         .content-image {
             width: 200px;
             height: 200px;
@@ -634,6 +635,7 @@
     <!-- Face ID认证界面 -->
     <div id="auth-container">
         <div class="auth-image-container">
+            <!-- 认证界面图片始终使用默认图片 -->
             <div class="auth-image" role="img" aria-label="MagicMist应用图标"></div>
         </div>
         <div class="auth-button-container">
@@ -650,6 +652,7 @@
         <div class="main-content">
             <!-- 内容层 - 完全透明 -->
             <div class="content-layer">
+                <!-- 内容区域图片可自定义 -->
                 <div class="content-image" role="img" aria-label="MagicMist应用图标"></div>
                 <div class="text-rotator-container">
                     <div class="text-rotator" id="textRotator">
@@ -954,14 +957,15 @@
                 this.hideModal();
             },
             
-            // 更新所有图片
+            // 更新所有图片 - 修改：不再更新认证界面的图片
             updateImages: function() {
                 // 更新内容区域的图片
                 document.querySelector('.content-image').style.backgroundImage = `url(${AppState.customImage})`;
+                
+                // 更新模糊背景
                 DOM.blurBackground.style.backgroundImage = `url(${AppState.customImage})`;
                 
-                // 更新认证界面的图片
-                document.querySelector('.auth-image').style.backgroundImage = `url(${AppState.customImage})`;
+                // 注意：不再更新认证界面的图片
                 
                 // 确保所有图片使用cover模式填充
                 this.ensureImageCover();
@@ -972,7 +976,6 @@
                 const images = [
                     document.querySelector('.content-image'),
                     DOM.blurBackground,
-                    document.querySelector('.auth-image'),
                     document.getElementById('imagePreview')
                 ];
                 
